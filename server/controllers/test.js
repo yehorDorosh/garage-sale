@@ -12,10 +12,6 @@ exports.test = async(req, res, next) => {
   } catch (err) {
     console.log(err);
   }
-
-  res.status(200).json({
-    data: 'Test DATA'
-  });
 };
 
 exports.testDB = async(req, res, next) => {
