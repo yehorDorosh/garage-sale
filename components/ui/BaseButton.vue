@@ -1,0 +1,60 @@
+<template>
+  <button v-if="!link" :class="mode" type="button">
+    <slot />
+  </button>
+  <router-link v-else :to="to" :class="mode">
+    <slot />
+  </router-link>
+</template>
+
+<script>
+export default {
+  props: {
+    mode: {
+      type: String,
+      required: false,
+      default: null
+    },
+    link: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    to: {
+      type: String,
+      required: false,
+      default: '/'
+    }
+  }
+};
+</script>
+
+<style scoped>
+  button,
+  a {
+    text-decoration: none;
+    padding: 8px 16px;
+    font: inherit;
+    background-color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 32px;
+    color: var(--accent-txt);
+    cursor: pointer;
+    margin: 8px;
+    display: inline-block;
+  }
+
+  a:hover,
+  a:active,
+  button:hover,
+  button:active {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover-txt);
+  }
+
+  .flat {
+    background-color: transparent;
+    border: none;
+    color: var(--accent);
+  }
+</style>

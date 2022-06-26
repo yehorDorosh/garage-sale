@@ -2,6 +2,18 @@
 
 ## Build Setup
 
+### For Сontainerization (Docker)
+
+```bash
+# Star dev
+$ docker-compose up
+
+# Stop
+$ docker-compose down
+```
+
+### For localhost (Without docker)
+
 ```bash
 # install dependencies
 $ npm install
