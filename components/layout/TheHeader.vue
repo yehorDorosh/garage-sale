@@ -15,20 +15,31 @@
         </ul>
       </nav>
       <div>
-        <base-button>
+        <base-button @click="openReg">
           Sign In
         </base-button>
       </div>
     </div>
+    <base-dialog :show="regIsShown" @close="closeReg">
+      test dialog
+    </base-dialog>
   </header>
 </template>
 
 <script>
-import BaseButton from '@/components/ui/BaseButton';
-
 export default {
-  components: {
-    BaseButton
+  data() {
+    return {
+      regIsShown: false,
+    };
+  },
+  methods: {
+    openReg() {
+      this.regIsShown = true;
+    },
+    closeReg() {
+      this.regIsShown = false;
+    },
   }
 };
 </script>

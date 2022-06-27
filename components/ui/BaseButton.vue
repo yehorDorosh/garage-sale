@@ -1,5 +1,5 @@
 <template>
-  <button v-if="!link" :class="mode" :type="type">
+  <button v-if="!link" :class="mode" :type="type" v-on="$listeners">
     <slot />
   </button>
   <router-link v-else :to="to" :class="mode">
@@ -47,6 +47,7 @@ export default {
     cursor: pointer;
     margin: 8px;
     display: inline-block;
+    transition: background-color, color, border-color, 300ms linear;
   }
 
   a:hover,
@@ -54,7 +55,8 @@ export default {
   button:hover,
   button:active {
     background-color: var(--accent-hover);
-    border-color: var(--accent-hover-txt);
+    color: var(--accent-hover-txt);
+    border-color: var(--accent-hover);
   }
 
   .flat {

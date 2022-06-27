@@ -5,9 +5,9 @@ html {
 }
 
 :root {
-  --accent: #5b0000;
+  --accent: #da600f;
   --accent-txt: white;
-  --accent-hover: #aa5959;
+  --accent-hover: #f08c53;
   --accent-hover-txt: black;
 }
 
