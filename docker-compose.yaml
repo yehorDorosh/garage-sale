@@ -6,9 +6,9 @@ services:
       - '27017:27017'
     volumes:
       - data:/data/db
-    command: mongod --quiet --logpath /dev/null 
+    command: mongod --quiet --logpath /dev/null
     env_file:
-      - .env
+      - ./env/db.env
   garage-sale:
     build: ./
     ports:
@@ -16,6 +16,9 @@ services:
     volumes:
       - ./:/app
       - /app/node_modules
+    env_file:
+      - ./env/nuxt.env
+    command: npm run dev
     stdin_open: true
     tty: true
     depends_on:
