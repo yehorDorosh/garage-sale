@@ -20,14 +20,19 @@
         </base-button>
       </div>
     </div>
-    <base-dialog :show="regIsShown" @close="closeReg">
-      test dialog
+    <base-dialog :show="regIsShown" :cross="true" @close="closeReg">
+      <reg-form />
     </base-dialog>
   </header>
 </template>
 
 <script>
+import RegForm from '~/components/user/RegForm';
+
 export default {
+  components: {
+    RegForm,
+  },
   data() {
     return {
       regIsShown: false,

@@ -1,11 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div>
+  <Fragment>
     <TheHeader />
     <div class="wrap">
       <Nuxt />
     </div>
-  </div>
+  </Fragment>
 </template>
 
 <script>
