@@ -8,7 +8,7 @@ const getters = {
   },
 
   token(state) {
-    return state.token;
+    return localStorage.getItem('token') || state.token;
   }
 };
 
