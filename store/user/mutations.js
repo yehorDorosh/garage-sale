@@ -6,6 +6,10 @@ const mutations = {
   userId(state, payload) {
     state.userId = payload;
   },
+
+  token(state, payload) {
+    state.token = payload;
+  },
 };
 
 export default mutations;

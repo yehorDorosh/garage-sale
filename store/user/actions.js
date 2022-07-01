@@ -12,7 +12,10 @@ const actions = {
       const data = await response.json();
       data.status = status;
       context.commit('response', data);
-      if (status === 200 || status === 201) { context.commit('userId', data.userId); }
+      if (status === 200 || status === 201) {
+        context.commit('userId', data.userId);
+        context.commit('token', data.token);
+      }
     } catch (error) {
       throw new Error(error);
     }

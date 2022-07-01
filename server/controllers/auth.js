@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
@@ -28,9 +29,17 @@ exports.signup = async(req, res, next) => {
     });
 
     const result = await user.save();
+
+    const token = jwt.sign({
+      email,
+      userId: result._id
+    },
+    process.env.JWT_PASSWORD);
+
     res.status(201).json({
       message: 'Created new user',
-      userId: result._id
+      userId: result._id,
+      token
     });
   } catch (err) {
     if (!err.statusCode) {
