@@ -1,18 +1,18 @@
 const actions = {
   async userReg(context, userData) {
     try {
-      const response = await fetch(`${context.getters.protocol}://${context.getters.hostName}/user/signup`, {
+      const response = await fetch(`${context.rootGetters.protocol}://${context.rootGetters.hostName}/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        userData,
+        body: JSON.stringify({ ...userData }),
       });
 
-      const data = await JSON.stringify(response);
+      const data = await response.json();
       console.log(data);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 };

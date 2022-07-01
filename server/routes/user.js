@@ -1,0 +1,41 @@
+const express = require('express');
+const { body } = require('express-validator');
+
+const User = require('../models/user');
+const authController = require('../controllers/auth');
+
+const router = express.Router();
+
+router.post('/signup', [
+  body('email')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .custom((value, { req }) => {
+      return User.findOne({ email: value }).then((userDoc) => {
+        if (userDoc) {
+          return Promise.reject(new Error('Email adress already exist.'));
+        }
+      });
+    })
+    .normalizeEmail(),
+  body('password')
+    .trim()
+    .isStrongPassword({ minSymbols: 0 })
+    .withMessage('Please enter a valid password.'),
+  body('name')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('The field Name shouldn\'t be empty.'),
+  body('passwordConfirmation')
+    .trim()
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('Password confirmation is incorrect.');
+      } else {
+        return true;
+      }
+    }),
+], authController.signup);
+
+module.exports = router;

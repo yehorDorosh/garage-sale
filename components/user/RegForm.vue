@@ -3,7 +3,7 @@
     <base-input id="name-input" v-model.trim="name" type="text" label="Name" placeholder="Name" />
     <base-input id="email-input" v-model.trim="email" type="email" label="Email" placeholder="user@email.com" />
     <base-input id="pass-input" v-model.trim="password" type="password" label="Password" placeholder="******" />
-    <base-input id="pass-repeat-input" v-model.trim="repeatedPassword" type="password" label="Repeat password" placeholder="******" />
+    <base-input id="pass-repeat-input" v-model.trim="passwordConfirmation" type="password" label="Repeat password" placeholder="******" />
   </base-form>
 </template>
 
@@ -21,7 +21,7 @@ export default {
       name: '',
       email: '',
       password: '',
-      repeatedPassword: ''
+      passwordConfirmation: ''
     };
   },
   methods: {
@@ -30,9 +30,10 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
+        passwordConfirmation: this.passwordConfirmation,
       };
 
-      console.log(userData);
+      this.$store.dispatch('user/userReg', userData);
     }
   }
 };
