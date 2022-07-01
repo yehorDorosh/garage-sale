@@ -1,5 +1,6 @@
 const state = () => ({
-  response: {}
+  response: {},
+  userId: null,
 });
 
 export default state;
