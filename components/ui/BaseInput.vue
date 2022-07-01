@@ -1,7 +1,16 @@
 <template>
   <div class="row">
     <label v-if="label" :for="id">{{ label }}</label>
-    <input :id="id" v-bind="$attrs" @input="$emit('input', $event.target.value)">
+    <input
+      :id="id"
+      v-bind="$attrs"
+      :class="{ invalid: isValid === false }"
+      @input="$emit('input', $event.target.value)"
+      @blur="$emit('blur', $event.target.value)"
+    >
+    <p v-if="isValid === false" class="err">
+      {{ errMsg }}
+    </p>
   </div>
 </template>
 
@@ -13,6 +22,16 @@ export default {
       required: true,
     },
     label: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    isValid: {
+      type: Boolean,
+      required: false,
+      default: null
+    },
+    errMsg: {
       type: String,
       required: false,
       default: ''
@@ -33,5 +52,17 @@ export default {
 
   .row {
     margin-block: 8px;
+  }
+
+  input.invalid {
+    border-color: red;
+    outline-color: transparent;
+  }
+
+  .err {
+    font-size: 0.5rem;
+    color: red;
+    margin-top: 8px;
+    margin-bottom: 0;
   }
 </style>
