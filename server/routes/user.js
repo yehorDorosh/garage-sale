@@ -21,7 +21,7 @@ router.post('/signup', [
   body('password')
     .trim()
     .isStrongPassword({ minSymbols: 0 })
-    .withMessage('Please enter a valid password.'),
+    .withMessage('Password should contain at least 8 symbols. At least one char in upper case and at least 1 number.'),
   body('name')
     .trim()
     .not()

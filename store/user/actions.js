@@ -8,9 +8,10 @@ const actions = {
         },
         body: JSON.stringify({ ...userData }),
       });
-
+      const status = response.status;
       const data = await response.json();
-      console.log(data);
+      data.status = status;
+      context.commit('response', data);
     } catch (error) {
       throw new Error(error);
     }
