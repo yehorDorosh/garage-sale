@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitCB">
+  <form @submit.prevent="submit">
     <slot />
     <base-button type="submit">
       {{ btnTxt }}
@@ -10,15 +10,17 @@
 <script>
 export default {
   props: {
-    submitCb: {
-      type: Function,
-      required: true
-    },
     btnTxt: {
       type: String,
       default: 'Submit'
     }
-  }
+  },
+  emits: ['form-submit'],
+  methods: {
+    submit(e) {
+      this.$emit('form-submit', e);
+    }
+  },
 };
 </script>
 

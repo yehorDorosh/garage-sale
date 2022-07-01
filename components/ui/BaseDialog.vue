@@ -42,6 +42,7 @@ dialog {
   top: 100px;
   border-radius: 32px;
   text-align: center;
+  padding: 32px;
 }
 
 .backdrop {
@@ -74,8 +75,8 @@ dialog {
 
 .cross {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 12px;
+  right: 12px;
   height: 16px;
   width: 16px;
   opacity: 0.3;

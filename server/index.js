@@ -14,7 +14,7 @@ module.exports = app;
 
 /* eslint no-console: "off" */
 mongoose.connect(
-  `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/test-collection?authSource=admin`
+  `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/garage-sale?authSource=admin`
 )
   .then(() => {
     console.log('Connect to DB!!!');
