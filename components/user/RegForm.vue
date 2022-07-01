@@ -83,7 +83,7 @@ export default {
 
       await this.$store.dispatch('user/userReg', userData);
       const res = this.$store.getters['user/response'];
-      if (res.status) {
+      if (res.status === 422) {
         res.data.forEach((err) => {
           if (this[err.param]) {
             this[err.param].isValid = false;
