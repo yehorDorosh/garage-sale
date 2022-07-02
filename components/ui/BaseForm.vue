@@ -1,18 +1,31 @@
 <template>
-  <form @submit.prevent="submit">
+  <form v-bind="$attrs" @submit.prevent="submit">
     <slot />
     <base-button type="submit">
       {{ btnTxt }}
     </base-button>
+    <base-spinner :is-loading="isLoading" />
   </form>
 </template>
 
 <script>
+import BaseSpinner from '~/components/ui/BaseSpinner';
+
 export default {
+  components: {
+    BaseSpinner,
+  },
+
   props: {
     btnTxt: {
       type: String,
       default: 'Submit'
+    },
+
+    isLoading: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   emits: ['form-submit'],
@@ -26,6 +39,7 @@ export default {
 
 <style scoped>
 form {
+  position: relative;
   display: flex;
   flex-direction: column;
 }

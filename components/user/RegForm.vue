@@ -1,5 +1,5 @@
 <template>
-  <base-form btn-txt="Create account" @form-submit="submit">
+  <base-form btn-txt="Create account" :is-loading="isLoading" @form-submit="submit">
     <base-input
       id="name-input"
       v-model.trim="name.value"
@@ -82,8 +82,10 @@ export default {
         errMsg: 'Passwords must match.',
         touched: false,
       },
+      isLoading: false,
     };
   },
+
   methods: {
     nameValidation(value) {
       if (!this.name.touched) { return; }
@@ -165,7 +167,10 @@ export default {
         passwordConfirmation: this.passwordConfirmation.value,
       };
 
+      this.isLoading = true;
       await this.$store.dispatch('user/userReg', userData);
+      this.isLoading = false;
+
       const res = this.$store.getters['user/response'];
       if (res.status === 422) {
         res.data.forEach((err) => {

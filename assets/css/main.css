@@ -9,6 +9,8 @@ html {
   --accent-txt: white;
   --accent-hover: #f08c53;
   --accent-hover-txt: black;
+  --spinner: grey;
+  --spinner-dropdown: white;
 }
 
 body {
