@@ -13,7 +13,15 @@ const getters = {
 
   isAuth(state) {
     return !!state.token;
-  }
+  },
+
+  userName(state) {
+    return state.userName;
+  },
+
+  userEmail(state) {
+    return state.userEmail;
+  },
 };
 
 export default getters;

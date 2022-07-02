@@ -14,6 +14,14 @@ const mutations = {
   clearToken(state) {
     state.token = null;
   },
+
+  userName(state, payload) {
+    state.userName = payload;
+  },
+
+  userEmail(state, payload) {
+    state.userEmail = payload;
+  }
 };
 
 export default mutations;

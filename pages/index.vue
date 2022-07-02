@@ -15,6 +15,7 @@
         submit
       </button>
     </form>
+    <button @click="getUserData">get user data</button>
   </div>
 </template>
 
@@ -59,6 +60,10 @@ export default {
         console.log(error);
       }
     },
+
+    getUserData() {
+      this.$store.dispatch('user/getUserData');
+    }
   }
 };
 </script>

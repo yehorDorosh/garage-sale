@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import Cookie from 'js-cookie';
 
 const actions = {
@@ -76,10 +75,8 @@ const actions = {
     }
 
     if (!token) { return; }
-    const userData = jwt.decode(token);
-    context.commit('userId', userData.userId);
-    context.commit('setToken', token);
 
+    context.commit('setToken', token);
     context.dispatch('getUserData');
   },
 
@@ -92,8 +89,11 @@ const actions = {
           },
         });
         const status = response.status;
-        const data = await response.json();
-        data.status = status;
+        const userData = await response.json();
+        userData.status = status;
+        context.commit('userId', userData.id);
+        context.commit('userName', userData.name);
+        context.commit('userEmail', userData.email);
       } catch (error) {
         throw new Error(error);
       }
