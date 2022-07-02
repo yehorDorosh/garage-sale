@@ -24,6 +24,9 @@
         <base-button v-if="isAuth" @click="logout">
           Logout
         </base-button>
+        <base-button>
+          {{ userName }}
+        </base-button>
       </div>
     </div>
     <base-dialog :show="regIsShown" :cross="true" @close="closeReg">
@@ -49,7 +52,7 @@ export default {
   components: {
     RegForm,
     LoginForm,
-    BaseDialog,
+    BaseDialog
   },
 
   data() {
@@ -63,6 +66,10 @@ export default {
   computed: {
     isAuth() {
       return this.$store.getters['user/isAuth'];
+    },
+
+    userName() {
+      return this.$store.getters['user/getUserName'];
     }
   },
 

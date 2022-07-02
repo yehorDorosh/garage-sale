@@ -4,15 +4,15 @@ const getters = {
   },
 
   getUserId(state) {
-    return state.userId;
+    return state.user.id;
   },
 
   getUserName(state) {
-    return state.userName;
+    return state.user.name;
   },
 
   getUserEmail(state) {
-    return state.userEmail;
+    return state.user.email;
   },
 
   getUser(state) {
