@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 const actions = {
   async userReg(context, userData) {
     try {
-      const response = await fetch(`${context.rootGetters.protocol}://${context.rootGetters.hostName}/user/signup`, {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const actions = {
 
   async login(context, userData) {
     try {
-      const response = await fetch(`${context.rootGetters.protocol}://${context.rootGetters.hostName}/user/login`, {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

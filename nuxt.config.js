@@ -54,5 +54,10 @@ export default {
 
   router: {
     middleware: 'check-auth'
+  },
+
+  env: {
+    protocol: process.env.PROTOCOL || 'http',
+    hostName: process.env.HOST_NAME || 'localhost:3000'
   }
 };
