@@ -15,8 +15,8 @@ const actions = {
       data.status = status;
       context.commit('setResponse', data);
       if (status === 200 || status === 201) {
-        context.commit('setUserId', data.userId);
         context.commit('setToken', data.token);
+        context.dispatch('getUserData');
         Cookie.set('jwt', data.token);
         if (process.client) {
           localStorage.setItem('token', data.token);
@@ -29,10 +29,8 @@ const actions = {
 
   logout(context) {
     context.commit('clearToken');
-    context.commit('setUserId', null);
-    context.commit('setUserName', null);
-    context.commit('setUserEmail', null);
-    context.commit('setResponse', null);
+    context.commit('clearResponse');
+    context.commit('clearUserData');
     Cookie.remove('jwt');
     if (process.client) {
       localStorage.removeItem('token');
@@ -53,8 +51,8 @@ const actions = {
       data.status = status;
       context.commit('setResponse', data);
       if (status === 200) {
-        context.commit('setUserId', data.userId);
         context.commit('setToken', data.token);
+        context.dispatch('getUserData');
         Cookie.set('jwt', data.token);
         if (process.client) {
           localStorage.setItem('token', data.token);
@@ -87,15 +85,17 @@ const actions = {
       try {
         const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/data`, {
           headers: {
-            Authorization: 'Bearer ' + context.getters.token,
+            Authorization: 'Bearer ' + context.getters.getToken,
           },
         });
         const status = response.status;
         const userData = await response.json();
         userData.status = status;
-        context.commit('setUserId', userData.id);
-        context.commit('setUserName', userData.name);
-        context.commit('setUserEmail', userData.email);
+        context.commit('setUser', {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+        });
       } catch (error) {
         throw new Error(error);
       }

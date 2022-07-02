@@ -3,16 +3,8 @@ const mutations = {
     state.response = payload;
   },
 
-  setUserId(state, payload) {
-    state.userId = payload;
-  },
-
-  setUserName(state, payload) {
-    state.userName = payload;
-  },
-
-  setUserEmail(state, payload) {
-    state.userEmail = payload;
+  clearResponse(state) {
+    state.response = null;
   },
 
   setToken(state, payload) {
@@ -22,6 +14,30 @@ const mutations = {
   clearToken(state) {
     state.token = null;
   },
+
+  setUserId(state, payload) {
+    state.user.id = payload;
+  },
+
+  setUserName(state, payload) {
+    state.user.name = payload;
+  },
+
+  setUserEmail(state, payload) {
+    state.user.email = payload;
+  },
+
+  setUser(state, payload) {
+    state.user = {
+      ...payload,
+    };
+  },
+
+  clearUserData(state) {
+    state.user.id = null;
+    state.user.name = null;
+    state.user.email = null;
+  }
 };
 
 export default mutations;

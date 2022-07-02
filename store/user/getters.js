@@ -15,6 +15,10 @@ const getters = {
     return state.userEmail;
   },
 
+  getUser(state) {
+    return state.user;
+  },
+
   getToken(state) {
     return state.token;
   },

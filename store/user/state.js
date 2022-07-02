@@ -1,9 +1,11 @@
 const state = () => ({
   response: {},
-  userId: null,
+  user: {
+    id: null,
+    name: null,
+    email: null,
+  },
   token: null,
-  userName: '',
-  userEmail: '',
 });
 
 export default state;
