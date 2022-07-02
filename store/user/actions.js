@@ -79,6 +79,25 @@ const actions = {
     const userData = jwt.decode(token);
     context.commit('userId', userData.userId);
     context.commit('setToken', token);
+
+    context.dispatch('getUserData');
+  },
+
+  async getUserData(context) {
+    if (context.getters.isAuth) {
+      try {
+        const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/data`, {
+          headers: {
+            Authorization: 'Bearer ' + context.getters.token,
+          },
+        });
+        const status = response.status;
+        const data = await response.json();
+        data.status = status;
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
   }
 };
 

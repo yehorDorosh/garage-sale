@@ -88,3 +88,26 @@ exports.login = async(req, res, next) => {
     next(err);
   }
 };
+
+exports.userData = async(req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      const error = new Error('User not found.');
+      error.statusCode = 404;
+      next(error);
+      return;
+    }
+
+    res.status(200).json({
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
