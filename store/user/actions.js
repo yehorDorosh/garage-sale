@@ -19,6 +19,12 @@ const actions = {
     } catch (error) {
       throw new Error(error);
     }
+  },
+
+  logout(context) {
+    context.commit('token', null);
+    context.commit('userId', null);
+    context.commit('response', null);
   }
 };
 

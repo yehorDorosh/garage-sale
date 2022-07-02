@@ -9,6 +9,10 @@ const getters = {
 
   token(state) {
     return localStorage.getItem('token') || state.token;
+  },
+
+  isAuth(_, getters) {
+    return !!getters.token;
   }
 };
 

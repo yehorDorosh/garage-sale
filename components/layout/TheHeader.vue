@@ -15,8 +15,11 @@
         </ul>
       </nav>
       <div>
-        <base-button @click="openReg">
+        <base-button v-if="!isAuth" @click="openReg">
           Sign In
+        </base-button>
+        <base-button v-if="isAuth" @click="logout">
+          Logout
         </base-button>
       </div>
     </div>
@@ -24,7 +27,9 @@
       <reg-form @reg-compleated="regIsSuccessfull" />
     </base-dialog>
     <base-dialog :show="popupIsShown" @close="closePopup">
-      The registration completed successfully!
+      <p>
+        The registration completed successfully!
+      </p>
     </base-dialog>
   </header>
 </template>
@@ -46,6 +51,12 @@ export default {
     };
   },
 
+  computed: {
+    isAuth() {
+      return this.$store.getters['user/isAuth'];
+    }
+  },
+
   methods: {
     openReg() {
       this.regIsShown = true;
@@ -62,6 +73,10 @@ export default {
     regIsSuccessfull() {
       this.closeReg();
       this.popupIsShown = true;
+    },
+
+    logout() {
+      this.$store.dispatch('user/logout');
     }
   }
 };
