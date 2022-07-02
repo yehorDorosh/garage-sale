@@ -1,9 +1,9 @@
 <template>
   <header>
     <div class="wrap container">
-      <a href="#">
+      <router-link to="/">
         <img src="/favicon.ico">
-      </a>
+      </router-link>
       <nav>
         <ul>
           <li>
@@ -24,7 +24,7 @@
         <base-button v-if="isAuth" @click="logout">
           Logout
         </base-button>
-        <base-button v-if="isAuth">
+        <base-button v-if="isAuth" :link="true" to="/user">
           {{ userName }}
         </base-button>
       </div>

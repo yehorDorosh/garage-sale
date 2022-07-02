@@ -62,7 +62,7 @@ const actions = {
   },
 
   async checkAuth(context) {
-    if (process.client) {
+    if (process.client && !context.getters.isAuth) {
       const token = localStorage.getItem('token');
       if (!token) { return; }
       await context.dispatch('getUserData', token);
