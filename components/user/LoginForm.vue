@@ -105,7 +105,7 @@ export default {
       await this.$store.dispatch('user/login', userData);
       this.isLoading = false;
 
-      const res = this.$store.getters['user/response'];
+      const res = this.$store.getters['user/getResponse'];
       if (res.status === 401) {
         this.loginErrMsg = res.message;
       }

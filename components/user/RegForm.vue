@@ -174,7 +174,7 @@ export default {
       await this.$store.dispatch('user/userReg', userData);
       this.isLoading = false;
 
-      const res = this.$store.getters['user/response'];
+      const res = this.$store.getters['user/getResponse'];
       if (res.status === 422) {
         res.data.forEach((err) => {
           if (this[err.param]) {

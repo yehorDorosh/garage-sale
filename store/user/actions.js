@@ -13,9 +13,9 @@ const actions = {
       const status = response.status;
       const data = await response.json();
       data.status = status;
-      context.commit('response', data);
+      context.commit('setResponse', data);
       if (status === 200 || status === 201) {
-        context.commit('userId', data.userId);
+        context.commit('setUserId', data.userId);
         context.commit('setToken', data.token);
         Cookie.set('jwt', data.token);
         if (process.client) {
@@ -29,8 +29,10 @@ const actions = {
 
   logout(context) {
     context.commit('clearToken');
-    context.commit('userId', null);
-    context.commit('response', null);
+    context.commit('setUserId', null);
+    context.commit('setUserName', null);
+    context.commit('setUserEmail', null);
+    context.commit('setResponse', null);
     Cookie.remove('jwt');
     if (process.client) {
       localStorage.removeItem('token');
@@ -49,9 +51,9 @@ const actions = {
       const status = response.status;
       const data = await response.json();
       data.status = status;
-      context.commit('response', data);
+      context.commit('setResponse', data);
       if (status === 200) {
-        context.commit('userId', data.userId);
+        context.commit('setUserId', data.userId);
         context.commit('setToken', data.token);
         Cookie.set('jwt', data.token);
         if (process.client) {
@@ -91,9 +93,9 @@ const actions = {
         const status = response.status;
         const userData = await response.json();
         userData.status = status;
-        context.commit('userId', userData.id);
-        context.commit('userName', userData.name);
-        context.commit('userEmail', userData.email);
+        context.commit('setUserId', userData.id);
+        context.commit('setUserName', userData.name);
+        context.commit('setUserEmail', userData.email);
       } catch (error) {
         throw new Error(error);
       }

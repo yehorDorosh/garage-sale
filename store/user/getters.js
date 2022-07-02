@@ -1,26 +1,26 @@
 const getters = {
-  response(state) {
+  getResponse(state) {
     return state.response;
   },
 
-  userId(state) {
+  getUserId(state) {
     return state.userId;
   },
 
-  token(state) {
+  getUserName(state) {
+    return state.userName;
+  },
+
+  getUserEmail(state) {
+    return state.userEmail;
+  },
+
+  getToken(state) {
     return state.token;
   },
 
   isAuth(state) {
     return !!state.token;
-  },
-
-  userName(state) {
-    return state.userName;
-  },
-
-  userEmail(state) {
-    return state.userEmail;
   },
 };
 
