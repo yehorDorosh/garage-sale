@@ -32,11 +32,6 @@ HOST_NAME=..... (localhost:3000 - for dev mode)
 PROTOCOL=..... (http)
 JWT_PASSWORD=.....
 
-Change for prod next states:
-store/index.js
-hostName: 'localhost:3000',
-protocol: 'http',
-
 ### For localhost (Without docker)
 
 ```bash
