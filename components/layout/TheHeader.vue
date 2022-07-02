@@ -21,30 +21,48 @@
       </div>
     </div>
     <base-dialog :show="regIsShown" :cross="true" @close="closeReg">
-      <reg-form />
+      <reg-form @reg-compleated="regIsSuccessfull" />
+    </base-dialog>
+    <base-dialog :show="popupIsShown" @close="closePopup">
+      The registration completed successfully!
     </base-dialog>
   </header>
 </template>
 
 <script>
 import RegForm from '~/components/user/RegForm';
+import BaseDialog from '~/components/ui/BaseDialog.vue';
 
 export default {
   components: {
     RegForm,
+    BaseDialog,
   },
+
   data() {
     return {
       regIsShown: false,
+      popupIsShown: false,
     };
   },
+
   methods: {
     openReg() {
       this.regIsShown = true;
     },
+
     closeReg() {
       this.regIsShown = false;
     },
+
+    closePopup() {
+      this.popupIsShown = false;
+    },
+
+    regIsSuccessfull() {
+      this.closeReg();
+      this.popupIsShown = true;
+    }
   }
 };
 </script>

@@ -56,6 +56,9 @@ export default {
     BaseForm,
     BaseInput,
   },
+
+  emits: ['reg-compleated'],
+
   data() {
     return {
       name: {
@@ -179,6 +182,10 @@ export default {
             this[err.param].errMsg = err.msg;
           }
         });
+      }
+
+      if (res.status === 200 || res.status === 201) {
+        this.$emit('reg-compleated');
       }
     },
   },
