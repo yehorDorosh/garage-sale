@@ -8,13 +8,11 @@ const getters = {
   },
 
   token(state) {
-    if (process.client) {
-      return localStorage.getItem('token') || state.token;
-    }
+    return state.token;
   },
 
-  isAuth(_, getters) {
-    return !!getters.token;
+  isAuth(state) {
+    return !!state.token;
   }
 };
 

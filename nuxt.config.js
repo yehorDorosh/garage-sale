@@ -51,4 +51,8 @@ export default {
   serverMiddleware: [
     '~/server'
   ],
+
+  router: {
+    middleware: 'check-auth'
+  }
 };

@@ -1,5 +1,8 @@
 <template>
   <base-form btn-txt="Login" :is-loading="isLoading" @form-submit="submit">
+    <p v-if="loginErrMsg" class="error-txt">
+      {{ loginErrMsg }}
+    </p>
     <base-input
       id="email-input"
       v-model.trim="email.value"
@@ -52,6 +55,7 @@ export default {
         touched: false,
       },
       isLoading: false,
+      loginErrMsg: '',
     };
   },
 
@@ -98,20 +102,15 @@ export default {
       };
 
       this.isLoading = true;
-      await this.$store.dispatch('user/userReg', userData);
+      await this.$store.dispatch('user/login', userData);
       this.isLoading = false;
 
       const res = this.$store.getters['user/response'];
-      if (res.status === 422) {
-        res.data.forEach((err) => {
-          if (this[err.param]) {
-            this[err.param].isValid = false;
-            this[err.param].errMsg = err.msg;
-          }
-        });
+      if (res.status === 401) {
+        this.loginErrMsg = res.message;
       }
 
-      if (res.status === 200 || res.status === 201) {
+      if (res.status === 200) {
         this.$emit('login-compleated');
       }
     },
@@ -123,5 +122,11 @@ export default {
 form {
   text-align: left;
   width: 260px;
+}
+
+.error-txt {
+  color: red;
+  font-size: 0.5rem;
+  margin-block: 0;
 }
 </style>

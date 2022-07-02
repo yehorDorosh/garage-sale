@@ -16,7 +16,7 @@
       </nav>
       <div>
         <base-button v-if="!isAuth" @click="openReg">
-          Sign In
+          Signup
         </base-button>
         <base-button v-if="!isAuth" @click="openLogin">
           Login
@@ -35,7 +35,7 @@
       </p>
     </base-dialog>
     <base-dialog :show="loginIsShown" :cross="true" @close="closeLogin">
-      <login-form />
+      <login-form @login-compleated="closeLogin" />
     </base-dialog>
   </header>
 </template>

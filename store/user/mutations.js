@@ -7,15 +7,12 @@ const mutations = {
     state.userId = payload;
   },
 
-  token(state, payload) {
-    if (process.client) {
-      if (payload === null) {
-        localStorage.removeItem('token');
-      } else {
-        localStorage.setItem('token', payload);
-      }
-      state.token = payload;
-    }
+  setToken(state, payload) {
+    state.token = payload;
+  },
+
+  clearToken(state) {
+    state.token = null;
   },
 };
 
