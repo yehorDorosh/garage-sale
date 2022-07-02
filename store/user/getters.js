@@ -8,7 +8,9 @@ const getters = {
   },
 
   token(state) {
-    return localStorage.getItem('token') || state.token;
+    if (process.client) {
+      return localStorage.getItem('token') || state.token;
+    }
   },
 
   isAuth(_, getters) {

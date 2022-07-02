@@ -18,6 +18,9 @@
         <base-button v-if="!isAuth" @click="openReg">
           Sign In
         </base-button>
+        <base-button v-if="!isAuth" @click="openLogin">
+          Login
+        </base-button>
         <base-button v-if="isAuth" @click="logout">
           Logout
         </base-button>
@@ -31,16 +34,21 @@
         The registration completed successfully!
       </p>
     </base-dialog>
+    <base-dialog :show="loginIsShown" :cross="true" @close="closeLogin">
+      <login-form />
+    </base-dialog>
   </header>
 </template>
 
 <script>
 import RegForm from '~/components/user/RegForm';
+import LoginForm from '~/components/user/LoginForm';
 import BaseDialog from '~/components/ui/BaseDialog.vue';
 
 export default {
   components: {
     RegForm,
+    LoginForm,
     BaseDialog,
   },
 
@@ -48,6 +56,7 @@ export default {
     return {
       regIsShown: false,
       popupIsShown: false,
+      loginIsShown: false
     };
   },
 
@@ -77,7 +86,15 @@ export default {
 
     logout() {
       this.$store.dispatch('user/logout');
-    }
+    },
+
+    openLogin() {
+      this.loginIsShown = true;
+    },
+
+    closeLogin() {
+      this.loginIsShown = false;
+    },
   }
 };
 </script>

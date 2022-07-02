@@ -8,12 +8,14 @@ const mutations = {
   },
 
   token(state, payload) {
-    if (payload === null) {
-      localStorage.removeItem('token');
-    } else {
-      localStorage.setItem('token', payload);
+    if (process.client) {
+      if (payload === null) {
+        localStorage.removeItem('token');
+      } else {
+        localStorage.setItem('token', payload);
+      }
+      state.token = payload;
     }
-    state.token = payload;
   },
 };
 
