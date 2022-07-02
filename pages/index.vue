@@ -15,7 +15,9 @@
         submit
       </button>
     </form>
-    <button @click="getUserData">get user data</button>
+    <button @click="getUserData">
+      get user data
+    </button>
   </div>
 </template>
 

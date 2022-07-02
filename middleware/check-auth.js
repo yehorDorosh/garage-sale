@@ -1,3 +1,3 @@
 export default function(context) {
-  context.store.dispatch('user/checkAuth', context.req);
+  context.store.dispatch('user/checkAuth');
 }

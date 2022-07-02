@@ -15,8 +15,7 @@ const actions = {
       data.status = status;
       context.commit('setResponse', data);
       if (status === 200 || status === 201) {
-        context.commit('setToken', data.token);
-        context.dispatch('getUserData');
+        await context.dispatch('getUserData', data.token);
         Cookie.set('jwt', data.token);
         if (process.client) {
           localStorage.setItem('token', data.token);
@@ -51,8 +50,7 @@ const actions = {
       data.status = status;
       context.commit('setResponse', data);
       if (status === 200) {
-        context.commit('setToken', data.token);
-        context.dispatch('getUserData');
+        await context.dispatch('getUserData', data.token);
         Cookie.set('jwt', data.token);
         if (process.client) {
           localStorage.setItem('token', data.token);
@@ -63,42 +61,30 @@ const actions = {
     }
   },
 
-  checkAuth(context, req) {
-    let token;
-    if (req) {
-      if (!req.headers.cookie) { return; }
-      const jwtCookie = req.headers.cookie.split(';')?.find(c => c.trim().startsWith('jwt'));
-      if (!jwtCookie) { return; }
-      token = jwtCookie.split('=')[1];
-    } else if (process.client) {
-      token = localStorage.getItem('token');
+  async checkAuth(context) {
+    if (process.client) {
+      const token = localStorage.getItem('token');
+      if (!token) { return; }
+      await context.dispatch('getUserData', token);
     }
-
-    if (!token) { return; }
-
-    context.commit('setToken', token);
-    context.dispatch('getUserData');
   },
 
-  async getUserData(context) {
-    if (context.getters.isAuth) {
-      try {
-        const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/data`, {
-          headers: {
-            Authorization: 'Bearer ' + context.getters.getToken,
-          },
-        });
-        const status = response.status;
-        const userData = await response.json();
-        userData.status = status;
-        context.commit('setUser', {
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-        });
-      } catch (error) {
-        throw new Error(error);
-      }
+  async getUserData(context, token) {
+    context.commit('setToken', token);
+    try {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/data`, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      });
+      const userData = await response.json();
+      context.commit('setUser', {
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+      });
+    } catch (error) {
+      throw new Error(error);
     }
   }
 };

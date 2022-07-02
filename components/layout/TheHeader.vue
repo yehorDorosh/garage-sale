@@ -24,7 +24,7 @@
         <base-button v-if="isAuth" @click="logout">
           Logout
         </base-button>
-        <base-button>
+        <base-button v-if="isAuth">
           {{ userName }}
         </base-button>
       </div>
