@@ -111,3 +111,23 @@ exports.userData = async(req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteUser = async(req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      const error = new Error('User not found');
+      error.statusCode = 404;
+      next(error);
+      return;
+    }
+
+    await User.findByIdAndRemove(req.userId);
+    res.status(200).json({ message: 'User was delete' });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
