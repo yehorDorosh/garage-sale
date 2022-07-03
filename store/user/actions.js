@@ -111,7 +111,24 @@ const actions = {
     } catch (err) {
       throw new Error(err);
     }
-  }
+  },
+
+  async deleteAccount(context) {
+    try {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/delete`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + context.getters.getToken,
+        }
+      });
+      const status = response.status;
+      const data = await response.json();
+      data.status = status;
+      context.commit('setResponse', data);
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };
 
 export default actions;

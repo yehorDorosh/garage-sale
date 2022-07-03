@@ -92,6 +92,7 @@ export default {
     },
 
     logout() {
+      this.$router.push('/');
       this.$store.dispatch('user/logout');
     },
 

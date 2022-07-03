@@ -52,6 +52,8 @@ export default {
     BaseInput,
   },
 
+  middleware: 'auth',
+
   data() {
     return {
       conformationIsShown: false,
@@ -79,29 +81,14 @@ export default {
       this.conformationIsShown = false;
     },
 
-    editName() {
-      this.name.isTouched = true;
-    },
-
     async deleteAccount() {
-      try {
-        this.isLoading = true;
-        const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/delete`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: 'Bearer ' + this.$store.getters['user/getToken'],
-          }
-        });
-        const status = response.status;
-        this.isLoading = false;
-
-        if (status === 200) {
-          this.$store.dispatch('user/logout');
-          this.$router.push('/');
-        }
-      } catch (err) {
-        this.isLoading = false;
-        throw new Error(err);
+      this.isLoading = true;
+      await this.$store.dispatch('user/deleteAccount');
+      this.isLoading = false;
+      const status = this.$store.getters['user/getResponse'].status;
+      if (status === 200) {
+        this.$store.dispatch('user/logout');
+        this.$router.push('/');
       }
     },
 
