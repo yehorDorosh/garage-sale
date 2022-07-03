@@ -131,3 +131,31 @@ exports.deleteUser = async(req, res, next) => {
     next(err);
   }
 };
+
+exports.updUserData = async(req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      const error = new Error('User not found');
+      error.statusCode = 404;
+      next(error);
+      return;
+    }
+
+    const newName = req.body.name;
+    user.name = newName;
+
+    await user.save();
+    res.status(200).json({
+      message: 'User data was updated',
+      user: {
+        name: newName
+      }
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};

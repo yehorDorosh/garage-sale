@@ -4,6 +4,24 @@
     <h1>
       Account settings
     </h1>
+    <p>
+      Email: {{ user.email }}
+    </p>
+    <base-form class="user-data" :is-loading="isLoading" :no-submit-btn="true">
+      <base-input
+        id="user-name"
+        ref="name"
+        v-model="newUserName"
+        type="text"
+        label="User name"
+        @blur="updUserData"
+        @keydown.enter="updUserData"
+      />
+      <p v-if="name.isUpdated" class="warning">
+        The name was updated!
+      </p>
+      <base-spinner :is-loading="isLoading" />
+    </base-form>
     <base-button @click="openConformation">
       Delete account
     </base-button>
@@ -24,17 +42,32 @@
 
 <script>
 import BaseSpinner from '~/components/ui/BaseSpinner';
+import BaseForm from '~/components/ui/BaseForm';
+import BaseInput from '~/components/ui/BaseInput';
 
 export default {
   components: {
-    BaseSpinner
+    BaseSpinner,
+    BaseForm,
+    BaseInput,
   },
 
   data() {
     return {
       conformationIsShown: false,
       isLoading: false,
+      newUserName: this.$store.getters['user/getUser']?.name,
+      name: {
+        isUpdated: false,
+        isTouched: false,
+      },
     };
+  },
+
+  computed: {
+    user() {
+      return this.$store.getters['user/getUser'];
+    },
   },
 
   methods: {
@@ -44,6 +77,10 @@ export default {
 
     closeConformation() {
       this.conformationIsShown = false;
+    },
+
+    editName() {
+      this.name.isTouched = true;
     },
 
     async deleteAccount() {
@@ -66,7 +103,30 @@ export default {
         this.isLoading = false;
         throw new Error(err);
       }
+    },
+
+    async updUserData() {
+      this.name.isUpdated = false;
+      this.isLoading = true;
+      await this.$store.dispatch('user/updUserData', { name: this.newUserName });
+      this.isLoading = false;
+      this.name.isTouched = false;
+      const status = this.$store.getters['user/getResponse'].status;
+      if (status === 200) { this.name.isUpdated = true; }
     }
   },
 };
 </script>
+
+<style scoped>
+  form.user-data {
+    max-width: 260px;
+  }
+
+  .warning {
+    color: lightgrey;
+    font-size: 0.5rem;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+</style>

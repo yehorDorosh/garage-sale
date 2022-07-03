@@ -1,7 +1,7 @@
 <template>
   <form v-bind="$attrs" @submit.prevent="submit">
     <slot />
-    <base-button type="submit">
+    <base-button v-if="!noSubmitBtn" type="submit">
       {{ btnTxt }}
     </base-button>
     <base-spinner :is-loading="isLoading" />
@@ -19,16 +19,22 @@ export default {
   props: {
     btnTxt: {
       type: String,
-      default: 'Submit'
+      default: 'Submit',
     },
-
     isLoading: {
       type: Boolean,
       required: true,
-      default: false
+      default: false,
+    },
+    noSubmitBtn: {
+      type: Boolean,
+      required: false,
+      default: false,
     }
   },
+
   emits: ['form-submit'],
+
   methods: {
     submit(e) {
       this.$emit('form-submit', e);

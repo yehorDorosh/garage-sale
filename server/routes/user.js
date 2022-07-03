@@ -45,4 +45,6 @@ router.get('/data', isAuth, authController.userData);
 
 router.delete('/delete', isAuth, authController.deleteUser);
 
+router.put('/update', isAuth, authController.updUserData);
+
 module.exports = router;

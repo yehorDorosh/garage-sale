@@ -86,6 +86,31 @@ const actions = {
     } catch (error) {
       throw new Error(error);
     }
+  },
+
+  async updUserData(context, newUserData) {
+    try {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/update`, {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + context.getters.getToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: newUserData.name,
+        }),
+      });
+      const status = response.status;
+      const data = await response.json();
+      data.status = status;
+      context.commit('setResponse', data);
+
+      if (status === 200) {
+        context.commit('setUserName', data.user.name);
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 };
 

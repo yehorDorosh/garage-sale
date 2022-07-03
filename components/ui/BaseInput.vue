@@ -4,9 +4,11 @@
     <input
       :id="id"
       v-bind="$attrs"
+      ref="input"
       :class="{ invalid: isValid === false }"
       @input="$emit('input', $event.target.value)"
       @blur="$emit('blur', $event.target.value)"
+      @keydown.enter="$emit('keydown', $event)"
     >
     <p v-if="isValid === false" class="err">
       {{ errMsg }}
