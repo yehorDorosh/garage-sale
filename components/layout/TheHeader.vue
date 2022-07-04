@@ -6,8 +6,10 @@
       </router-link>
       <nav>
         <ul>
-          <li>
-            <span>Menu item 1</span>
+          <li v-if="isAuth">
+            <router-link to="/sale-editor">
+              My sale
+            </router-link>
           </li>
           <li>
             <span>Menu item 2</span>
