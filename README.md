@@ -15,22 +15,24 @@ $ docker-compose down
 $ docker-compose build garage-sale
 ```
 
-Create env directory in project root. With files db.env and nuxt.env.
+```
+Create env directory in project root. With files: db.env and nuxt.env.
 | env
   | db.env
   | nuxt.env
 
 Set env. vars for db.env:
-MONGO_INITDB_ROOT_USERNAME=.....
-MONGO_INITDB_ROOT_PASSWORD=.....
+MONGO_INITDB_ROOT_USERNAME=mongoadmin
+MONGO_INITDB_ROOT_PASSWORD=secret
 
 Set env. vars for nuxt.env:
-MONGO_INITDB_ROOT_USERNAME=.....
-MONGO_INITDB_ROOT_PASSWORD=.....
-HOST=..... (0.0.0.0 - for containers on same machine)
-HOST_NAME=..... (localhost:3000 - for dev mode)
-PROTOCOL=..... (http)
-JWT_PASSWORD=.....
+MONGO_INITDB_ROOT_USERNAME=mongoadmin
+MONGO_INITDB_ROOT_PASSWORD=secret
+HOST=0.0.0.0 (0.0.0.0 - for containers on same machine)
+HOST_NAME=localhost:3000 (localhost:3000 - for dev mode)
+PROTOCOL=http (http or https)
+JWT_PASSWORD=secret
+```
 
 ### For localhost (Without docker)
 
