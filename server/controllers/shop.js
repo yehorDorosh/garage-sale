@@ -1,4 +1,7 @@
 const { validationResult } = require('express-validator');
+const mongodb = require('mongodb');
+
+const ObjectId = mongodb.ObjectId;
 
 const Product = require('../models/product');
 const User = require('../models/user');
@@ -37,29 +40,59 @@ exports.createProduct = async(req, res, next) => {
   const owner = req.userId;
   const isBooked = req.body.isBooked;
   const buyer = req.body.buyer;
-
-  const product = new Product({
-    title,
-    description,
-    price,
-    images,
-    isPublished,
-    owner,
-    isBooked,
-    buyer,
-  });
+  const prodId = req.body.tempId;
+  const isValidId = ObjectId.isValid(prodId);
+  let product;
 
   try {
-    await product.save();
-    const user = await User.findById(req.userId);
+    if (isValidId) {
+      product = await Product.findById(prodId);
+    }
 
-    user.products.push(product);
-    await user.save();
+    if (product) {
+      if (product.owner.toString() !== owner) {
+        const error = new Error('Not authorized!');
+        error.statusCode = 403;
+        next(error);
+        return;
+      }
 
-    res.status(201).json({
-      message: 'Product created successful.',
-      product,
-    });
+      product.title = title;
+      product.description = description;
+      product.price = price;
+      product.images = images;
+      product.isPublished = isPublished;
+      product.isBooked = isBooked;
+      product.buyer = buyer;
+      await product.save();
+
+      res.status(200).json({
+        message: 'Product was updated.',
+        product,
+      });
+    } else {
+      product = new Product({
+        title,
+        description,
+        price,
+        images,
+        isPublished,
+        owner,
+        isBooked,
+        buyer,
+      });
+
+      await product.save();
+      const user = await User.findById(req.userId);
+
+      user.products.push(product);
+      await user.save();
+
+      res.status(201).json({
+        message: 'Product created successful.',
+        product,
+      });
+    }
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

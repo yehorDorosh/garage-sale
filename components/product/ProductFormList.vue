@@ -1,13 +1,13 @@
 <template>
   <section>
     <ul>
-      <li v-for="product in products" :key="product.id">
+      <li v-for="product in [...$store.getters['product/getUserProducts']]" :key="product.id">
         <product-form
-          :current-id="product.id"
+          :current-id="product._id"
           :current-title="product.title"
           :current-description="product.description"
           :current-price="product.price"
-          :current-imgs="product.imgs"
+          :current-imgs="product.images"
           :current-is-published="product.isPublished"
           @delete="deleteProduct"
         />
@@ -31,34 +31,43 @@ export default {
 
   data() {
     return {
-      products: [],
-      productTemplate: {
-        title: '',
-        description: '',
-        price: 0,
-        imgs: [],
-        isPublished: true,
-        owner: this.$store.getters['user/getUserEmail'],
-        isBooked: false,
-        buyer: {
-          name: '',
-          email: ''
-        }
-      }
+
     };
+  },
+
+  computed: {
+    products() {
+      return this.$store.getters['product/getUserProducts'];
+    }
+  },
+
+  async created() {
+    await this.$store.dispatch('product/fetchUserProducts');
   },
 
   methods: {
     createProduct() {
-      this.products.push({
-        id: uuid(),
-        ...this.productTemplate
-      });
+      const newProduct = {
+        _id: uuid(),
+        title: '',
+        description: '',
+        price: 0,
+        images: [],
+        isPublished: true,
+        owner: this.$store.getters['user/getUserId'],
+        isBooked: false,
+        buyer: {
+          name: '',
+          email: '',
+        }
+      };
+
+      this.$store.commit('product/addUserProducts', newProduct);
     },
 
     deleteProduct(id) {
-      this.products = this.products.filter(product => product.id !== id);
-    }
-  }
+      this.$store.commit('product/removeProduct', id);
+    },
+  },
 };
 </script>
