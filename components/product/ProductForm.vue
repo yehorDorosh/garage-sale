@@ -16,10 +16,10 @@
       label="Product price"
       type="number"
     />
-    <base-input
+    <multiple-img-input
       :id="imgElemId"
-      v-model="imgInput"
-      label="Upload product image"
+      title="Upload product image"
+      :img-inputs-prop="imgInputs"
     />
     <base-checkbox
       :id="publishElemId"
@@ -42,12 +42,14 @@
 import BaseForm from '~/components/ui/BaseForm';
 import BaseInput from '~/components/ui/BaseInput';
 import BaseCheckbox from '~/components/ui/BaseCheckbox';
+import MultipleImgInput from '~/components/ui/MultipleImgInput.vue';
 
 export default {
   components: {
     BaseForm,
     BaseInput,
     BaseCheckbox,
+    MultipleImgInput,
   },
 
   emit: ['delete'],
@@ -69,8 +71,8 @@ export default {
       type: Number,
       required: true,
     },
-    currentImg: {
-      type: String,
+    currentImgs: {
+      type: Array,
       required: true,
     },
     currentIsPublished: {
@@ -86,7 +88,7 @@ export default {
       titleInput: this.currentTitle,
       descriptionInput: this.currentDescription,
       priceInput: this.currentPrice,
-      imgInput: this.currentImg,
+      imgInputs: [...this.currentImgs],
       isPublishedInput: this.currentIsPublished,
     };
   },

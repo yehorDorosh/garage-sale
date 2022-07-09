@@ -7,7 +7,7 @@
           :current-title="product.title"
           :current-description="product.description"
           :current-price="product.price"
-          :current-img="product.img"
+          :current-imgs="product.imgs"
           :current-is-published="product.isPublished"
           @delete="deleteProduct"
         />
@@ -36,7 +36,7 @@ export default {
         title: '',
         description: '',
         price: 0,
-        img: '',
+        imgs: [],
         isPublished: true,
         owner: this.$store.getters['user/getUserEmail'],
         isBooked: false,
