@@ -1,28 +1,28 @@
 <template>
   <base-form :is-loading="isLoading" :no-submit-btn="true">
     <base-input
-      id="title"
+      :id="titleElemId"
       v-model="titleInput"
       label="Product name"
     />
     <base-input
-      id="description"
+      :id="descriptionElemId"
       v-model="descriptionInput"
       label="Product description"
     />
     <base-input
-      id="price"
+      :id="priceElemId"
       v-model="priceInput"
       label="Product price"
       type="number"
     />
     <base-input
-      id="image"
+      :id="imgElemId"
       v-model="imgInput"
       label="Upload product image"
     />
     <base-checkbox
-      id="publish"
+      :id="publishElemId"
       v-model="isPublishedInput"
       label="Publish"
       :value="isPublishedInput"
@@ -89,6 +89,24 @@ export default {
       imgInput: this.currentImg,
       isPublishedInput: this.currentIsPublished,
     };
+  },
+
+  computed: {
+    titleElemId() {
+      return 'title--' + this.id;
+    },
+    descriptionElemId() {
+      return 'description--' + this.id;
+    },
+    priceElemId() {
+      return 'price--' + this.id;
+    },
+    imgElemId() {
+      return 'image--' + this.id;
+    },
+    publishElemId() {
+      return 'publish--' + this.id;
+    },
   },
 
   methods: {
