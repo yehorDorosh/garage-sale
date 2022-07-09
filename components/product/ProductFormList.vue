@@ -41,8 +41,8 @@ export default {
         owner: this.$store.getters['user/getUserEmail'],
         isBooked: false,
         buyer: {
-          name: null,
-          email: null
+          name: '',
+          email: ''
         }
       }
     };
