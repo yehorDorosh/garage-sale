@@ -1,5 +1,5 @@
 <template>
-  <base-form :is-loading="isLoading" :no-submit-btn="true">
+  <base-form :is-loading="isLoading" :no-submit-btn="true" @form-submit="saveProduct">
     <base-input
       :id="titleElemId"
       v-model="titleInput"
@@ -115,6 +115,24 @@ export default {
     deleteProduct() {
       this.$emit('delete', this.id);
     },
+
+    async saveProduct() {
+      const product = {
+        title: this.titleInput,
+        description: this.descriptionInput,
+        price: this.priceInput,
+        images: this.imgInputs,
+        isPublished: this.isPublishedInput,
+        isBooked: false,
+        buyer: {
+          name: '',
+          email: ''
+        },
+      };
+      this.isLoading = true;
+      await this.$store.dispatch('product/saveUserProduct', product);
+      this.isLoading = false;
+    }
   },
 };
 </script>
