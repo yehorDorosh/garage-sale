@@ -52,7 +52,7 @@ export default {
     MultipleImgInput,
   },
 
-  emit: ['delete'],
+  emit: ['delete', 'saved'],
 
   props: {
     currentId: {
@@ -84,7 +84,6 @@ export default {
   data() {
     return {
       isLoading: false,
-      id: this.currentId,
       titleInput: this.currentTitle,
       descriptionInput: this.currentDescription,
       priceInput: this.currentPrice,
@@ -95,29 +94,30 @@ export default {
 
   computed: {
     titleElemId() {
-      return 'title--' + this.id;
+      return 'title--' + this.currentId;
     },
     descriptionElemId() {
-      return 'description--' + this.id;
+      return 'description--' + this.currentId;
     },
     priceElemId() {
-      return 'price--' + this.id;
+      return 'price--' + this.currentId;
     },
     imgElemId() {
-      return 'image--' + this.id;
+      return 'image--' + this.currentId;
     },
     publishElemId() {
-      return 'publish--' + this.id;
+      return 'publish--' + this.currentId;
     },
   },
 
   methods: {
     deleteProduct() {
-      this.$emit('delete', this.id);
+      this.$emit('delete', this.currentId);
     },
 
     async saveProduct() {
       const product = {
+        tempId: this.currentId,
         title: this.titleInput,
         description: this.descriptionInput,
         price: this.priceInput,
@@ -132,6 +132,7 @@ export default {
       this.isLoading = true;
       await this.$store.dispatch('product/saveUserProduct', product);
       this.isLoading = false;
+      this.$emit('saved');
     }
   },
 };
