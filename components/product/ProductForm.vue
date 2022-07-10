@@ -16,6 +16,9 @@
       label="Product price"
       type="number"
     />
+    <div v-if="imgInputs.length" class="slider">
+      <img v-for="(img, i) in imgInputs" :key="i+img" :src="img" class="prod-img">
+    </div>
     <multiple-img-input
       :id="imgElemId"
       title="Upload product image"
@@ -173,5 +176,23 @@ form {
   box-shadow: 0 0 5px 2px lightgray;
   padding: 16px;
   margin-bottom: 16px;
+}
+
+.slider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px;
+  border: 1px solid lightgray;
+  border-radius: 16px;
+}
+
+.prod-img {
+  display: block;
+  box-sizing: border-box;
+  width: 25%;
+  height: auto;
+  padding: 8px;
 }
 </style>
