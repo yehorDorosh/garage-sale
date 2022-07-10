@@ -1,7 +1,7 @@
 <template>
   <section>
-    <ul>
-      <li v-for="product in [...$store.getters['product/getUserProducts']]" :key="product.id">
+    <ul v-if="products.length > 0">
+      <li v-for="product in products" :key="product.id">
         <product-form
           :current-id="product._id"
           :current-title="product.title"
@@ -9,7 +9,6 @@
           :current-price="product.price"
           :current-imgs="product.images"
           :current-is-published="product.isPublished"
-          @delete="deleteProduct"
         />
       </li>
     </ul>
@@ -63,10 +62,6 @@ export default {
       };
 
       this.$store.commit('product/addUserProducts', newProduct);
-    },
-
-    deleteProduct(id) {
-      this.$store.commit('product/removeProduct', id);
     },
   },
 };

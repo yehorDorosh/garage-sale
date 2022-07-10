@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { validate as uuidValidate } from 'uuid';
+
 import BaseForm from '~/components/ui/BaseForm';
 import BaseInput from '~/components/ui/BaseInput';
 import BaseCheckbox from '~/components/ui/BaseCheckbox';
@@ -51,8 +53,6 @@ export default {
     BaseCheckbox,
     MultipleImgInput,
   },
-
-  emit: ['delete'],
 
   props: {
     currentId: {
@@ -111,8 +111,14 @@ export default {
   },
 
   methods: {
-    deleteProduct() {
-      this.$emit('delete', this.currentId);
+    async deleteProduct() {
+      if (uuidValidate(this.currentId)) {
+        this.$store.commit('product/removeProduct', this.currentId);
+      } else {
+        this.isLoading = true;
+        await this.$store.dispatch('product/deleteUserProduct', this.currentId);
+        this.isLoading = false;
+      }
     },
 
     async saveProduct() {
@@ -136,3 +142,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+form {
+  border-radius: 16px;
+  box-shadow: 0 0 5px 2px lightgray;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+</style>
