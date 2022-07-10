@@ -52,7 +52,7 @@ export default {
     MultipleImgInput,
   },
 
-  emit: ['delete', 'saved'],
+  emit: ['delete'],
 
   props: {
     currentId: {
@@ -132,7 +132,6 @@ export default {
       this.isLoading = true;
       await this.$store.dispatch('product/saveUserProduct', product);
       this.isLoading = false;
-      this.$emit('saved');
     }
   },
 };
