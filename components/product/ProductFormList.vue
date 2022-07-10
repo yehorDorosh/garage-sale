@@ -41,8 +41,8 @@ export default {
     }
   },
 
-  async created() {
-    await this.$store.dispatch('product/fetchUserProducts');
+  created() {
+    this.$store.dispatch('product/fetchUserProducts');
   },
 
   methods: {
