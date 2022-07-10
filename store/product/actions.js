@@ -18,14 +18,25 @@ const actions = {
   },
 
   async saveUserProduct(context, product) {
+    const formData = new FormData();
+    formData.append('tempId', product.tempId);
+    formData.append('title', product.title);
+    formData.append('description', product.description);
+    formData.append('price', product.price);
+    formData.append('isPublished', product.isPublished);
+    formData.append('isBooked', product.isBooked);
+    formData.append('buyer', product.buyer);
+    product.images.forEach((img) => {
+      formData.append('images', img);
+    });
+
     try {
       const response = await fetch(`${process.env.protocol}://${process.env.hostName}/products`, {
         method: 'POST',
         headers: {
           Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...product }),
+        body: formData,
       });
       const status = response.status;
       const data = await response.json();

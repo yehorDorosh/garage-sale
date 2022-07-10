@@ -35,7 +35,6 @@ exports.createProduct = async(req, res, next) => {
   const title = req.body.title;
   const description = req.body.description;
   const price = req.body.price;
-  const images = req.body.images;
   const isPublished = req.body.isPublished;
   const owner = req.userId;
   const isBooked = req.body.isBooked;
@@ -43,6 +42,17 @@ exports.createProduct = async(req, res, next) => {
   const prodId = req.body.tempId;
   const isValidId = ObjectId.isValid(prodId);
   let product;
+
+  let images = req.body.images;
+  if (req.files.length) {
+    images = req.files.map(img => img.path);
+  }
+  if (!images || !images.length) {
+    const error = new Error('No file picked.');
+    error.statusCode = 422;
+    next(error);
+    return;
+  }
 
   try {
     if (isValidId) {

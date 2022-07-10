@@ -5,10 +5,9 @@
     </p>
     <ul>
       <li v-for="(imgInput, i) in imgInputs" :key="`${i}-${id}`" class="item">
-        <base-input
-          :id="`${i}-${id}`"
-          v-model="imgInputs[i]"
-        />
+        <div class="row">
+          <input :id="`${i}-${id}`" type="file" @change="inputHandler($event, i)">
+        </div>
         <base-button @click="removeInput(i)">
           Remove image
         </base-button>
@@ -23,12 +22,7 @@
 </template>
 
 <script>
-import BaseInput from '~/components/ui/BaseInput';
-
 export default {
-  components: {
-    BaseInput
-  },
 
   props: {
     id: {
@@ -59,7 +53,11 @@ export default {
 
     removeInput(index) {
       this.imgInputs.splice(index, 1);
-    }
+    },
+
+    inputHandler(e, i) {
+      this.imgInputs[i] = e.target.files[0];
+    },
   },
 };
 </script>
