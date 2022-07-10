@@ -29,4 +29,6 @@ router.post('/products', isAuth, [
     .withMessage('The product must have at least one image, but no more than 10.'),
 ], shopController.createProduct);
 
+router.delete('/products', isAuth, shopController.deleteProduct);
+
 module.exports = router;
