@@ -28,7 +28,7 @@
       :value="isPublishedInput"
     />
     <div>
-      <base-button type="submit">
+      <base-button v-if="isChanged" type="submit">
         Save
       </base-button>
       <base-button @click="deleteProduct">
@@ -107,6 +107,30 @@ export default {
     },
     publishElemId() {
       return 'publish--' + this.currentId;
+    },
+
+    isChanged() {
+      const imgsIsChanged = () => {
+        const lengthIsSame = this.imgInputs.length === this.currentImgs.length;
+        if (!lengthIsSame) { return true; }
+
+        const contentIsSame = this.imgInputs.every((item, i) => item === this.currentImgs[i]);
+        if (!contentIsSame) { return true; }
+
+        return false;
+      };
+
+      if (
+        this.titleInput !== this.currentTitle ||
+        this.descriptionInput !== this.currentDescription ||
+        +this.priceInput !== +this.currentPrice ||
+        this.isPublishedInput !== this.currentIsPublished ||
+        imgsIsChanged()
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 
