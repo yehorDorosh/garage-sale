@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const { validationResult } = require('express-validator');
 const mongodb = require('mongodb');
 
@@ -44,8 +47,12 @@ exports.createProduct = async(req, res, next) => {
   let product;
 
   let images = req.body.images;
+  console.log('--------------', images);
+
   if (req.files.length) {
-    images = req.files.map(img => img.path);
+    images = req.files.map((img) => {
+      return { path: img.path };
+    });
   }
   if (!images || !images.length) {
     const error = new Error('No file picked.');
@@ -138,6 +145,10 @@ exports.deleteProduct = async(req, res, next) => {
       return;
     }
 
+    product.images.forEach((img) => {
+      clearImage(img.path, next);
+    });
+
     await Product.findByIdAndRemove(prodId);
 
     const user = await User.findById(req.userId);
@@ -154,4 +165,14 @@ exports.deleteProduct = async(req, res, next) => {
     }
     next(err);
   }
+};
+
+function clearImage(filePath, next) {
+  filePath = path.join(__dirname, '..', '..', filePath);
+  fs.unlink(filePath, (err) => {
+    if (err && !err.statusCode) {
+      err.statusCode = 500;
+      next(err);
+    }
+  });
 };

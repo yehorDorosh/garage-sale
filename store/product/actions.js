@@ -27,7 +27,7 @@ const actions = {
     formData.append('isBooked', product.isBooked);
     formData.append('buyer', product.buyer);
     product.images.forEach((img) => {
-      formData.append('images', img);
+      formData.append('images', img.file || img.path);
     });
 
     try {

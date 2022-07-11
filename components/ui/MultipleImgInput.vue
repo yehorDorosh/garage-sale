@@ -5,6 +5,7 @@
     </p>
     <ul>
       <li v-for="(imgInput, i) in imgInputs" :key="`${i}-${id}`" class="item">
+        <img v-if="imgInput.path" :src="imgInput.path">
         <div class="row">
           <input :id="`${i}-${id}`" type="file" @change="inputHandler($event, i)">
         </div>
@@ -46,9 +47,15 @@ export default {
     };
   },
 
+  watch: {
+    imgInputsProp(newValue) {
+      this.imgInputs = newValue;
+    }
+  },
+
   methods: {
     addInput() {
-      this.imgInputs.push('');
+      this.imgInputs.push({});
     },
 
     removeInput(index) {
@@ -56,7 +63,7 @@ export default {
     },
 
     inputHandler(e, i) {
-      this.imgInputs[i] = e.target.files[0];
+      this.imgInputs[i].file = e.target.files[0];
     },
   },
 };
@@ -71,5 +78,11 @@ export default {
 
   .item .row {
     flex-grow: 1;
+    padding-inline: 16px;
+  }
+
+  .item img {
+    width: 64px;
+    height: auto;
   }
 </style>
