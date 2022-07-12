@@ -46,6 +46,11 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extend(config, ctx) {
+      if (ctx.isDev) {
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map';
+      }
+    }
   },
 
   serverMiddleware: [
@@ -59,5 +64,5 @@ export default {
   env: {
     protocol: process.env.PROTOCOL || 'http',
     hostName: process.env.HOST_NAME || 'localhost:3000'
-  }
+  },
 };

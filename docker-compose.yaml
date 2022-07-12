@@ -13,12 +13,13 @@ services:
     build: ./
     ports:
       - '3000:3000'
+      - '9229:9229'
     volumes:
       - ./:/app
       - /app/node_modules
     env_file:
       - ./env/nuxt.env
-    command: npm run dev
+    command: npm run dev-debug
     stdin_open: true
     tty: true
     depends_on:
