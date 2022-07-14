@@ -81,11 +81,9 @@ export default {
 
     inputHandler(e, i) {
       const nameMatches = this.imgInputs.filter(img => img.name === e.target.files[0].name);
-      console.log(nameMatches);
       if (nameMatches.length > 0) {
         const nameAndExt = e.target.files[0].name.split('.');
-        const newImageName = `${nameAndExt[0]}-copy.${nameAndExt[1]}`;
-        console.log(e.target, e.target.files[0], newImageName);
+        const newImageName = `${nameAndExt[0]}-${new Date().toISOString()}.${nameAndExt[1]}`;
         this.renameFile(e.target, e.target.files[0], newImageName);
       }
 
@@ -114,11 +112,10 @@ export default {
     },
 
     renameFile(input, prevFile, newName) {
-      const newFile = new File(prevFile, newName);
+      const newFile = new File([prevFile], newName, { type: prevFile.type });
       const dataTransfer = new DataTransfer();
       dataTransfer.items.add(newFile);
       input.files = dataTransfer.files;
-      console.log(input.files[0]);
     },
   },
 };
