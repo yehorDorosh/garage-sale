@@ -5,9 +5,16 @@
     </p>
     <ul>
       <li v-for="(imgInput, i) in imgInputs" :key="`${i}-${id}`" class="item">
-        <img v-if="imgInput.path" :src="imgInput.path">
+        <img v-if="imgInput.path || imgInput.localpath" :src="imgInput.path || imgInput.localpath">
         <div class="row">
-          <input :id="`${i}-${id}`" type="file" @change="inputHandler($event, i)">
+          <label :for="`${i}-${id}`" class="btn">{{ selectBtnTxt(i) }}</label>
+          <input :id="`${i}-${id}`" type="file" style="display: none;" @change="inputHandler($event, i)">
+          <base-input
+            :id="`${i}-alt-${id}`"
+            :value="alt(i)"
+            placeholder="ALT text. Describe image."
+            @input="altHandler($event, i)"
+          />
         </div>
         <base-button @click="removeInput(i)">
           Remove image
@@ -23,7 +30,12 @@
 </template>
 
 <script>
+import BaseInput from '~/components/ui/BaseInput.vue';
+
 export default {
+  components: {
+    BaseInput,
+  },
 
   props: {
     id: {
@@ -50,12 +62,16 @@ export default {
   watch: {
     imgInputsProp(newValue) {
       this.imgInputs = newValue;
-    }
+    },
   },
 
   methods: {
     addInput() {
-      this.imgInputs.push({});
+      this.imgInputs.push({
+        alt: '',
+        name: '',
+        localpath: '',
+      });
     },
 
     removeInput(index) {
@@ -64,7 +80,28 @@ export default {
 
     inputHandler(e, i) {
       this.imgInputs[i].file = e.target.files[0];
+      this.imgInputs[i].name = e.target.files[0]?.name;
+
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0]);
+      fileReader.addEventListener('load', (FREvent) => {
+        this.imgInputs[i].localpath = FREvent.target.result;
+        this.selectBtnTxt(i);
+      });
     },
+
+    altHandler(e, i) {
+      this.imgInputs[i].alt = e;
+    },
+
+    alt(i) {
+      if (!this.imgInputs[i]) { return ''; }
+      return this.imgInputs[i].alt ? this.imgInputs[i].alt : '';
+    },
+
+    selectBtnTxt(i) {
+      return this.imgInputs[i].name ? this.imgInputs[i].name : 'Select Image';
+    }
   },
 };
 </script>
@@ -84,5 +121,16 @@ export default {
   .item img {
     width: 64px;
     height: auto;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 8px;
+    border: 1px solid var(--accent);
+    border-radius: 32px;
+    color: white;
+    background-color: var(--accent);
+    margin-inline: 16px;
   }
 </style>

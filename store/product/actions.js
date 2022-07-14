@@ -25,9 +25,11 @@ const actions = {
     formData.append('price', product.price);
     formData.append('isPublished', product.isPublished);
     formData.append('isBooked', product.isBooked);
-    formData.append('buyer', product.buyer);
+    formData.append('buyer', JSON.stringify(product.buyer));
+
+    formData.append('imagesData', JSON.stringify(product.images));
     product.images.forEach((img) => {
-      formData.append('images', img.file || img.path);
+      formData.append('images', img.file);
     });
 
     try {

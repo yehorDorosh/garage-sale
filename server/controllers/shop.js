@@ -41,20 +41,28 @@ exports.createProduct = async(req, res, next) => {
   const isPublished = req.body.isPublished;
   const owner = req.userId;
   const isBooked = req.body.isBooked;
-  const buyer = req.body.buyer;
+  const buyer = JSON.parse(req.body.buyer) || {};
   const prodId = req.body.tempId;
+  const imagesData = (req.body.imagesData && JSON.parse(req.body.imagesData)) || [];
+  const images = req.files;
   const isValidId = ObjectId.isValid(prodId);
   let product;
+  imagesData.forEach((imgObj) => {
+    if (!imgObj.alt) { imgObj.alt = title; }
+  });
 
-  let images = req.body.images;
-  console.log('--------------', images);
+  if (images.length) {
+    req.files.forEach((imgFile) => {
+      const imgData = imagesData.find(img => img.name === imgFile.originalname);
 
-  if (req.files.length) {
-    images = req.files.map((img) => {
-      return { path: img.path };
+      if (imgData) {
+        imgData.path = imgFile.path;
+        imgData.originalname = imgFile.originalname;
+        imgData.filename = imgFile.filename;
+      }
     });
   }
-  if (!images || !images.length) {
+  if (!images.length && !imagesData.length) {
     const error = new Error('No file picked.');
     error.statusCode = 422;
     next(error);
@@ -74,10 +82,17 @@ exports.createProduct = async(req, res, next) => {
         return;
       }
 
+      product.images.forEach((currImg) => {
+        const imgIsExist = imagesData.find(newImg => newImg.path === currImg.path);
+        if (!imgIsExist) {
+          clearImage(currImg.path, next);
+        }
+      });
+
       product.title = title;
       product.description = description;
       product.price = price;
-      product.images = images;
+      product.images = imagesData;
       product.isPublished = isPublished;
       product.isBooked = isBooked;
       product.buyer = buyer;
@@ -92,7 +107,7 @@ exports.createProduct = async(req, res, next) => {
         title,
         description,
         price,
-        images,
+        images: imagesData,
         isPublished,
         owner,
         isBooked,

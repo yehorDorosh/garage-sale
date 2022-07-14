@@ -24,6 +24,17 @@ const fileStorage = multer.diskStorage({
 });
 
 const fileFilterSetup = (req, file, cb) => {
+  const imagesData = JSON.parse(req.body.imagesData);
+  const nameMatches = imagesData.filter(img => img.name === file.originalname);
+
+  if (nameMatches.length > 1) {
+    const error = new Error('Detected image files with same name.');
+    error.data = file.originalname;
+    error.statusCode = 422;
+    cb(error, false);
+    return;
+  }
+
   if (
     file.mimetype === 'image/png' ||
     file.mimetype === 'image/jpg' ||
@@ -38,7 +49,7 @@ const fileFilterSetup = (req, file, cb) => {
 app.use(bodyParser.json());
 
 app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilterSetup }).array('images')
+  multer({ storage: fileStorage, fileFilter: fileFilterSetup }).array('images', 10)
 );
 app.use('/server/images', express.static(path.join(__dirname, 'images')));
 

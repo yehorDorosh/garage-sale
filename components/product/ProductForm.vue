@@ -87,7 +87,7 @@ export default {
       titleInput: this.currentTitle,
       descriptionInput: this.currentDescription,
       priceInput: this.currentPrice,
-      imgInputs: [...this.currentImgs],
+      imgInputs: this.currentImgs.map(imgObj => Object.assign({}, imgObj)),
       isPublishedInput: this.currentIsPublished,
     };
   },
@@ -114,8 +114,10 @@ export default {
         const lengthIsSame = this.imgInputs.length === this.currentImgs.length;
         if (!lengthIsSame) { return true; }
 
-        // const contentIsSame = this.imgInputs.every((item, i) => item === this.currentImgs[i]);
-        // if (!contentIsSame) { return true; }
+        const contentIsSame = this.imgInputs.every((imgObj, i) => {
+          return imgObj.name === this.currentImgs[i].name && imgObj.alt === this.currentImgs[i].alt;
+        });
+        if (!contentIsSame) { return true; }
 
         return false;
       };
@@ -136,7 +138,7 @@ export default {
 
   watch: {
     currentImgs(newValue) {
-      this.imgInputs = [...newValue];
+      this.imgInputs = newValue.map(imgObj => Object.assign({}, imgObj));
     }
   },
 

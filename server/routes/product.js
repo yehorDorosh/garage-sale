@@ -24,7 +24,7 @@ router.post('/products', isAuth, [
     .not()
     .isEmpty()
     .withMessage('The field Price shouldn\'t be empty.'),
-  // body('images')
+  // body('imagesData')
   //   .isArray({ min: 1, max: 10 })
   //   .withMessage('The product must have at least one image, but no more than 10.'),
 ], shopController.createProduct);
