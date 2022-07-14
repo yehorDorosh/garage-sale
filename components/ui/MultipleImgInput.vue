@@ -71,6 +71,7 @@ export default {
         alt: '',
         name: '',
         localpath: '',
+        path: '',
       });
     },
 

@@ -14,6 +14,7 @@ const productRoutes = require('./routes/product');
 
 const app = express();
 
+const MAX_FILE_SIZE = 1000000;
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './server/images');
@@ -26,10 +27,19 @@ const fileStorage = multer.diskStorage({
 const fileFilterSetup = (req, file, cb) => {
   const imagesData = JSON.parse(req.body.imagesData);
   const nameMatches = imagesData.filter(img => img.name === file.originalname);
+  const fileSize = parseInt(req.headers['content-length']);
 
   if (nameMatches.length > 1) {
     const error = new Error('Detected image files with same name.');
     error.data = file.originalname;
+    error.statusCode = 422;
+    cb(error, false);
+    return;
+  }
+
+  if (fileSize > MAX_FILE_SIZE) {
+    const error = new Error('File too large');
+    error.data = fileSize;
     error.statusCode = 422;
     cb(error, false);
     return;
@@ -49,7 +59,7 @@ const fileFilterSetup = (req, file, cb) => {
 app.use(bodyParser.json());
 
 app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilterSetup }).array('images', 10)
+  multer({ storage: fileStorage, fileFilter: fileFilterSetup, limits: { fileSize: MAX_FILE_SIZE } }).array('images', 10)
 );
 app.use('/server/images', express.static(path.join(__dirname, 'images')));
 

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 
 const { validationResult } = require('express-validator');
 const mongodb = require('mongodb');
@@ -72,6 +73,16 @@ exports.createProduct = async(req, res, next) => {
   try {
     if (isValidId) {
       product = await Product.findById(prodId);
+    }
+
+    for await (const img of images) {
+      const filePath = path.join(__dirname, '..', '..', img.path);
+      const buffer = await sharp(img.path)
+        .resize(512, 512, {
+          withoutEnlargement: true,
+        })
+        .toBuffer();
+      await sharp(buffer).toFile(filePath);
     }
 
     if (product) {
