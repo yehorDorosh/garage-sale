@@ -8,6 +8,7 @@
     <base-input
       :id="descriptionElemId"
       v-model="descriptionInput"
+      :text-area="true"
       label="Product description"
     />
     <base-input
