@@ -1,14 +1,15 @@
 const express = require('express');
 const { body } = require('express-validator');
 
-const shopController = require('../controllers/shop');
 const isAuth = require('../middleware/is-auth');
+const imgUploader = require('../middleware/img-uploader');
+const shopController = require('../controllers/shop');
 
 const router = express.Router();
 
 router.get('/products', isAuth, shopController.getProducts);
 
-router.post('/products', isAuth, [
+router.post('/products', isAuth, imgUploader, [
   body('title')
     .trim()
     .not()

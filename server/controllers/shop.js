@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const sharp = require('sharp');
 
+const sharp = require('sharp');
 const { validationResult } = require('express-validator');
 const mongodb = require('mongodb');
+
+const constants = require('../utils/constants.js');
 
 const ObjectId = mongodb.ObjectId;
 
@@ -76,9 +78,9 @@ exports.createProduct = async(req, res, next) => {
     }
 
     for await (const img of images) {
-      const filePath = path.join(__dirname, '..', '..', img.path);
+      const filePath = path.join(...constants.ROOT_DIR_ARR, img.path);
       const buffer = await sharp(img.path)
-        .resize(512, 512, {
+        .resize(constants.IMG_WIDTH, constants.IMG_HEIGHT, {
           withoutEnlargement: true,
         })
         .toBuffer();
@@ -194,7 +196,7 @@ exports.deleteProduct = async(req, res, next) => {
 };
 
 function clearImage(filePath, next) {
-  filePath = path.join(__dirname, '..', '..', filePath);
+  filePath = path.join(...constants.ROOT_DIR_ARR, filePath);
   fs.unlink(filePath, (err) => {
     if (err && !err.statusCode) {
       err.statusCode = 500;
