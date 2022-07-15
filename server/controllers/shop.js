@@ -54,6 +54,7 @@ exports.createProduct = async(req, res, next) => {
     if (!imgObj.alt) { imgObj.alt = title; }
   });
 
+  // Copy data from image files to images data array
   if (images.length) {
     req.files.forEach((imgFile) => {
       const imgData = imagesData.find(img => img.name === imgFile.originalname);
@@ -66,8 +67,9 @@ exports.createProduct = async(req, res, next) => {
     });
   }
   if (!images.length && !imagesData.length) {
-    const error = new Error('No file picked.');
+    const error = new Error('Validation faild.');
     error.statusCode = 422;
+    error.data = [{ value: imagesData, msg: 'No file piked.', param: 'imagesData', location: 'body' }];
     next(error);
     return;
   }
@@ -77,6 +79,7 @@ exports.createProduct = async(req, res, next) => {
       product = await Product.findById(prodId);
     }
 
+    // Resize uploaded images
     for await (const img of images) {
       const filePath = path.join(...constants.ROOT_DIR_ARR, img.path);
       const buffer = await sharp(img.path)
@@ -87,6 +90,7 @@ exports.createProduct = async(req, res, next) => {
       await sharp(buffer).toFile(filePath);
     }
 
+    // Update product
     if (product) {
       if (product.owner.toString() !== owner) {
         const error = new Error('Not authorized!');
@@ -95,6 +99,7 @@ exports.createProduct = async(req, res, next) => {
         return;
       }
 
+      // Delete irrelevant images
       product.images.forEach((currImg) => {
         const imgIsExist = imagesData.find(newImg => newImg.path === currImg.path);
         if (!imgIsExist) {
@@ -116,6 +121,7 @@ exports.createProduct = async(req, res, next) => {
         product,
       });
     } else {
+      // Save new product
       product = new Product({
         title,
         description,

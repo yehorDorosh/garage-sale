@@ -14,6 +14,7 @@ const fileStorage = multer.diskStorage({
     cb(null, `${uuid()}-${file.originalname}`);
   }
 });
+
 const fileFilterSetup = (req, file, cb) => {
   const imagesData = JSON.parse(req.body.imagesData);
   const nameMatches = imagesData.filter(img => img.name === file.originalname);
