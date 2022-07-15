@@ -80,18 +80,36 @@ export default {
     },
 
     inputHandler(e, i) {
-      const nameMatches = this.imgInputs.filter(img => img.name === e.target.files[0].name);
+      const inputField = e.target;
+      let imgFile = inputField.files[0];
+
+      // Rename uploaded fiel if name clashes
+      const nameMatches = this.imgInputs.filter(img => img.name === imgFile.name);
       if (nameMatches.length > 0) {
-        const nameAndExt = e.target.files[0].name.split('.');
-        const newImageName = `${nameAndExt[0]}-${new Date().toISOString()}.${nameAndExt[1]}`;
-        this.renameFile(e.target, e.target.files[0], newImageName);
+        const nameAndExt = imgFile.name.split('.');
+        const regex = new RegExp(`^${nameAndExt[0]}-\\d{1,}\\.[\\d\\w][^_]{1,}$`, 'i');
+        const filesWithIndex = this.imgInputs.filter(img => regex.test(img.name));
+        let newIndex = 1;
+        if (filesWithIndex.length) {
+          const indexesList = filesWithIndex.map((img) => {
+            const name = img.name.split('.')[0];
+            return +name.split('-').at(-1);
+          });
+          newIndex = Math.max(...indexesList);
+          ++newIndex;
+        }
+        const newImageName = `${nameAndExt[0]}-${newIndex}.${nameAndExt[1]}`;
+        this.renameFile(inputField, imgFile, newImageName);
+        imgFile = inputField.files[0];
       }
 
-      this.imgInputs[i].file = e.target.files[0];
-      this.imgInputs[i].name = e.target.files[0]?.name;
+      // Save image data
+      this.imgInputs[i].file = imgFile;
+      this.imgInputs[i].name = imgFile?.name;
 
+      // Preview image
       const fileReader = new FileReader();
-      fileReader.readAsDataURL(e.target.files[0]);
+      fileReader.readAsDataURL(imgFile);
       fileReader.addEventListener('load', (FREvent) => {
         this.imgInputs[i].localpath = FREvent.target.result;
         this.selectBtnTxt(i);
@@ -103,12 +121,11 @@ export default {
     },
 
     alt(i) {
-      if (!this.imgInputs[i]) { return ''; }
-      return this.imgInputs[i].alt ? this.imgInputs[i].alt : '';
+      return this.imgInputs[i]?.alt || '';
     },
 
     selectBtnTxt(i) {
-      return this.imgInputs[i].name ? this.imgInputs[i].name : 'Select Image';
+      return this.imgInputs[i].name || 'Select Image';
     },
 
     renameFile(input, prevFile, newName) {
