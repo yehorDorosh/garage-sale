@@ -1,32 +1,32 @@
 <template>
   <base-form :is-loading="isLoading" :no-submit-btn="true" @form-submit="saveProduct">
     <base-input
-      :id="titleElemId"
-      v-model="titleInput"
+      :id="titleInput.id"
+      v-model="titleInput.value"
       label="Product name"
     />
     <base-input
-      :id="descriptionElemId"
-      v-model="descriptionInput"
+      :id="descriptionInput.id"
+      v-model="descriptionInput.value"
       :text-area="true"
       label="Product description"
     />
     <base-input
-      :id="priceElemId"
-      v-model="priceInput"
+      :id="priceInput.id"
+      v-model="priceInput.value"
       label="Product price"
       type="number"
     />
     <multiple-img-input
-      :id="imgElemId"
+      :id="imgInputs.id"
       title="Upload product image"
-      :img-inputs-prop="imgInputs"
+      :img-inputs-prop="imgInputs.value"
     />
     <base-checkbox
-      :id="publishElemId"
-      v-model="isPublishedInput"
+      :id="isPublishedInput.id"
+      v-model="isPublishedInput.value"
       label="Publish"
-      :value="isPublishedInput"
+      :value="isPublishedInput.value"
     />
     <div>
       <base-button v-if="isChanged" type="submit">
@@ -85,37 +85,36 @@ export default {
   data() {
     return {
       isLoading: false,
-      titleInput: this.currentTitle,
-      descriptionInput: this.currentDescription,
-      priceInput: this.currentPrice,
-      imgInputs: this.currentImgs.map(imgObj => Object.assign({}, imgObj)),
-      isPublishedInput: this.currentIsPublished,
+      titleInput: {
+        id: 'title--' + this.currentId,
+        value: this.currentTitle,
+      },
+      descriptionInput: {
+        id: 'description--' + this.currentId,
+        value: this.currentDescription,
+      },
+      priceInput: {
+        id: 'price--' + this.currentId,
+        value: this.currentPrice,
+      },
+      imgInputs: {
+        id: 'image--' + this.currentId,
+        value: this.currentImgs.map(imgObj => Object.assign({}, imgObj)),
+      },
+      isPublishedInput: {
+        id: 'publish--' + this.currentId,
+        value: this.currentIsPublished,
+      }
     };
   },
 
   computed: {
-    titleElemId() {
-      return 'title--' + this.currentId;
-    },
-    descriptionElemId() {
-      return 'description--' + this.currentId;
-    },
-    priceElemId() {
-      return 'price--' + this.currentId;
-    },
-    imgElemId() {
-      return 'image--' + this.currentId;
-    },
-    publishElemId() {
-      return 'publish--' + this.currentId;
-    },
-
     isChanged() {
       const imgsIsChanged = () => {
-        const lengthIsSame = this.imgInputs.length === this.currentImgs.length;
+        const lengthIsSame = this.imgInputs.value.length === this.currentImgs.length;
         if (!lengthIsSame) { return true; }
 
-        const contentIsSame = this.imgInputs.every((imgObj, i) => {
+        const contentIsSame = this.imgInputs.value.every((imgObj, i) => {
           return imgObj.name === this.currentImgs[i].name && imgObj.alt === this.currentImgs[i].alt;
         });
         if (!contentIsSame) { return true; }
@@ -124,10 +123,10 @@ export default {
       };
 
       if (
-        this.titleInput !== this.currentTitle ||
-        this.descriptionInput !== this.currentDescription ||
-        +this.priceInput !== +this.currentPrice ||
-        this.isPublishedInput !== this.currentIsPublished ||
+        this.titleInput.value !== this.currentTitle ||
+        this.descriptionInput.value !== this.currentDescription ||
+        +this.priceInput.value !== +this.currentPrice ||
+        this.isPublishedInput.value !== this.currentIsPublished ||
         imgsIsChanged()
       ) {
         return true;
@@ -139,7 +138,7 @@ export default {
 
   watch: {
     currentImgs(newValue) {
-      this.imgInputs = newValue.map(imgObj => Object.assign({}, imgObj));
+      this.imgInputs.value = newValue.map(imgObj => Object.assign({}, imgObj));
     }
   },
 
@@ -157,11 +156,11 @@ export default {
     async saveProduct() {
       const product = {
         tempId: this.currentId,
-        title: this.titleInput,
-        description: this.descriptionInput,
-        price: this.priceInput,
-        images: this.imgInputs,
-        isPublished: this.isPublishedInput,
+        title: this.titleInput.value,
+        description: this.descriptionInput.value,
+        price: this.priceInput.value,
+        images: this.imgInputs.value,
+        isPublished: this.isPublishedInput.value,
         isBooked: false,
         buyer: {
           name: '',
