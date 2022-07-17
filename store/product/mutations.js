@@ -8,7 +8,7 @@ const mutations = {
   },
 
   replaceProduct(state, payload) {
-    const index = state.userProducts.findIndex(product => product._id === payload.tempId);
+    const index = state.userProducts.findIndex(product => product._id === payload.id);
     if (index !== -1 && payload.product) {
       state.userProducts.splice(index, 1, payload.product);
     }
@@ -16,7 +16,7 @@ const mutations = {
 
   removeProduct(state, id) {
     state.userProducts = state.userProducts.filter(product => product._id !== id);
-  }
+  },
 };
 
 export default mutations;

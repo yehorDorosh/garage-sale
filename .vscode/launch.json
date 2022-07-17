@@ -6,7 +6,11 @@
       "request": "launch",
       "name": "client: chrome",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}/",
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:///*": "${webRoot}/*"
+      }
     },
     {
       "type": "node",

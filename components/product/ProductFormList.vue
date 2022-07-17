@@ -48,9 +48,9 @@ export default {
     createProduct() {
       const newProduct = {
         _id: uuid(),
-        title: '',
-        description: '',
-        price: 0,
+        title: 'Book',
+        description: 'Harry Potter',
+        price: 5,
         images: [],
         isPublished: true,
         owner: this.$store.getters['user/getUserId'],

@@ -1,4 +1,5 @@
 /* eslint no-console: "off" */
+const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -11,6 +12,8 @@ const productRoutes = require('./routes/product');
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use('/server/images', express.static(path.join(__dirname, 'images')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', `${process.env.PROTOCOL}://${process.env.HOST_NAME}`);

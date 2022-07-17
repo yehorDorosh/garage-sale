@@ -2,6 +2,7 @@
   <div class="row">
     <label v-if="label" :for="id">{{ label }}</label>
     <input
+      v-if="!textArea"
       :id="id"
       v-bind="$attrs"
       ref="input"
@@ -10,6 +11,17 @@
       @blur="$emit('blur', $event.target.value)"
       @keydown.enter="$emit('keydown', $event)"
     >
+    <textarea
+      v-else
+      :id="id"
+      ref="input"
+      v-bind="$attrs"
+      type="text"
+      :class="{ invalid: isValid === false }"
+      @input="$emit('input', $event.target.value)"
+      @blur="$emit('blur', $event.target.value)"
+      @keydown.enter="$emit('keydown', $event)"
+    />
     <p v-if="isValid === false" class="err">
       {{ errMsg }}
     </p>
@@ -26,17 +38,21 @@ export default {
     label: {
       type: String,
       required: false,
-      default: ''
+      default: '',
     },
     isValid: {
       type: Boolean,
       required: false,
-      default: null
+      default: null,
     },
     errMsg: {
       type: String,
       required: false,
-      default: ''
+      default: '',
+    },
+    textArea: {
+      type: Boolean,
+      default: false,
     }
   }
 };
@@ -66,5 +82,12 @@ export default {
     color: red;
     margin-top: 8px;
     margin-bottom: 0;
+  }
+
+  textarea {
+    width: 100% !important;
+    box-sizing: border-box;
+    resize: none;
+    overflow-y: scroll;
   }
 </style>

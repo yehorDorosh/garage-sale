@@ -1,8 +1,12 @@
+const fs = require('fs');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const constants = require('../utils/constants.js');
+
 const User = require('../models/user');
+const Product = require('../models/product');
 
 exports.signup = async(req, res, next) => {
   const errors = validationResult(req);
@@ -122,6 +126,8 @@ exports.deleteUser = async(req, res, next) => {
       return;
     }
 
+    await Product.deleteMany({ owner: req.userId });
+    await fs.rmSync(`${constants.IMAGE_DIR_PATH}/${req.userId}`, { recursive: true, force: true });
     await User.findByIdAndRemove(req.userId);
     res.status(200).json({ message: 'User was delete' });
   } catch (err) {
