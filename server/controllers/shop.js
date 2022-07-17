@@ -1,5 +1,11 @@
+const fs = require('fs');
+const path = require('path');
+
+const sharp = require('sharp');
 const { validationResult } = require('express-validator');
 const mongodb = require('mongodb');
+
+const constants = require('../utils/constants.js');
 
 const ObjectId = mongodb.ObjectId;
 
@@ -35,20 +41,56 @@ exports.createProduct = async(req, res, next) => {
   const title = req.body.title;
   const description = req.body.description;
   const price = req.body.price;
-  const images = req.body.images;
   const isPublished = req.body.isPublished;
   const owner = req.userId;
   const isBooked = req.body.isBooked;
-  const buyer = req.body.buyer;
-  const prodId = req.body.tempId;
+  const buyer = JSON.parse(req.body.buyer) || {};
+  const prodId = req.body.id;
+  const imagesData = (req.body.imagesData && JSON.parse(req.body.imagesData)) || [];
+  const images = req.files;
   const isValidId = ObjectId.isValid(prodId);
   let product;
+  imagesData.forEach((imgObj) => {
+    if (!imgObj.alt) { imgObj.alt = title; }
+  });
+
+  // Copy data from image files to images data array
+  if (images.length) {
+    req.files.forEach((imgFile) => {
+      const imgData = imagesData.find(img => img.name === imgFile.originalname);
+
+      if (imgData) {
+        imgData.path = imgFile.path;
+        imgData.originalname = imgFile.originalname;
+        imgData.filename = imgFile.filename;
+      }
+    });
+  }
+  if (!images.length && !imagesData.length) {
+    const error = new Error('Validation faild.');
+    error.statusCode = 422;
+    error.data = [{ value: imagesData, msg: 'No file piked.', param: 'imagesData', location: 'body' }];
+    next(error);
+    return;
+  }
 
   try {
     if (isValidId) {
       product = await Product.findById(prodId);
     }
 
+    // Resize uploaded images
+    for await (const img of images) {
+      const filePath = path.join(...constants.ROOT_DIR_ARR, img.path);
+      const buffer = await sharp(img.path)
+        .resize(constants.IMG_WIDTH, constants.IMG_HEIGHT, {
+          withoutEnlargement: true,
+        })
+        .toBuffer();
+      await sharp(buffer).toFile(filePath);
+    }
+
+    // Update product
     if (product) {
       if (product.owner.toString() !== owner) {
         const error = new Error('Not authorized!');
@@ -57,10 +99,18 @@ exports.createProduct = async(req, res, next) => {
         return;
       }
 
+      // Delete irrelevant images
+      product.images.forEach((currImg) => {
+        const imgIsExist = imagesData.find(newImg => newImg.path === currImg.path);
+        if (!imgIsExist) {
+          clearImage(currImg.path, next);
+        }
+      });
+
       product.title = title;
       product.description = description;
       product.price = price;
-      product.images = images;
+      product.images = imagesData;
       product.isPublished = isPublished;
       product.isBooked = isBooked;
       product.buyer = buyer;
@@ -71,11 +121,12 @@ exports.createProduct = async(req, res, next) => {
         product,
       });
     } else {
+      // Save new product
       product = new Product({
         title,
         description,
         price,
-        images,
+        images: imagesData,
         isPublished,
         owner,
         isBooked,
@@ -128,6 +179,10 @@ exports.deleteProduct = async(req, res, next) => {
       return;
     }
 
+    product.images.forEach((img) => {
+      clearImage(img.path, next);
+    });
+
     await Product.findByIdAndRemove(prodId);
 
     const user = await User.findById(req.userId);
@@ -144,4 +199,14 @@ exports.deleteProduct = async(req, res, next) => {
     }
     next(err);
   }
+};
+
+function clearImage(filePath, next) {
+  filePath = path.join(...constants.ROOT_DIR_ARR, filePath);
+  fs.unlink(filePath, (err) => {
+    if (err && !err.statusCode) {
+      err.statusCode = 500;
+      next(err);
+    }
+  });
 };

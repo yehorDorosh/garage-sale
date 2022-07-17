@@ -8,7 +8,6 @@ const actions = {
       });
       const status = response.status;
       const data = await response.json();
-      console.log(data);
       if (status === 200) {
         context.commit('setUserProducts', data.products);
       }
@@ -18,23 +17,40 @@ const actions = {
   },
 
   async saveUserProduct(context, product) {
+    const formData = new FormData();
+    formData.append('id', product.id);
+    formData.append('title', product.title);
+    formData.append('description', product.description);
+    formData.append('price', product.price);
+    formData.append('isPublished', product.isPublished);
+    formData.append('isBooked', product.isBooked);
+    formData.append('buyer', JSON.stringify(product.buyer));
+
+    formData.append('imagesData', JSON.stringify(product.images));
+    product.images.forEach((img) => {
+      formData.append('images', img.file);
+    });
+
     try {
       const response = await fetch(`${process.env.protocol}://${process.env.hostName}/products`, {
         method: 'POST',
         headers: {
           Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...product }),
+        body: formData,
       });
       const status = response.status;
       const data = await response.json();
-      console.log(data);
       if (status === 200 || status === 201) {
         context.commit('replaceProduct', {
-          tempId: product.tempId,
+          id: product.id,
           product: data.product,
         });
+      } else {
+        return {
+          ...data,
+          status,
+        };
       }
     } catch (error) {
       throw new Error(error);
@@ -53,7 +69,6 @@ const actions = {
       });
       const status = response.status;
       const data = await response.json();
-      console.log(data);
       if (status === 200) {
         context.commit('removeProduct', data.prodId);
       }

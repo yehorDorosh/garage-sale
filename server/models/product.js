@@ -16,7 +16,7 @@ const productSchema = new Schema({
     required: true
   },
   images: [{
-    type: String,
+    type: Object,
   }],
   isPublished: {
     type: Boolean,

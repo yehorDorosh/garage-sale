@@ -1,14 +1,15 @@
 const express = require('express');
 const { body } = require('express-validator');
 
-const shopController = require('../controllers/shop');
 const isAuth = require('../middleware/is-auth');
+const imgUploader = require('../middleware/img-uploader');
+const shopController = require('../controllers/shop');
 
 const router = express.Router();
 
 router.get('/products', isAuth, shopController.getProducts);
 
-router.post('/products', isAuth, [
+router.post('/products', isAuth, imgUploader, [
   body('title')
     .trim()
     .not()
@@ -24,9 +25,9 @@ router.post('/products', isAuth, [
     .not()
     .isEmpty()
     .withMessage('The field Price shouldn\'t be empty.'),
-  body('images')
-    .isArray({ min: 1, max: 10 })
-    .withMessage('The product must have at least one image, but no more than 10.'),
+  // body('imagesData')
+  //   .isArray({ min: 1, max: 10 })
+  //   .withMessage('The product must have at least one image, but no more than 10.'),
 ], shopController.createProduct);
 
 router.delete('/products', isAuth, shopController.deleteProduct);

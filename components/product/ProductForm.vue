@@ -1,34 +1,51 @@
 <template>
   <base-form :is-loading="isLoading" :no-submit-btn="true" @form-submit="saveProduct">
+    <ul v-if="!validationErrFromBE.isValid" class="err">
+      <li v-for="(msg, i) in validationErrFromBE.errMsg" :key="`${i}-${msg}`">
+        {{ msg }}
+      </li>
+    </ul>
     <base-input
-      :id="titleElemId"
-      v-model="titleInput"
+      :id="titleInput.id"
+      v-model="titleInput.value"
       label="Product name"
+      :is-valid="titleInput.isValid"
+      :err-msg="titleInput.errMsg"
+      @input="filedValidation($event, titleInput, false)"
+      @blur="filedValidation($event, titleInput, true)"
     />
     <base-input
-      :id="descriptionElemId"
-      v-model="descriptionInput"
+      :id="descriptionInput.id"
+      v-model="descriptionInput.value"
+      :text-area="true"
       label="Product description"
+      :is-valid="descriptionInput.isValid"
+      :err-msg="descriptionInput.errMsg"
+      @input="filedValidation($event, descriptionInput, false)"
+      @blur="filedValidation($event, descriptionInput, true)"
     />
     <base-input
-      :id="priceElemId"
-      v-model="priceInput"
+      :id="priceInput.id"
+      v-model="priceInput.value"
       label="Product price"
       type="number"
+      :is-valid="priceInput.isValid"
+      :err-msg="priceInput.errMsg"
+      @input="filedValidation($event, priceInput, false, priceValidator)"
+      @blur="filedValidation($event, priceInput, true, priceValidator)"
     />
-    <div v-if="imgInputs.length" class="slider">
-      <img v-for="(img, i) in imgInputs" :key="i+img" :src="img" class="prod-img">
-    </div>
     <multiple-img-input
-      :id="imgElemId"
+      :id="imgInputs.id"
       title="Upload product image"
-      :img-inputs-prop="imgInputs"
+      :img-inputs-prop="imgInputs.value"
+      :is-valid="imgInputs.isValid"
+      :err-msg="imgInputs.errMsg"
     />
     <base-checkbox
-      :id="publishElemId"
-      v-model="isPublishedInput"
+      :id="isPublishedInput.id"
+      v-model="isPublishedInput.value"
       label="Publish"
-      :value="isPublishedInput"
+      :value="isPublishedInput.value"
     />
     <div>
       <base-button v-if="isChanged" type="submit">
@@ -87,47 +104,63 @@ export default {
   data() {
     return {
       isLoading: false,
-      titleInput: this.currentTitle,
-      descriptionInput: this.currentDescription,
-      priceInput: this.currentPrice,
-      imgInputs: [...this.currentImgs],
-      isPublishedInput: this.currentIsPublished,
+      validationErrFromBE: {
+        isValid: true,
+        errMsg: [],
+      },
+      titleInput: {
+        id: 'title--' + this.currentId,
+        value: this.currentTitle,
+        isTouched: false,
+        isValid: null,
+        errMsg: 'This field shouldn\'t be empty.',
+      },
+      descriptionInput: {
+        id: 'description--' + this.currentId,
+        value: this.currentDescription,
+        isTouched: false,
+        isValid: null,
+        errMsg: 'This field shouldn\'t be empty.',
+      },
+      priceInput: {
+        id: 'price--' + this.currentId,
+        value: this.currentPrice,
+        isTouched: false,
+        isValid: null,
+        errMsg: 'The price field shouldn\'t be less then 0.',
+      },
+      imgInputs: {
+        id: 'image--' + this.currentId,
+        value: this.currentImgs.map(imgObj => Object.assign({}, imgObj)),
+        isValid: null,
+        errMsg: 'Add at least one image. Maximum image ammount is 10.',
+      },
+      isPublishedInput: {
+        id: 'publish--' + this.currentId,
+        value: this.currentIsPublished,
+      }
     };
   },
 
   computed: {
-    titleElemId() {
-      return 'title--' + this.currentId;
-    },
-    descriptionElemId() {
-      return 'description--' + this.currentId;
-    },
-    priceElemId() {
-      return 'price--' + this.currentId;
-    },
-    imgElemId() {
-      return 'image--' + this.currentId;
-    },
-    publishElemId() {
-      return 'publish--' + this.currentId;
-    },
-
     isChanged() {
       const imgsIsChanged = () => {
-        const lengthIsSame = this.imgInputs.length === this.currentImgs.length;
+        const lengthIsSame = this.imgInputs.value.length === this.currentImgs.length;
         if (!lengthIsSame) { return true; }
 
-        const contentIsSame = this.imgInputs.every((item, i) => item === this.currentImgs[i]);
+        const contentIsSame = this.imgInputs.value.every((imgObj, i) => {
+          return imgObj.name === this.currentImgs[i].name && imgObj.alt === this.currentImgs[i].alt;
+        });
         if (!contentIsSame) { return true; }
 
         return false;
       };
 
       if (
-        this.titleInput !== this.currentTitle ||
-        this.descriptionInput !== this.currentDescription ||
-        +this.priceInput !== +this.currentPrice ||
-        this.isPublishedInput !== this.currentIsPublished ||
+        this.titleInput.value !== this.currentTitle ||
+        this.descriptionInput.value !== this.currentDescription ||
+        +this.priceInput.value !== +this.currentPrice ||
+        this.isPublishedInput.value !== this.currentIsPublished ||
         imgsIsChanged()
       ) {
         return true;
@@ -137,7 +170,30 @@ export default {
     },
   },
 
+  watch: {
+    currentImgs(newValue) {
+      this.imgInputs.value = newValue.map(imgObj => Object.assign({}, imgObj));
+    }
+  },
+
   methods: {
+    filedValidation(value, field, touch, validation) {
+      if (touch === true) { field.isTouched = true; }
+      if (!field.isTouched) { return; }
+      if (validation === undefined) {
+        validation = (value) => {
+          return String(value).trim().length > 0;
+        };
+      }
+      field.isValid = validation(value);
+    },
+
+    priceValidator(value) {
+      if (!value) { return false; }
+      value = Number(`${value}`.replace(/[^0-9.-]+/g, ''));
+      return value >= 0;
+    },
+
     async deleteProduct() {
       if (uuidValidate(this.currentId)) {
         this.$store.commit('product/removeProduct', this.currentId);
@@ -149,13 +205,30 @@ export default {
     },
 
     async saveProduct() {
+      this.validationErrFromBE.errMsg = [];
+      this.filedValidation(this.titleInput.value, this.titleInput, true);
+      this.filedValidation(this.descriptionInput.value, this.descriptionInput, true);
+      this.filedValidation(this.priceInput.value, this.priceInput, true, this.priceValidator);
+      this.imgInputs.isValid = !!this.imgInputs.value.length && this.imgInputs.value.every(imgObj => !!imgObj.file || !!imgObj.path);
+
+      if (
+        !this.imgInputs.isValid ||
+        !this.titleInput.isValid ||
+        !this.descriptionInput.isValid ||
+        !this.priceInput.isValid
+      ) { return; }
+
+      this.imgInputs.value.forEach((imgObj) => {
+        delete imgObj.localpath;
+      });
+
       const product = {
-        tempId: this.currentId,
-        title: this.titleInput,
-        description: this.descriptionInput,
-        price: this.priceInput,
-        images: this.imgInputs,
-        isPublished: this.isPublishedInput,
+        id: this.currentId,
+        title: this.titleInput.value,
+        description: this.descriptionInput.value,
+        price: this.priceInput.value,
+        images: this.imgInputs.value,
+        isPublished: this.isPublishedInput.value,
         isBooked: false,
         buyer: {
           name: '',
@@ -163,8 +236,15 @@ export default {
         },
       };
       this.isLoading = true;
-      await this.$store.dispatch('product/saveUserProduct', product);
+      const response = await this.$store.dispatch('product/saveUserProduct', product);
       this.isLoading = false;
+
+      if (response?.status === 422) {
+        this.validationErrFromBE.isValid = false;
+        response.data.forEach((err) => {
+          this.validationErrFromBE.errMsg.push(err.msg);
+        });
+      }
     }
   },
 };
@@ -178,21 +258,10 @@ form {
   margin-bottom: 16px;
 }
 
-.slider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 8px;
-  border: 1px solid lightgray;
-  border-radius: 16px;
-}
-
-.prod-img {
-  display: block;
-  box-sizing: border-box;
-  width: 25%;
-  height: auto;
-  padding: 8px;
+.err {
+  font-size: 0.5rem;
+  color: red;
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 </style>

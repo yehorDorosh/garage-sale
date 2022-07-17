@@ -90,3 +90,5 @@ sw.*
 *.swp
 
 /env
+/server/images/*
+!/server/images/.gitkeep
