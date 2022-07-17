@@ -3,6 +3,9 @@
     <p v-if="title && imgInputs.length > 0">
       {{ title }}
     </p>
+    <p v-if="isValid === false" class="err">
+      {{ errMsg }}
+    </p>
     <ul>
       <li v-for="(imgInput, i) in imgInputs" :key="`${i}-${id}`" class="item">
         <img v-if="imgInput.path || imgInput.localpath" :src="imgInput.path || imgInput.localpath">
@@ -51,6 +54,14 @@ export default {
       type: Array,
       required: true
     },
+    isValid: {
+      type: Boolean,
+      default: null,
+    },
+    errMsg: {
+      type: String,
+      default: 'Some error was occured'
+    }
   },
 
   data() {
@@ -164,5 +175,12 @@ export default {
     color: white;
     background-color: var(--accent);
     margin-inline: 16px;
+  }
+
+  .err {
+    font-size: 0.5rem;
+    color: red;
+    margin-top: 8px;
+    margin-bottom: 0;
   }
 </style>

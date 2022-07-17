@@ -45,7 +45,7 @@ exports.createProduct = async(req, res, next) => {
   const owner = req.userId;
   const isBooked = req.body.isBooked;
   const buyer = JSON.parse(req.body.buyer) || {};
-  const prodId = req.body.tempId;
+  const prodId = req.body.id;
   const imagesData = (req.body.imagesData && JSON.parse(req.body.imagesData)) || [];
   const images = req.files;
   const isValidId = ObjectId.isValid(prodId);

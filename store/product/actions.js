@@ -19,7 +19,7 @@ const actions = {
 
   async saveUserProduct(context, product) {
     const formData = new FormData();
-    formData.append('tempId', product.tempId);
+    formData.append('id', product.id);
     formData.append('title', product.title);
     formData.append('description', product.description);
     formData.append('price', product.price);
@@ -45,9 +45,14 @@ const actions = {
       console.log(data);
       if (status === 200 || status === 201) {
         context.commit('replaceProduct', {
-          tempId: product.tempId,
+          id: product.id,
           product: data.product,
         });
+      } else {
+        return {
+          ...data,
+          status,
+        };
       }
     } catch (error) {
       throw new Error(error);
