@@ -8,7 +8,6 @@ const actions = {
       });
       const status = response.status;
       const data = await response.json();
-      console.log(data);
       if (status === 200) {
         context.commit('setUserProducts', data.products);
       }
@@ -42,7 +41,6 @@ const actions = {
       });
       const status = response.status;
       const data = await response.json();
-      console.log(data);
       if (status === 200 || status === 201) {
         context.commit('replaceProduct', {
           id: product.id,
@@ -71,7 +69,6 @@ const actions = {
       });
       const status = response.status;
       const data = await response.json();
-      console.log(data);
       if (status === 200) {
         context.commit('removeProduct', data.prodId);
       }
