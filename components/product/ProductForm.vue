@@ -171,6 +171,15 @@ export default {
   },
 
   watch: {
+    currentTitle(newValue) {
+      this.titleInput.value = newValue;
+    },
+    currentDescription(newValue) {
+      this.descriptionInput.value = newValue;
+    },
+    currentPrice(newValue) {
+      this.priceInput.value = newValue;
+    },
     currentImgs(newValue) {
       this.imgInputs.value = newValue.map(imgObj => Object.assign({}, imgObj));
     }
