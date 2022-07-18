@@ -2,7 +2,7 @@ const Sale = require('../models/sale');
 
 exports.getSales = async(req, res, next) => {
   try {
-    const sales = await Sale.find();
+    const sales = await Sale.find().populate('products');
 
     res.status(200).json({
       message: 'Fetched sales successfully.',
