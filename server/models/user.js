@@ -15,10 +15,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  products: [
+  sales: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Product',
+      ref: 'Sale',
     },
   ]
 });

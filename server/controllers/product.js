@@ -11,6 +11,7 @@ const ObjectId = mongodb.ObjectId;
 
 const Product = require('../models/product');
 const User = require('../models/user');
+const Sale = require('../models/sale');
 
 exports.getProducts = async(req, res, next) => {
   try {
@@ -49,7 +50,7 @@ exports.createProduct = async(req, res, next) => {
   const imagesData = (req.body.imagesData && JSON.parse(req.body.imagesData)) || [];
   const images = req.files;
   const isValidId = ObjectId.isValid(prodId);
-  let product;
+  let product, sale;
   imagesData.forEach((imgObj) => {
     if (!imgObj.alt) { imgObj.alt = title; }
   });
@@ -75,6 +76,24 @@ exports.createProduct = async(req, res, next) => {
   }
 
   try {
+    const user = await User.findById(req.userId);
+
+    const saleIsExist = await Sale.countDocuments({ id: owner });
+    if (saleIsExist === 0) {
+      sale = new Sale({
+        id: owner,
+        description: '',
+        isPublished: true,
+        owner,
+        products: []
+      });
+      await sale.save();
+      user.sales.push(sale);
+      await user.save();
+    } else {
+      sale = await Sale.findOne({ id: owner });
+    }
+
     if (isValidId) {
       product = await Product.findById(prodId);
     }
@@ -132,12 +151,10 @@ exports.createProduct = async(req, res, next) => {
         isBooked,
         buyer,
       });
-
       await product.save();
-      const user = await User.findById(req.userId);
 
-      user.products.push(product);
-      await user.save();
+      sale.products.push(product);
+      await sale.save();
 
       res.status(201).json({
         message: 'Product created successful.',
@@ -185,9 +202,9 @@ exports.deleteProduct = async(req, res, next) => {
 
     await Product.findByIdAndRemove(prodId);
 
-    const user = await User.findById(req.userId);
-    user.products.pull(prodId);
-    await user.save();
+    const sale = await Sale.findOne({ id: req.userId });
+    sale.products.pull(prodId);
+    await sale.save();
 
     res.status(200).json({
       message: 'Product was deleted.',

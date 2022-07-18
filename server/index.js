@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const testRoutes = require('./routes/test');
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
+const saleRoutes = require('./routes/sale');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 app.use(testRoutes);
 app.use('/user', userRoutes);
 app.use(productRoutes);
+app.use(saleRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);

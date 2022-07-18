@@ -7,6 +7,7 @@ const constants = require('../utils/constants.js');
 
 const User = require('../models/user');
 const Product = require('../models/product');
+const Sale = require('../models/sale');
 
 exports.signup = async(req, res, next) => {
   const errors = validationResult(req);
@@ -125,6 +126,7 @@ exports.deleteUser = async(req, res, next) => {
       return;
     }
 
+    await Sale.deleteMany({ owner: req.userId });
     await Product.deleteMany({ owner: req.userId });
     await fs.rmSync(`${constants.IMAGE_DIR_PATH}/${req.userId}`, { recursive: true, force: true });
     await User.findByIdAndRemove(req.userId);
