@@ -6,13 +6,15 @@
       </router-link>
       <nav>
         <ul>
+          <li>
+            <router-link to="/sales">
+              Sales
+            </router-link>
+          </li>
           <li v-if="isAuth">
             <router-link to="/sale-editor">
               My sale
             </router-link>
-          </li>
-          <li>
-            <span>Menu item 2</span>
           </li>
         </ul>
       </nav>
