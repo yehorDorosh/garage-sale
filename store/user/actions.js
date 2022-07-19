@@ -30,6 +30,8 @@ const actions = {
     context.commit('clearToken');
     context.commit('clearResponse');
     context.commit('clearUserData');
+    context.commit('product/clearUserProduct', null, { root: true });
+    context.commit('sale/clearUserSales', null, { root: true });
     Cookie.remove('jwt');
     if (process.client) {
       localStorage.removeItem('token');
