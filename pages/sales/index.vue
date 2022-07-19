@@ -19,11 +19,5 @@ export default {
   components: {
     salesList,
   },
-
-  data() {
-    return {
-
-    };
-  },
 };
 </script>
