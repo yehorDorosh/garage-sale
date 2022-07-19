@@ -10,7 +10,6 @@ const constants = require('../utils/constants.js');
 const ObjectId = mongodb.ObjectId;
 
 const Product = require('../models/product');
-const User = require('../models/user');
 const Sale = require('../models/sale');
 
 exports.getProducts = async(req, res, next) => {
@@ -76,22 +75,12 @@ exports.createProduct = async(req, res, next) => {
   }
 
   try {
-    const user = await User.findById(req.userId);
-
-    const saleIsExist = await Sale.countDocuments({ id: owner });
-    if (saleIsExist === 0) {
-      sale = new Sale({
-        id: owner,
-        description: '',
-        isPublished: true,
-        owner,
-        products: []
-      });
-      await sale.save();
-      user.sales.push(sale);
-      await user.save();
-    } else {
-      sale = await Sale.findOne({ id: owner });
+    sale = await Sale.findOne({ id: owner });
+    if (!sale) {
+      const error = new Error('Sale does not exist');
+      error.statusCode = 404;
+      next(error);
+      return;
     }
 
     if (isValidId) {

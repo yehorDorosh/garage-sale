@@ -7,6 +7,7 @@
           Product list editor.
         </h1>
       </section>
+      <sale-form />
       <product-form-list />
     </article>
   </Fragment>
@@ -14,18 +15,14 @@
 
 <script>
 import ProductFormList from '~/components/product/ProductFormList.vue';
+import SaleForm from '~/components/sale/SaleForm.vue';
 
 export default {
   components: {
-    ProductFormList
+    ProductFormList,
+    SaleForm
   },
 
   middleware: 'auth',
-
-  data() {
-    return {
-
-    };
-  },
 };
 </script>
