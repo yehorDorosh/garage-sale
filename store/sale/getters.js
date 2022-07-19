@@ -10,6 +10,10 @@ const getters = {
   getSaleById(state) {
     return id => state.sales.filter(sale => sale._id === id)[0];
   },
+
+  getUserSales(state) {
+    return state.userSales;
+  },
 };
 
 export default getters;

@@ -12,7 +12,7 @@
         />
       </li>
     </ul>
-    <base-button @click="createProduct">
+    <base-button v-if="userSales.length" @click="createProduct">
       Add new product
     </base-button>
   </section>
@@ -37,7 +37,10 @@ export default {
   computed: {
     products() {
       return this.$store.getters['product/getUserProducts'];
-    }
+    },
+    userSales() {
+      return this.$store.getters['sale/getUserSales'];
+    },
   },
 
   created() {
