@@ -2,7 +2,7 @@ const Sale = require('../models/sale');
 
 exports.getSales = async(req, res, next) => {
   try {
-    const sales = await Sale.find().populate('products');
+    const sales = await Sale.find().populate('products').populate('owner', '-password');
 
     res.status(200).json({
       message: 'Fetched sales successfully.',

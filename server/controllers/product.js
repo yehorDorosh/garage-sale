@@ -15,7 +15,7 @@ const Sale = require('../models/sale');
 
 exports.getProducts = async(req, res, next) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({ owner: req.userId });
 
     res.status(200).json({
       message: 'Fetched products successfully.',
