@@ -14,6 +14,11 @@
 <script>
 
 export default {
+  validate(data) {
+    const salesIDs = data.store.getters['sale/getSalesIDs'];
+    return salesIDs.includes(data.params.id);
+  },
+
   data() {
     return {
 
@@ -21,8 +26,14 @@ export default {
   },
 
   computed: {
+    id() {
+      return this.$route.params.id;
+    },
+    sale() {
+      return this.$store.getters['sale/getSaleById'](this.id);
+    },
     userName() {
-      return 'Egor';
+      return this.sale.owner.name;
     },
   },
 };
