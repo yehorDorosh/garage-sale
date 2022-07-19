@@ -15,6 +15,7 @@ export const getters = {
 
 export const actions = {
   async nuxtServerInit(storeContext, nuxtContext) {
+    // Check user is auth. on backend; And get user data.
     const req = nuxtContext.req;
     if (!req) { return; }
     if (!req.headers.cookie) { return; }

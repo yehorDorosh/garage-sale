@@ -14,7 +14,10 @@
 <script>
 
 export default {
-  validate(data) {
+  async validate(data) {
+    if (!data.store.getters['sale/getSales'].length) {
+      await data.store.dispatch('sale/fetchSales');
+    }
     const salesIDs = data.store.getters['sale/getSalesIDs'];
     return salesIDs.includes(data.params.id);
   },
