@@ -17,6 +17,10 @@ const mutations = {
   removeProduct(state, id) {
     state.userProducts = state.userProducts.filter(product => product._id !== id);
   },
+
+  clearUserProduct(state) {
+    state.userProducts = [];
+  },
 };
 
 export default mutations;
