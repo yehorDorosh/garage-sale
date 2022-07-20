@@ -1,7 +1,13 @@
 <template>
   <section>
     <ul>
-      <product-item v-for="product in filteredProducts" :key="product._id" :product="product" />
+      <product-item
+        v-for="product in filteredProducts"
+        :key="product._id"
+        :product="product"
+        :buyer-name="sessionBuyer.name"
+        :buyer-email="sessionBuyer.email"
+      />
     </ul>
   </section>
 </template>
@@ -17,7 +23,7 @@ export default {
   props: {
     products: {
       type: Array,
-      require: true,
+      required: true,
       default: () => [],
     },
   },
@@ -25,6 +31,9 @@ export default {
   computed: {
     filteredProducts() {
       return this.products.filter(product => product.isPublished);
+    },
+    sessionBuyer() {
+      return this.$store.getters.getSessionBuyer;
     },
   },
 };

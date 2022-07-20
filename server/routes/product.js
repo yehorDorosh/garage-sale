@@ -44,4 +44,6 @@ router.post('/buyer', [
     .withMessage('The field Name shouldn\'t be empty.'),
 ], productController.saveBuyer);
 
+router.delete('/buyer', isAuth, productController.saveBuyer);
+
 module.exports = router;

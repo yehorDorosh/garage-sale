@@ -88,11 +88,36 @@ const actions = {
       });
       const status = response.status;
       const data = await response.json();
-      console.log(data);
 
       if (status === 200 || status === 201) {
         context.commit('sale/setBuyer', data.buyer, { root: true });
         context.commit('setSessionBuyer', data.buyer, { root: true });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async clearBuyer(context, buyer) {
+    buyer.name = '';
+    buyer.email = '';
+
+    try {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/buyer`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
+        },
+        body: JSON.stringify(buyer),
+      });
+      const status = response.status;
+      const data = await response.json();
+
+      if (status === 200 || status === 201) {
+        data.buyer.name = '';
+        data.buyer.email = '';
+        context.commit('product/setBuyer', data.buyer, { root: true });
       }
     } catch (error) {
       throw new Error(error);

@@ -54,11 +54,9 @@ export default {
     userId() {
       return this.$store.getters['user/getUserId'];
     },
-
     userSale() {
       return this.$store.getters['sale/getUserSales'][0];
     },
-
     isChanged() {
       if (
         this.userSale?.description !== this.titleInput.value ||

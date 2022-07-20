@@ -21,6 +21,13 @@ const mutations = {
   clearUserProduct(state) {
     state.userProducts = [];
   },
+
+  setBuyer(state, buyer) {
+    const product = state.userProducts.find(product => product._id === buyer.productId);
+    product.buyer.name = buyer.name;
+    product.buyer.email = buyer.email;
+    product.isBooked = !!buyer.name && !!buyer.email;
+  }
 };
 
 export default mutations;

@@ -58,14 +58,22 @@ export default {
   props: {
     product: {
       type: Object,
-      require: true,
+      required: true,
       default: () => ({
         title: '',
         description: '',
         price: 0,
         images: [],
       }),
-    }
+    },
+    buyerName: {
+      type: String,
+      required: true,
+    },
+    buyerEmail: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
@@ -73,21 +81,17 @@ export default {
       isLoading: false,
       nameInput: {
         id: 'buyer-name-' + this.product._id,
-        value: '',
+        value: this.buyerName,
         isTouched: false,
         isValid: null,
         errMsg: 'This field shouldn\'t be empty.',
       },
       emailInput: {
         id: 'buyer-email-' + this.product._id,
-        value: '',
+        value: this.buyerEmail,
         isTouched: false,
         isValid: null,
         errMsg: 'Invalid email.',
-      },
-      buyer: {
-        name: this.$store.getters.sessionBuyer?.name,
-        email: this.$store.getters.sessionBuyer?.email,
       },
     };
   },
@@ -102,10 +106,12 @@ export default {
   },
 
   watch: {
-    buyer(newValue) {
-      this.nameInput.value = newValue.name;
-      this.emailInput.value = newValue.email;
+    buyerName(newValue) {
+      this.nameInput.value = newValue;
     },
+    buyerEmail(newValue) {
+      this.emailInput.value = newValue;
+    }
   },
 
   methods: {
