@@ -1,5 +1,5 @@
 <template>
-  <base-form :is-loading="isLoading" :no-submit-btn="true" @form-submit="saveProduct">
+  <base-form :is-loading="isLoading" :no-submit-btn="true" class="card" @form-submit="saveProduct">
     <ul v-if="!validationErrFromBE.isValid" class="err">
       <li v-for="(msg, i) in validationErrFromBE.errMsg" :key="`${i}-${msg}`">
         {{ msg }}
@@ -260,13 +260,6 @@ export default {
 </script>
 
 <style scoped>
-form {
-  border-radius: 16px;
-  box-shadow: 0 0 5px 2px lightgray;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
 .err {
   font-size: 0.5rem;
   color: red;

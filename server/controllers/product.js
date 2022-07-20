@@ -60,7 +60,7 @@ exports.createProduct = async(req, res, next) => {
       const imgData = imagesData.find(img => img.name === imgFile.originalname);
 
       if (imgData) {
-        imgData.path = imgFile.path;
+        imgData.path = '/' + imgFile.path;
         imgData.originalname = imgFile.originalname;
         imgData.filename = imgFile.filename;
       }
@@ -198,6 +198,52 @@ exports.deleteProduct = async(req, res, next) => {
     res.status(200).json({
       message: 'Product was deleted.',
       prodId,
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.saveBuyer = async(req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error('Validation faild.');
+    error.statusCode = 422;
+    error.data = errors.array();
+    next(error);
+    return;
+  }
+
+  const saleId = req.body.saleId;
+  const productId = req.body.productId;
+  const name = req.body.name;
+  const email = req.body.email;
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      const error = new Error('Failed update buyer. The product doesn\'t exist.');
+      error.statusCode = 404;
+      next(error);
+      return;
+    }
+
+    product.buyer.name = name;
+    product.buyer.email = email;
+    product.isBooked = true;
+    await product.save();
+
+    res.status(200).json({
+      message: 'Buyer was updated.',
+      buyer: {
+        saleId,
+        productId,
+        name,
+        email,
+      },
     });
   } catch (err) {
     if (!err.statusCode) {

@@ -32,4 +32,16 @@ router.post('/products', isAuth, imgUploader, [
 
 router.delete('/products', isAuth, productController.deleteProduct);
 
+router.post('/buyer', [
+  body('email')
+    .isEmail()
+    .withMessage('Please enter a valid email.')
+    .normalizeEmail(),
+  body('name')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('The field Name shouldn\'t be empty.'),
+], productController.saveBuyer);
+
 module.exports = router;

@@ -76,6 +76,28 @@ const actions = {
       throw new Error(error);
     }
   },
+
+  async saveBuyer(context, buyer) {
+    try {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/buyer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(buyer),
+      });
+      const status = response.status;
+      const data = await response.json();
+      console.log(data);
+
+      if (status === 200 || status === 201) {
+        context.commit('sale/setBuyer', data.buyer, { root: true });
+        context.commit('setSessionBuyer', data.buyer, { root: true });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
 
 export default actions;
