@@ -9,6 +9,9 @@
           :current-price="product.price"
           :current-imgs="product.images"
           :current-is-published="product.isPublished"
+          :current-is-booked="product.isBooked"
+          :current-buyer="product.buyer"
+          :sale-id="userSales[0]._id"
         />
       </li>
     </ul>
@@ -26,12 +29,6 @@ import ProductForm from '~/components/product/ProductForm';
 export default {
   components: {
     ProductForm
-  },
-
-  data() {
-    return {
-
-    };
   },
 
   computed: {

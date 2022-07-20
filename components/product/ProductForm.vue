@@ -47,7 +47,18 @@
       label="Publish"
       :value="isPublishedInput.value"
     />
-    <div>
+    <div v-if="currentIsBooked">
+      <p>
+        <b>{{ currentBuyer.name }}</b> booked this product.
+      </p>
+      <p>
+        {{ currentBuyer.name }} email:  <b>{{ currentBuyer.email }}</b>
+      </p>
+      <base-button @click="unBook">
+        Cancel reservation
+      </base-button>
+    </div>
+    <div v-else>
       <base-button v-if="isChanged" type="submit">
         Save
       </base-button>
@@ -97,6 +108,18 @@ export default {
     },
     currentIsPublished: {
       type: Boolean,
+      required: true,
+    },
+    currentIsBooked: {
+      type: Boolean,
+      required: true,
+    },
+    currentBuyer: {
+      type: Object,
+      required: true,
+    },
+    saleId: {
+      type: String,
       required: true,
     },
   },
@@ -254,7 +277,20 @@ export default {
           this.validationErrFromBE.errMsg.push(err.msg);
         });
       }
-    }
+    },
+
+    async unBook() {
+      const buyer = {
+        saleId: this.saleId,
+        productId: this.currentId,
+        name: '',
+        email: '',
+      };
+
+      this.isLoading = true;
+      await this.$store.dispatch('product/clearBuyer', buyer);
+      this.isLoading = false;
+    },
   },
 };
 </script>

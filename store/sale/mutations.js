@@ -16,7 +16,7 @@ const mutations = {
     const product = sale.products.find(product => product._id === buyer.productId);
     product.buyer.name = buyer.name;
     product.buyer.email = buyer.email;
-    product.isBooked = true;
+    product.isBooked = !!buyer.name && !!buyer.email;
   }
 };
 
