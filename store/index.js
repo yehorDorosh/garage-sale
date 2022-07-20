@@ -1,6 +1,10 @@
 export const state = () => ({
   hostName: 'localhost:3000',
   protocol: 'http',
+  sessionBuyer: {
+    name: '',
+    email: '',
+  },
 });
 
 export const getters = {
@@ -10,6 +14,23 @@ export const getters = {
 
   protocol(state) {
     return state.protocol;
+  },
+
+  getLocale() {
+    if (!process.client) { return 'ru'; }
+    if (navigator.languages !== undefined) { return navigator.languages[0]; }
+    return navigator.language;
+  },
+
+  getSessionBuyer(state) {
+    return state.sessionBuyer;
+  },
+};
+
+export const mutations = {
+  setSessionBuyer(state, payload) {
+    state.sessionBuyer.name = payload.name;
+    state.sessionBuyer.email = payload.email;
   },
 };
 

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <base-form :is-loading="isLoading" :no-submit-btn="!isChanged" @form-submit="saveSale">
+    <base-form :is-loading="isLoading" :no-submit-btn="!isChanged" class="card" @form-submit="saveSale">
       <h3>Sale configuration</h3>
       <base-input
         :id="titleInput.id"
@@ -110,12 +110,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-form {
-  border-radius: 16px;
-  box-shadow: 0 0 5px 2px lightgray;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-</style>

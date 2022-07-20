@@ -1,7 +1,7 @@
 <template>
   <section>
     <ul class="sale-list">
-      <li v-for="sale in sales" :key="sale._id" class="sale-item">
+      <li v-for="sale in sales" :key="sale._id" class="card sale-item">
         <nuxt-link :to="`/sales/${sale._id}`" class="sale-item__link">
           <div class="sale-item__info">
             <h4 class="sale-item__title">
@@ -40,13 +40,6 @@ export default {
 </script>
 
 <style scoped>
-  .sale-item {
-    border-radius: 16px;
-    box-shadow: 0 0 5px 2px lightgray;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-
   .sale-item__link {
     text-decoration: none;
     color: inherit;
