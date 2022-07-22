@@ -234,6 +234,13 @@ exports.saveBuyer = async(req, res, next) => {
     product.buyer.name = name;
     product.buyer.email = email;
     if (name && email) {
+      if (product.isBooked) {
+        res.status(202).json({
+          message: 'Product already booked',
+          buyer: null
+        });
+        return;
+      }
       product.isBooked = true;
     } else {
       product.isBooked = false;

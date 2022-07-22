@@ -55,6 +55,8 @@ export default {
     BaseInput,
   },
 
+  emit: ['bookingWasCanceled'],
+
   props: {
     product: {
       type: Object,
@@ -147,8 +149,12 @@ export default {
       };
 
       this.isLoading = true;
-      await this.$store.dispatch('product/saveBuyer', buyer);
+      const data = await this.$store.dispatch('product/saveBuyer', buyer);
       this.isLoading = false;
+
+      if (data.status === 202) {
+        this.$emit('bookingWasCanceled', data);
+      }
     }
   },
 };
