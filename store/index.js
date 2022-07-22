@@ -23,6 +23,11 @@ export const getters = {
   },
 
   getSessionBuyer(state) {
+    if (process.client && !state.sessionBuyer.name && !state.sessionBuyer.email) {
+      const name = localStorage.getItem('buyer-name');
+      const email = localStorage.getItem('buyer-email');
+      if (name && email) { return { name, email }; }
+    }
     return state.sessionBuyer;
   },
 };
