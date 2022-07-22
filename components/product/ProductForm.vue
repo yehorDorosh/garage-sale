@@ -57,6 +57,14 @@
       <base-button @click="unBook">
         Cancel reservation
       </base-button>
+      <base-button @click="sellHandler">
+        <span v-if="!isSold">
+          Sold
+        </span>
+        <span v-else>
+          Cancel sold status
+        </span>
+      </base-button>
     </div>
     <div v-else>
       <base-button v-if="isChanged" type="submit">
@@ -114,6 +122,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    currentIsSold: {
+      type: Boolean,
+      required: true,
+    },
     currentBuyer: {
       type: Object,
       required: true,
@@ -161,7 +173,8 @@ export default {
       isPublishedInput: {
         id: 'publish--' + this.currentId,
         value: this.currentIsPublished,
-      }
+      },
+      isSold: this.currentIsSold,
     };
   },
 
@@ -261,11 +274,6 @@ export default {
         price: this.priceInput.value,
         images: this.imgInputs.value,
         isPublished: this.isPublishedInput.value,
-        isBooked: false,
-        buyer: {
-          name: '',
-          email: ''
-        },
       };
       this.isLoading = true;
       const response = await this.$store.dispatch('product/saveUserProduct', product);
@@ -289,6 +297,15 @@ export default {
 
       this.isLoading = true;
       await this.$store.dispatch('product/clearBuyer', buyer);
+      this.isLoading = false;
+    },
+
+    async sellHandler() {
+      this.isLoading = true;
+      this.isSold = await this.$store.dispatch('product/sell', {
+        productId: this.currentId,
+        isSold: !this.isSold,
+      });
       this.isLoading = false;
     },
   },

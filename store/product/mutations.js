@@ -27,6 +27,11 @@ const mutations = {
     product.buyer.name = buyer.name;
     product.buyer.email = buyer.email;
     product.isBooked = !!buyer.name && !!buyer.email;
+  },
+
+  setStatusSold(state, payload) {
+    const product = state.userProducts.find(product => product._id === payload.productId);
+    product.isSold = payload.isSold;
   }
 };
 
