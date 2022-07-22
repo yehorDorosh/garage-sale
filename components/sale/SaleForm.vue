@@ -78,9 +78,9 @@ export default {
     },
   },
 
-  created() {
-    this.$store.dispatch('sale/fetchUserSales');
-  },
+  // created() {
+  //   this.$store.dispatch('sale/fetchUserSales');
+  // },
 
   methods: {
     filedValidation(value, field, touch, validation) {

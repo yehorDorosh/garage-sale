@@ -24,5 +24,10 @@ export default {
   },
 
   middleware: 'auth',
+
+  async created() {
+    await this.$store.dispatch('sale/fetchUserSales');
+    await this.$store.dispatch('product/fetchUserProducts');
+  },
 };
 </script>

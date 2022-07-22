@@ -40,9 +40,9 @@ export default {
     },
   },
 
-  created() {
-    this.$store.dispatch('product/fetchUserProducts');
-  },
+  // created() {
+  //   this.$store.dispatch('product/fetchUserProducts');
+  // },
 
   methods: {
     createProduct() {
