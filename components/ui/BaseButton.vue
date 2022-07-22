@@ -1,10 +1,20 @@
 <template>
-  <button v-if="!link" :class="mode" :type="type" v-on="$listeners">
+  <button v-if="!link && !externalLink" v-bind="$attrs" :class="mode" :type="type" v-on="$listeners">
     <slot />
   </button>
-  <router-link v-else :to="to" :class="mode">
+  <a
+    v-else-if="externalLink"
+    :href="to"
+    :class="mode"
+    v-bind="$attrs"
+    target="_blank"
+    rel="noopener"
+  >
     <slot />
-  </router-link>
+  </a>
+  <nuxt-link v-else :to="to" v-bind="$attrs" :class="mode">
+    <slot />
+  </nuxt-link>
 </template>
 
 <script>
@@ -13,9 +23,14 @@ export default {
     mode: {
       type: String,
       required: false,
-      default: null
+      default: 'button'
     },
     link: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    externalLink: {
       type: Boolean,
       required: false,
       default: false
@@ -35,8 +50,7 @@ export default {
 </script>
 
 <style scoped>
-  button,
-  a {
+  .button {
     text-decoration: none;
     padding: 8px 16px;
     font: inherit;
@@ -50,18 +64,16 @@ export default {
     transition: background-color, color, border-color, 300ms linear;
   }
 
-  a:hover,
-  a:active,
-  button:hover,
-  button:active {
+  .button:hover,
+  .button:active {
     background-color: var(--accent-hover);
     color: var(--accent-hover-txt);
     border-color: var(--accent-hover);
   }
 
-  .flat {
-    background-color: transparent;
-    border: none;
-    color: var(--accent);
+  .blank {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
   }
 </style>
