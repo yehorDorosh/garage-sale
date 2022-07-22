@@ -152,7 +152,7 @@ export default {
       const data = await this.$store.dispatch('product/saveBuyer', buyer);
       this.isLoading = false;
 
-      if (data.status === 202) {
+      if (data?.status === 202) {
         this.$emit('bookingWasCanceled', data);
       }
     }

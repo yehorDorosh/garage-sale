@@ -93,10 +93,12 @@ const actions = {
       if (status === 200 || status === 201) {
         context.commit('sale/setBuyer', data.buyer, { root: true });
         context.commit('setSessionBuyer', data.buyer, { root: true });
+        localStorage.setItem('buyer-name', data.buyer.name);
+        localStorage.setItem('buyer-email', data.buyer.email);
       }
-      if (status === 202) {
-        return data;
-      }
+      // if (status === 202) {
+      //   return data;
+      // }
     } catch (error) {
       throw new Error(error);
     }
