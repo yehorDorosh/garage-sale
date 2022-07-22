@@ -22,14 +22,18 @@ const productSchema = new Schema({
     type: Boolean,
     required: true
   },
+  isBooked: {
+    type: Boolean,
+    required: true
+  },
+  isSold: {
+    type: Boolean,
+    required: true
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  },
-  isBooked: {
-    type: Boolean,
-    required: true
   },
   buyer: {
     name: String,

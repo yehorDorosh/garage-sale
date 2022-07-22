@@ -10,6 +10,7 @@
           :current-imgs="product.images"
           :current-is-published="product.isPublished"
           :current-is-booked="product.isBooked"
+          :current-is-sold="product.isSold"
           :current-buyer="product.buyer"
           :sale-id="userSales[0]._id"
         />
@@ -55,6 +56,7 @@ export default {
         isPublished: true,
         owner: this.$store.getters['user/getUserId'],
         isBooked: false,
+        isSold: false,
         buyer: {
           name: '',
           email: '',

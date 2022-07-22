@@ -96,9 +96,9 @@ const actions = {
         localStorage.setItem('buyer-name', data.buyer.name);
         localStorage.setItem('buyer-email', data.buyer.email);
       }
-      // if (status === 202) {
-      //   return data;
-      // }
+      if (status === 202) {
+        return data;
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -124,6 +124,31 @@ const actions = {
         data.buyer.name = '';
         data.buyer.email = '';
         context.commit('product/setBuyer', data.buyer, { root: true });
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
+  async sell(context, payload) {
+    try {
+      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/sell`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
+        },
+        body: JSON.stringify(payload),
+      });
+      const status = response.status;
+      const data = await response.json();
+
+      if (status === 200) {
+        context.commit('setStatusSold', {
+          productId: data.product._id,
+          isSold: data.product.isSold,
+        });
+        return data.product.isSold;
       }
     } catch (error) {
       throw new Error(error);

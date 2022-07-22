@@ -25,9 +25,6 @@ router.post('/products', isAuth, imgUploader, [
     .not()
     .isEmpty()
     .withMessage('The field Price shouldn\'t be empty.'),
-  // body('imagesData')
-  //   .isArray({ min: 1, max: 10 })
-  //   .withMessage('The product must have at least one image, but no more than 10.'),
 ], productController.createProduct);
 
 router.delete('/products', isAuth, productController.deleteProduct);
@@ -45,5 +42,7 @@ router.post('/buyer', [
 ], productController.saveBuyer);
 
 router.delete('/buyer', isAuth, productController.saveBuyer);
+
+router.post('/sell', isAuth, productController.sell);
 
 module.exports = router;

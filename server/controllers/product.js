@@ -43,8 +43,6 @@ exports.createProduct = async(req, res, next) => {
   const price = req.body.price;
   const isPublished = req.body.isPublished;
   const owner = req.userId;
-  const isBooked = req.body.isBooked;
-  const buyer = JSON.parse(req.body.buyer) || {};
   const prodId = req.body.id;
   const imagesData = (req.body.imagesData && JSON.parse(req.body.imagesData)) || [];
   const images = req.files;
@@ -120,8 +118,6 @@ exports.createProduct = async(req, res, next) => {
       product.price = price;
       product.images = imagesData;
       product.isPublished = isPublished;
-      product.isBooked = isBooked;
-      product.buyer = buyer;
       await product.save();
 
       res.status(200).json({
@@ -137,8 +133,12 @@ exports.createProduct = async(req, res, next) => {
         images: imagesData,
         isPublished,
         owner,
-        isBooked,
-        buyer,
+        isBooked: false,
+        isSold: false,
+        buyer: {
+          name: '',
+          email: ''
+        },
       });
       await product.save();
 
@@ -243,6 +243,12 @@ exports.saveBuyer = async(req, res, next) => {
       }
       product.isBooked = true;
     } else {
+      if (product.owner.toString() !== req.userId) {
+        const error = new Error('Not authorized.');
+        error.statusCode = 403;
+        next(error);
+        return;
+      }
       product.isBooked = false;
     }
     await product.save();
@@ -255,6 +261,40 @@ exports.saveBuyer = async(req, res, next) => {
         name,
         email,
       },
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.sell = async(req, res, next) => {
+  const isSold = req.body.isSold;
+  const productId = req.body.productId;
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      const error = new Error('Failed update "is sold" status. The product doesn\'t exist.');
+      error.statusCode = 404;
+      next(error);
+      return;
+    }
+    if (product.owner.toString() !== req.userId) {
+      const error = new Error('Not authorized.');
+      error.statusCode = 403;
+      next(error);
+      return;
+    }
+
+    product.isSold = isSold;
+    await product.save();
+
+    res.status(200).json({
+      message: 'Product "is sold" status was updated.',
+      product,
     });
   } catch (err) {
     if (!err.statusCode) {
