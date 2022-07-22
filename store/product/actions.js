@@ -88,10 +88,14 @@ const actions = {
       });
       const status = response.status;
       const data = await response.json();
+      data.status = status;
 
       if (status === 200 || status === 201) {
         context.commit('sale/setBuyer', data.buyer, { root: true });
         context.commit('setSessionBuyer', data.buyer, { root: true });
+      }
+      if (status === 202) {
+        return data;
       }
     } catch (error) {
       throw new Error(error);
