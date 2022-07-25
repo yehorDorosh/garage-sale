@@ -54,7 +54,7 @@ export default {
   },
 
   serverMiddleware: [
-    '~/server'
+    // '~/server'
   ],
 
   router: {
@@ -63,6 +63,8 @@ export default {
 
   env: {
     protocol: process.env.PROTOCOL || 'http',
-    hostName: process.env.HOST_NAME || 'localhost:3000'
+    hostName: process.env.HOST_NAME || 'localhost:3000',
   },
+
+  telemetry: false,
 };
