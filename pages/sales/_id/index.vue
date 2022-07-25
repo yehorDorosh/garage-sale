@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import openSocket from 'socket.io-client';
 import ProductList from '~/components/product/ProductList';
 
 export default {
@@ -64,6 +65,13 @@ export default {
       };
       return date.toLocaleDateString(locale, options);
     },
+  },
+
+  created() {
+    const socket = openSocket(`${process.env.fullHostName}`);
+    socket.on('booking', (buyer) => {
+      this.$store.commit('sale/setBuyer', buyer);
+    });
   },
 };
 </script>

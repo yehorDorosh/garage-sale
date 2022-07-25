@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import openSocket from 'socket.io-client';
-
 export default {
   computed: {
     sales() {
@@ -37,7 +35,6 @@ export default {
 
   async created() {
     await this.$store.dispatch('sale/fetchSales');
-    openSocket('http://localhost:3000');
   },
 };
 </script>
