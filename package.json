@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nuxt",
     "dev-debug": "node --inspect=0.0.0.0 node_modules/.bin/nuxt",
-    "dev-p": "nodemon --inspect=0.0.0.0 -w server/index.js -w nuxt.config.js server/index.js",
+    "dev-p": "nodemon --inspect=0.0.0.0 -w server -w nuxt.config.js server/index.js",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

@@ -1,7 +1,4 @@
 /* eslint no-console: "off" */
-const port = process.env.PORT || 3000;
-const isDev = process.env.NODE_ENV !== 'production';
-
 const path = require('path');
 
 const express = require('express');
@@ -15,6 +12,9 @@ const testRoutes = require('./routes/test');
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
 const saleRoutes = require('./routes/sale');
+
+const port = process.env.PORT || 3000;
+const isDev = process.env.NODE_ENV !== 'prod';
 
 app.use(bodyParser.json());
 
@@ -62,7 +62,8 @@ async function start() {
   if (isDev) {
     build(nuxt);
   }
-  const server = app.listen(port, '0.0.0.0');
+  const server = app.listen(port);
+  console.log('Server listening on localhost:' + port + '.');
   const io = require('socket.io')(server);
   io.on('connection', (socket) => {
     console.log('Client connected');

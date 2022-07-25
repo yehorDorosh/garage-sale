@@ -3,7 +3,7 @@ import Cookie from 'js-cookie';
 const actions = {
   async userReg(context, userData) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/signup`, {
+      const response = await fetch(`${process.env.fullHostName}/user/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const actions = {
 
   async login(context, userData) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/login`, {
+      const response = await fetch(`${process.env.fullHostName}/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ const actions = {
   async getUserData(context, token) {
     context.commit('setToken', token);
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/data`, {
+      const response = await fetch(`${process.env.fullHostName}/user/data`, {
         headers: {
           Authorization: 'Bearer ' + token,
         },
@@ -92,7 +92,7 @@ const actions = {
 
   async updUserData(context, newUserData) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/update`, {
+      const response = await fetch(`${process.env.fullHostName}/user/update`, {
         method: 'PUT',
         headers: {
           Authorization: 'Bearer ' + context.getters.getToken,
@@ -117,7 +117,7 @@ const actions = {
 
   async deleteAccount(context) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/user/delete`, {
+      const response = await fetch(`${process.env.fullHostName}/user/delete`, {
         method: 'DELETE',
         headers: {
           Authorization: 'Bearer ' + context.getters.getToken,

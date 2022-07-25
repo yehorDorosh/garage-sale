@@ -1,7 +1,7 @@
 const actions = {
   async fetchUserProducts(context) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/products`, {
+      const response = await fetch(`${process.env.fullHostName}/products`, {
         headers: {
           Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
         },
@@ -32,7 +32,7 @@ const actions = {
     });
 
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/products`, {
+      const response = await fetch(`${process.env.fullHostName}/products`, {
         method: 'POST',
         headers: {
           Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
@@ -59,7 +59,7 @@ const actions = {
 
   async deleteUserProduct(context, prodId) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/products`, {
+      const response = await fetch(`${process.env.fullHostName}/products`, {
         method: 'DELETE',
         headers: {
           Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
@@ -79,7 +79,7 @@ const actions = {
 
   async saveBuyer(context, buyer) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/buyer`, {
+      const response = await fetch(`${process.env.fullHostName}/buyer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const actions = {
     buyer.email = '';
 
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/buyer`, {
+      const response = await fetch(`${process.env.fullHostName}/buyer`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ const actions = {
 
   async sell(context, payload) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/sell`, {
+      const response = await fetch(`${process.env.fullHostName}/sell`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

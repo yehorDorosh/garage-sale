@@ -62,8 +62,7 @@ export default {
   },
 
   env: {
-    protocol: process.env.PROTOCOL || 'http',
-    hostName: process.env.HOST_NAME || 'localhost:3000',
+    fullHostName: process.env.FULL_HOST_NAME || 'http://localhost:3000',
   },
 
   telemetry: false,

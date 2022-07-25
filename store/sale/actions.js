@@ -1,7 +1,7 @@
 const actions = {
   async fetchSales(context) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/api-sales`);
+      const response = await fetch(`${process.env.fullHostName}/api-sales`);
       const status = response.status;
       const data = await response.json();
 
@@ -15,7 +15,7 @@ const actions = {
 
   async fetchUserSales(context) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/api-user-sales`, {
+      const response = await fetch(`${process.env.fullHostName}/api-user-sales`, {
         headers: {
           Authorization: 'Bearer ' + context.rootGetters['user/getToken'],
         },
@@ -33,7 +33,7 @@ const actions = {
 
   async saveSale(context, saleData) {
     try {
-      const response = await fetch(`${process.env.protocol}://${process.env.hostName}/api-sales`, {
+      const response = await fetch(`${process.env.fullHostName}/api-sales`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
