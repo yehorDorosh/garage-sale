@@ -13,7 +13,7 @@
           </div>
           <div class="sale-item__products">
             <div v-for="product in sale.products" :key="product._id" class="sale-item__product">
-              <img :src="product.images[0].path" :alt="product.images[0].alt" class="sale-item__img">
+              <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
               <h5 class="sale-item__product-title">
                 {{ product.title }}
               </h5>

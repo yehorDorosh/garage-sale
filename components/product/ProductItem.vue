@@ -40,7 +40,7 @@
       </base-form>
     </div>
     <div class="prod__img-list">
-      <img v-for="image in product.images" :key="image.filename" class="pord__img" :src="image.path" :alt="image.alt">
+      <img v-for="image in product.images" :key="image.filename" class="pord__img" :src="image.preview" :alt="image.alt">
     </div>
   </li>
 </template>

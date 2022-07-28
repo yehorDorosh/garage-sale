@@ -63,6 +63,7 @@ export default {
 
   env: {
     fullHostName: process.env.FULL_HOST_NAME || 'http://localhost:3000',
+    maxUploadImgSize: process.env.MAX_UPLOAD_IMG_SIZE || 4000000,
   },
 
   telemetry: false,

@@ -18,19 +18,10 @@ const fileStorage = multer.diskStorage({
 const fileFilterSetup = (req, file, cb) => {
   const imagesData = JSON.parse(req.body.imagesData);
   const nameMatches = imagesData.filter(img => img.name === file.originalname);
-  const fileSize = parseInt(req.headers['content-length']);
 
   if (nameMatches.length > 1) {
     const error = new Error('Detected image files with same name.');
-    error.data = file.originalname;
-    error.statusCode = 422;
-    cb(error, false);
-    return;
-  }
-
-  if (fileSize > constants.MAX_IMG_SIZE) {
-    const error = new Error('File too large');
-    error.data = fileSize;
+    error.data = [{ value: file.originalname, msg: 'Detected image files with same name.', param: 'images', location: 'body' }];
     error.statusCode = 422;
     cb(error, false);
     return;
@@ -47,10 +38,24 @@ const fileFilterSetup = (req, file, cb) => {
   }
 };
 
-const imgUploader = multer({
-  storage: fileStorage,
-  fileFilter: fileFilterSetup,
-  limits: { fileSize: constants.MAX_IMG_SIZE }
-}).array('images', 10);
+const imgUploader = (req, res, next) => {
+  const upload = multer({
+    storage: fileStorage,
+    fileFilter: fileFilterSetup,
+    limits: { fileSize: constants.MAX_IMG_SIZE }
+  }).array('images', 10);
+
+  upload(req, res, function(error) {
+    if (error) {
+      const fileSize = parseInt(req.headers['content-length']);
+      if (error.code === 'LIMIT_FILE_SIZE') {
+        error.data = [{ value: fileSize, msg: 'File too large', param: 'images', location: 'body' }];
+        error.statusCode = 422;
+      }
+      next(error);
+    }
+    next();
+  });
+};
 
 module.exports = imgUploader;

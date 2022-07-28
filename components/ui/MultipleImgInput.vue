@@ -3,14 +3,19 @@
     <p v-if="title && imgInputs.length > 0">
       {{ title }}
     </p>
-    <p v-if="isValid === false" class="err">
+    <p v-if="isValid === false" class="err mb-8">
       {{ errMsg }}
     </p>
     <ul>
       <li v-for="(imgInput, i) in imgInputs" :key="`${i}-${id}`" class="item">
-        <img v-if="imgInput.path || imgInput.localpath" :src="imgInput.path || imgInput.localpath">
+        <img v-if="imgInput.preview || imgInput.localpath" :src="imgInput.preview || imgInput.localpath">
         <div class="row">
-          <label :for="`${i}-${id}`" class="btn">{{ selectBtnTxt(i) }}</label>
+          <label :for="`${i}-${id}`" class="btn">
+            {{ selectBtnTxt(i) }}
+          </label>
+          <span v-show="imgInput.error" class="err">
+            {{ imgInput.error }}
+          </span>
           <input :id="`${i}-${id}`" type="file" style="display: none;" @change="inputHandler($event, i)">
           <base-input
             :id="`${i}-alt-${id}`"
@@ -83,6 +88,7 @@ export default {
         name: '',
         localpath: '',
         path: '',
+        error: '',
       });
     },
 
@@ -93,6 +99,13 @@ export default {
     inputHandler(e, i) {
       const inputField = e.target;
       let imgFile = inputField.files[0];
+
+      if (imgFile.size > process.env.maxUploadImgSize) {
+        this.imgInputs[i].error = 'The file is too large. Maximum file size 4MB. ' + `File size: ${(imgFile.size / 1000000).toFixed(2)}MB`;
+        return;
+      } else {
+        this.imgInputs[i].error = '';
+      }
 
       // Rename uploaded fiel if name clashes
       const nameMatches = this.imgInputs.filter(img => img.name === imgFile.name);
@@ -182,5 +195,9 @@ export default {
     color: red;
     margin-top: 8px;
     margin-bottom: 0;
+  }
+
+  .mb-8 {
+    margin-bottom: 8px;
   }
 </style>

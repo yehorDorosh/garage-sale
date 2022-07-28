@@ -168,7 +168,7 @@ export default {
         id: 'image--' + this.currentId,
         value: this.currentImgs.map(imgObj => Object.assign({}, imgObj)),
         isValid: null,
-        errMsg: 'Add at least one image. Maximum image ammount is 10.',
+        errMsg: 'Add at least one image. Maximum image ammount is 10. Image upload field shoudn\'t be emtpy',
       },
       isPublishedInput: {
         id: 'publish--' + this.currentId,
@@ -239,6 +239,16 @@ export default {
       return value >= 0;
     },
 
+    imageFieldValidation() {
+      if (!this.imgInputs.value.length) {
+        this.imgInputs.errMsg = 'Add at least one image. Maximum image ammount is 10.';
+      }
+      if (this.imgInputs.value.some(imgObj => !imgObj.file && !imgObj.path)) {
+        this.imgInputs.errMsg = 'Image upload field shoudn\'t be emtpy';
+      }
+      this.imgInputs.isValid = !!this.imgInputs.value.length && this.imgInputs.value.every(imgObj => !!imgObj.file || !!imgObj.path);
+    },
+
     async deleteProduct() {
       if (uuidValidate(this.currentId)) {
         this.$store.commit('product/removeProduct', this.currentId);
@@ -254,7 +264,7 @@ export default {
       this.filedValidation(this.titleInput.value, this.titleInput, true);
       this.filedValidation(this.descriptionInput.value, this.descriptionInput, true);
       this.filedValidation(this.priceInput.value, this.priceInput, true, this.priceValidator);
-      this.imgInputs.isValid = !!this.imgInputs.value.length && this.imgInputs.value.every(imgObj => !!imgObj.file || !!imgObj.path);
+      this.imageFieldValidation();
 
       if (
         !this.imgInputs.isValid ||
