@@ -5,6 +5,8 @@ const multer = require('multer');
 
 const constants = require('../utils/constants.js');
 
+let customErr;
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     fs.mkdirSync(`${constants.IMAGE_DIR_PATH}/${req.userId}`, { recursive: true });
@@ -20,11 +22,10 @@ const fileFilterSetup = (req, file, cb) => {
   const nameMatches = imagesData.filter(img => img.name === file.originalname);
 
   if (nameMatches.length > 1) {
-    const error = new Error('Detected image files with same name.');
-    error.data = [{ value: file.originalname, msg: 'Detected image files with same name.', param: 'images', location: 'body' }];
-    error.statusCode = 422;
-    cb(error, false);
-    return;
+    customErr = new Error('Detected image files with same name.');
+    customErr.data = [{ value: file.originalname, msg: 'Detected image files with same name.', param: 'images', location: 'body' }];
+    customErr.statusCode = 422;
+    cb(null, false);
   }
 
   if (
@@ -34,6 +35,9 @@ const fileFilterSetup = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
+    customErr = new Error('Invalid image format. Support only jpg and png.');
+    customErr.data = [{ value: file.originalname, msg: 'Invalid image format. Support only jpg and png.', param: 'images', location: 'body' }];
+    customErr.statusCode = 422;
     cb(null, false);
   }
 };
@@ -53,8 +57,12 @@ const imgUploader = (req, res, next) => {
         error.statusCode = 422;
       }
       next(error);
+    } else if (customErr) { 
+      next(customErr);
+      customErr = null;
+    } else {
+      next();
     }
-    next();
   });
 };
 
