@@ -79,12 +79,17 @@ const actions = {
           Authorization: 'Bearer ' + token,
         },
       });
+      const status = response.status;
       const userData = await response.json();
-      context.commit('setUser', {
-        id: userData.id,
-        name: userData.name,
-        email: userData.email,
-      });
+      if (status === 200) {
+        context.commit('setUser', {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+        });
+      } else if (status === 401) {
+        context.dispatch('logout');
+      }
     } catch (error) {
       throw new Error(error);
     }
