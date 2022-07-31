@@ -1,28 +1,36 @@
 <template>
-  <div>
-    <h1>Helo world!</h1>
-    <button type="button" @click="testReq">
-      test
-    </button>
-    <ul>
-      <li v-for="item in testItems" :key="item._id">
-        {{ item.testText }}
-      </li>
-    </ul>
-    <form @submit.prevent="submitForm">
-      <input v-model.trim="testInput" type="text">
-      <button type="submit">
-        submit
+  <Fragment>
+    <h1>Garage sales</h1>
+    <section>
+      <sales-list />
+    </section>
+    <section>
+      <button type="button" @click="testReq">
+        test
       </button>
-    </form>
-    <button @click="getUserData">
-      get user data
-    </button>
-  </div>
+      <ul>
+        <li v-for="item in testItems" :key="item._id">
+          {{ item.testText }}
+        </li>
+      </ul>
+      <form @submit.prevent="submitForm">
+        <input v-model.trim="testInput" type="text">
+        <button type="submit">
+          submit
+        </button>
+      </form>
+    </section>
+  </Fragment>
 </template>
 
 <script>
+import SalesList from '~/components/sale/SalesList';
+
 export default {
+  components: {
+    SalesList
+  },
+
   name: 'IndexPage',
 
   data() {
@@ -62,10 +70,6 @@ export default {
         console.log(error);
       }
     },
-
-    getUserData() {
-      this.$store.dispatch('user/getUserData');
-    }
   }
 };
 </script>
