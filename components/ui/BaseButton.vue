@@ -76,4 +76,29 @@ export default {
     text-decoration: none;
     cursor: pointer;
   }
+
+  .arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 12px;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .left {
+    transform: rotate(135deg);
+  }
+
+  .right {
+    transform: rotate(-45deg);
+  }
+
+  .up {
+    transform: rotate(-135deg);
+  }
+
+  .down {
+    transform: rotate(45deg);
+  }
 </style>

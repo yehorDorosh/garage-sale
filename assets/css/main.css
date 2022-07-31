@@ -79,4 +79,13 @@ h5 {
   box-shadow: 0 0 5px 2px lightgray;
   padding: 16px;
   margin-bottom: 16px;
+  background-color: white;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background-color: black;
+  opacity: 0.6;
 }

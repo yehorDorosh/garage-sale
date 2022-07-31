@@ -100,7 +100,7 @@ export default {
       const inputField = e.target;
       let imgFile = inputField.files[0];
       const imgFormat = imgFile.type?.split('/')[1];
-      console.log(this.supportedImgFormats);
+
       if (imgFile.size > process.env.maxUploadImgSize) {
         this.imgInputs[i].error = `The file is too large. Maximum file size ${(process.env.maxUploadImgSize / 1e6).toFixed(2)}MB. File size: ${(imgFile.size / 1e6).toFixed(2)}MB`;
         return;

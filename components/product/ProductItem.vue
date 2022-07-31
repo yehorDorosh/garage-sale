@@ -39,20 +39,20 @@
         </base-button>
       </base-form>
     </div>
-    <div class="prod__img-list">
-      <img v-for="image in product.images" :key="image.filename" class="pord__img" :src="image.preview" :alt="image.alt">
-    </div>
+    <image-slider :images="product.images" />
   </li>
 </template>
 
 <script>
-import BaseForm from '~/components/ui/BaseForm.vue';
-import BaseInput from '~/components/ui/BaseInput.vue';
+import BaseForm from '~/components/ui/BaseForm';
+import BaseInput from '~/components/ui/BaseInput';
+import ImageSlider from '~/components/ui/ImageSlider';
 
 export default {
   components: {
     BaseForm,
     BaseInput,
+    ImageSlider,
   },
 
   emit: ['bookingWasCanceled'],
@@ -168,19 +168,5 @@ export default {
 
 .prod__price {
   font-weight: 700;
-}
-
-.prod__img-list {
-  display: flex;
-  margin-inline: -8px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.pord__img {
-  padding: 8px;
-  height: auto;
-  width: 25%;
-  box-sizing: border-box;
 }
 </style>
