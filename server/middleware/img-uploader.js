@@ -20,6 +20,7 @@ const fileStorage = multer.diskStorage({
 const fileFilterSetup = (req, file, cb) => {
   const imagesData = JSON.parse(req.body.imagesData);
   const nameMatches = imagesData.filter(img => img.name === file.originalname);
+  const imageFormat = file.mimetype?.split('/')[1];
 
   if (nameMatches.length > 1) {
     customErr = new Error('Detected image files with same name.');
@@ -28,15 +29,12 @@ const fileFilterSetup = (req, file, cb) => {
     cb(null, false);
   }
 
-  if (
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/jpeg'
-  ) {
+  if (constants.SUPPORTED_IMAGE_FORMATS.includes(imageFormat)) {
     cb(null, true);
   } else {
-    customErr = new Error('Invalid image format. Support only jpg and png.');
-    customErr.data = [{ value: file.originalname, msg: 'Invalid image format. Support only jpg and png.', param: 'images', location: 'body' }];
+    const msg = `Invalid image format. Support only: ${constants.SUPPORTED_IMAGE_FORMATS?.join(', ')}.`;
+    customErr = new Error(msg);
+    customErr.data = [{ value: file.originalname, msg, param: 'images', location: 'body' }];
     customErr.statusCode = 422;
     cb(null, false);
   }

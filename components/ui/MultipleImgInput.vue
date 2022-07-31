@@ -99,9 +99,13 @@ export default {
     inputHandler(e, i) {
       const inputField = e.target;
       let imgFile = inputField.files[0];
-
+      const imgFormat = imgFile.type?.split('/')[1];
+      console.log(this.supportedImgFormats);
       if (imgFile.size > process.env.maxUploadImgSize) {
-        this.imgInputs[i].error = 'The file is too large. Maximum file size 4MB. ' + `File size: ${(imgFile.size / 1000000).toFixed(2)}MB`;
+        this.imgInputs[i].error = `The file is too large. Maximum file size ${(process.env.maxUploadImgSize / 1e6).toFixed(2)}MB. File size: ${(imgFile.size / 1e6).toFixed(2)}MB`;
+        return;
+      } else if (!process.env.supportedImageFormats.includes(imgFormat)) {
+        this.imgInputs[i].error = `Invalid image format ${imgFormat}. Supported image formats: ${process.env.supportedImageFormats.join(', ')}`;
         return;
       } else {
         this.imgInputs[i].error = '';
