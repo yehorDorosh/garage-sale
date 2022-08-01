@@ -28,10 +28,13 @@ MONGO_INITDB_ROOT_PASSWORD=secret
 Set env. vars for nuxt.env:
 MONGO_INITDB_ROOT_USERNAME=mongoadmin
 MONGO_INITDB_ROOT_PASSWORD=secret
-HOST=0.0.0.0 (0.0.0.0 - for containers on same machine)
-HOST_NAME=localhost:3000 (localhost:3000 - for dev mode)
-PROTOCOL=http (http or https)
+FULL_HOST_NAME=http://localhost:3000
+NODE_ENV=dev
+PORT=3000
 JWT_PASSWORD=secret
+SENDGRID_KEY=******** (generate your own key on https://sendgrid.com/)
+MAX_UPLOAD_IMG_SIZE=4000000
+SUPPORTED_IMAGE_FORMATS=jpg,jpeg,png
 ```
 
 ### For localhost (Without docker)
