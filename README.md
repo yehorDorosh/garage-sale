@@ -32,7 +32,7 @@ FULL_HOST_NAME=http://localhost:3000
 NODE_ENV=dev
 PORT=3000
 JWT_PASSWORD=secret
-SENDGRID_KEY=******** (generate your own key on https://sendgrid.com/)
+SENDGRID_KEY=******** (generate your own key on https://sendgrid.com/. In is need for mail sending)
 MAX_UPLOAD_IMG_SIZE=4000000
 SUPPORTED_IMAGE_FORMATS=jpg,jpeg,png
 ```
