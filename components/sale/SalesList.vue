@@ -2,7 +2,7 @@
   <section>
     <ul class="sale-list">
       <li v-for="sale in sales" :key="sale._id" class="card sale-item">
-        <nuxt-link :to="`/sales/${sale._id}`" class="sale-item__link">
+        <a :to="`/sales/${sale._id}`" class="sale-item__link" @click="prevent($event)">
           <div class="sale-item__info">
             <h4 class="sale-item__title">
               {{ sale.description }}
@@ -12,21 +12,28 @@
             </p>
           </div>
           <div class="sale-item__products">
-            <div v-for="product in sale.products" :key="product._id" class="sale-item__product">
-              <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
-              <h5 class="sale-item__product-title">
-                {{ product.title }}
-              </h5>
-            </div>
+            <base-carusel :slide-amount="[2, 4, 6, 8]" @open="openSale(sale._id)">
+              <div v-for="product in sale.products" :key="product._id" class="sale-item__product">
+                <h5 class="sale-item__product-title">
+                  {{ product.title }}
+                </h5>
+                <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
+              </div>
+            </base-carusel>
           </div>
-        </nuxt-link>
+        </a>
       </li>
     </ul>
   </section>
 </template>
 
 <script>
+import BaseCarusel from '~/components/ui/BaseCarusel.vue';
 export default {
+  components: {
+    BaseCarusel
+  },
+
   computed: {
     sales() {
       return this.$store.getters['sale/getSales'];
@@ -35,6 +42,15 @@ export default {
 
   async created() {
     await this.$store.dispatch('sale/fetchSales');
+  },
+
+  methods: {
+    openSale(id) {
+      this.$router.push({ path: `/sales/${id}` });
+    },
+    prevent(e) {
+      e.preventDefault();
+    },
   },
 };
 </script>
@@ -62,22 +78,15 @@ export default {
     color: lightgrey;
   }
 
-  .sale-item__products {
-    display: flex;
-  }
-
-  .sale-item__product {
-    padding: 8px;
-  }
-
   .sale-item__img {
-    widows: 100px;
-    height: 100px;
-    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .sale-item__product-title {
-    margin: 8px 0 0;
+    margin: 0;
+    padding-bottom: 8px;
     text-align: center;
   }
 </style>

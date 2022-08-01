@@ -3,16 +3,7 @@
     <div v-show="opened" class="backdrop" @click="close" />
     <base-button v-show="opened" class="prev-btn" mode="arrow left" @click="prev" />
     <base-button v-show="opened" class="next-btn" mode="arrow right" @click="next" />
-    <div class="list">
-      <img
-        v-for="(image, i) in images"
-        :key="image.filename"
-        class="list__preview"
-        :src="image.preview"
-        :alt="image.alt"
-        @click="open(i)"
-      >
-    </div>
+    <image-carusel :sliders="images" @open="open" />
     <div v-show="opened" class="img-card">
       <close-cross @click="close" />
       <img
@@ -26,10 +17,12 @@
 
 <script>
 import CloseCross from '~/components/ui/CloseCross';
+import ImageCarusel from '~/components/ui/ImageCarusel';
 
 export default {
   components: {
     CloseCross,
+    ImageCarusel,
   },
 
   props: {
@@ -73,21 +66,6 @@ export default {
 </script>
 
 <style scoped>
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-inline: -8px;
-}
-
-.list__preview {
-  padding: 8px;
-  box-sizing: border-box;
-  width: 20%;
-  object-fit: cover;
-  cursor: pointer;
-}
-
 .img-card {
   position: fixed;
   top: 50%;

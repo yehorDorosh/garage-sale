@@ -7,6 +7,10 @@ module.exports = {
   // add your custom config here
   // https://stylelint.io/user-guide/configuration
   rules: {
-    'selector-class-pattern': ''
-  }
+    'selector-class-pattern': '',
+    'value-keyword-case': '',
+  },
+  env: {
+    browser: true,
+  },
 };
