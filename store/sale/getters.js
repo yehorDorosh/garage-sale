@@ -3,6 +3,10 @@ const getters = {
     return state.sales;
   },
 
+  getSalesAmount(state) {
+    return state.salesAmount;
+  },
+
   getSalesIDs(state) {
     return state.sales.map(sale => sale._id);
   },

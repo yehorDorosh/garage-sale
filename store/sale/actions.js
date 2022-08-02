@@ -1,12 +1,14 @@
 const actions = {
-  async fetchSales(context) {
+  async fetchSales(context, payload) {
+    const page = payload ? (!isNaN(payload.page) ? `?page=${payload.page}` : '') : '';
     try {
-      const response = await fetch(`${process.env.fullHostName}/api-sales`);
+      const response = await fetch(`${process.env.fullHostName}/api-sales${page}`);
       const status = response.status;
       const data = await response.json();
 
       if (status === 200) {
         context.commit('setSales', data.sales);
+        context.commit('setSalesAmount', data.totalItems);
       }
     } catch (error) {
       throw new Error(error);

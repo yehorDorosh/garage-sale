@@ -4,12 +4,20 @@ const Sale = require('../models/sale');
 const User = require('../models/user');
 
 exports.getSales = async(req, res, next) => {
+  const currentPage = req.query.page || 1;
+  const perPage = 10;
   try {
-    const sales = await Sale.find({ isPublished: true }).populate('products').populate('owner', '-password');
+    const totalItems = await Sale.find().countDocuments();
+    const sales = await Sale.find({ isPublished: true })
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage)
+      .populate('products')
+      .populate('owner', '-password');
 
     res.status(200).json({
       message: 'Fetched sales successfully.',
       sales,
+      totalItems,
     });
   } catch (err) {
     if (!err.statusCode) {

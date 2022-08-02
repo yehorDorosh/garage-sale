@@ -159,7 +159,7 @@ export default {
       },
       priceInput: {
         id: 'price--' + this.currentId,
-        value: this.currentPrice,
+        value: +this.currentPrice || 0,
         isTouched: false,
         isValid: null,
         errMsg: 'The price field shouldn\'t be less then 0.',
@@ -234,7 +234,7 @@ export default {
     },
 
     priceValidator(value) {
-      if (!value) { return false; }
+      if (isNaN(value)) { return false; }
       value = Number(`${value}`.replace(/[^0-9.-]+/g, ''));
       return value >= 0;
     },

@@ -74,7 +74,13 @@ export default {
   .blank {
     display: inline-block;
     text-decoration: none;
+    color: inherit;
     cursor: pointer;
+  }
+
+  .link {
+    text-decoration: underline;
+    color: var(--accent);
   }
 
   .arrow {

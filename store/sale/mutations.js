@@ -1,6 +1,12 @@
 const mutations = {
   setSales(state, payload) {
-    state.sales = payload;
+    state.sales = payload.sort((a, b) => {
+      return new Date(b.updatedAt) - new Date(a.updatedAt);
+    });
+  },
+
+  setSalesAmount(state, payload) {
+    state.salesAmount = payload;
   },
 
   setUserSales(state, payload) {

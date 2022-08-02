@@ -24,24 +24,70 @@
         </a>
       </li>
     </ul>
+    <div v-if="allSales.length > 3 && previewMode" class="view-more">
+      <base-button :link="true" to="/sales">
+        View more
+      </base-button>
+    </div>
+    <base-pagginator
+      v-else-if="!previewMode"
+      :total-amount="salesAmount"
+      :per-page="10"
+      :is-loading="isLoading"
+      path="api-sales"
+      :rest-api="true"
+      @getData="updSales"
+    />
+    <base-spinner :is-loading="isLoading" />
   </section>
 </template>
 
 <script>
 import BaseCarusel from '~/components/ui/BaseCarusel.vue';
+import BasePagginator from '~/components/ui/BasePagginator.vue';
+import BaseSpinner from '~/components/ui/BaseSpinner.vue';
+
 export default {
   components: {
-    BaseCarusel
+    BaseCarusel,
+    BasePagginator,
+    BaseSpinner,
+  },
+
+  props: {
+    previewMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      isLoading: false
+    };
   },
 
   computed: {
     sales() {
+      const salesList = this.$store.getters['sale/getSales'];
+      const previewList = salesList.slice(0, 3);
+      if (this.previewMode) {
+        return previewList.filter(sale => !!sale.products.length);
+      }
+      return salesList.filter(sale => !!sale.products.length);
+    },
+    salesAmount() {
+      return this.$store.getters['sale/getSalesAmount'];
+    },
+    allSales() {
       return this.$store.getters['sale/getSales'];
     },
   },
 
   async created() {
+    this.isLoading = true;
     await this.$store.dispatch('sale/fetchSales');
+    this.isLoading = false;
   },
 
   methods: {
@@ -51,11 +97,20 @@ export default {
     prevent(e) {
       e.preventDefault();
     },
+    async updSales(page) {
+      this.isLoading = true;
+      await this.$store.dispatch('sale/fetchSales', { page });
+      this.isLoading = false;
+    }
   },
 };
 </script>
 
 <style scoped>
+  section {
+    position: relative;
+  }
+
   .sale-item__link {
     text-decoration: none;
     color: inherit;
@@ -87,6 +142,10 @@ export default {
   .sale-item__product-title {
     margin: 0;
     padding-bottom: 8px;
+    text-align: center;
+  }
+
+  .view-more {
     text-align: center;
   }
 </style>

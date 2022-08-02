@@ -2,7 +2,7 @@
   <Fragment>
     <h1>Garage sales</h1>
     <section>
-      <sales-list />
+      <sales-list :preview-mode="true" />
     </section>
     <section>
       <button type="button" @click="testReq">
