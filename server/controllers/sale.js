@@ -7,8 +7,9 @@ exports.getSales = async(req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 10;
   try {
-    const totalItems = await Sale.find().countDocuments();
-    const sales = await Sale.find({ isPublished: true })
+    const filter = { isPublished: true, 'products.0': { $exists: true } };
+    const totalItems = await Sale.find(filter).countDocuments();
+    const sales = await Sale.find(filter)
       .skip((currentPage - 1) * perPage)
       .limit(perPage)
       .populate('products')

@@ -72,9 +72,9 @@ export default {
       const salesList = this.$store.getters['sale/getSales'];
       const previewList = salesList.slice(0, 3);
       if (this.previewMode) {
-        return previewList.filter(sale => !!sale.products.length);
+        return previewList;
       }
-      return salesList.filter(sale => !!sale.products.length);
+      return salesList;
     },
     salesAmount() {
       return this.$store.getters['sale/getSalesAmount'];
