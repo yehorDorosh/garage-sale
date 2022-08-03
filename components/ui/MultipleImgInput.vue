@@ -7,8 +7,19 @@
       {{ errMsg }}
     </p>
     <ul>
-      <li v-for="(imgInput, i) in imgInputs" :key="`${i}-${id}`" class="item">
-        <img v-if="imgInput.preview || imgInput.localpath" :src="imgInput.preview || imgInput.localpath">
+      <li
+        v-for="(imgInput, i) in imgInputs"
+        :key="`${i}-${id}`"
+        class="item"
+        draggable="true"
+        @dragstart="startDrag($event, imgInput)"
+        @dragend="stopDrag($event)"
+        @dragover.prevent="enterDrag($event)"
+        @dragenter.prevent="enterDrag($event)"
+        @dragleave.prevent="leaveDrag($event)"
+        @drop="onDrop($event, imgInput)"
+      >
+        <img v-if="imgInput.preview || imgInput.localpath" :src="imgInput.preview || imgInput.localpath" draggable="false">
         <div class="row">
           <label :for="`${i}-${id}`" class="btn">
             {{ selectBtnTxt(i) }}
@@ -162,6 +173,30 @@ export default {
       dataTransfer.items.add(newFile);
       input.files = dataTransfer.files;
     },
+    startDrag(e, item) {
+      e.currentTarget.classList.add('drag');
+      e.dataTransfer.dropEffect = 'move';
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('itemID', item.name);
+    },
+    stopDrag(e) {
+      e.currentTarget.classList.remove('drag');
+    },
+    enterDrag(e) {
+      e.currentTarget.classList.add('over');
+    },
+    leaveDrag(e) {
+      e.currentTarget.classList.remove('over');
+    },
+    onDrop(e, targetItem) {
+      e.currentTarget.classList.remove('over');
+      const itemID = e.dataTransfer.getData('itemID');
+      const draggableItem = this.imgInputs.find(item => item.name === itemID);
+      const draggableItemIndex = this.imgInputs.findIndex(item => item.name === itemID);
+      const targetItemIndex = this.imgInputs.findIndex(item => item.name === targetItem.name);
+      this.imgInputs.splice(draggableItemIndex, 1);
+      this.imgInputs.splice(targetItemIndex, 0, draggableItem);
+    },
   },
 };
 </script>
@@ -171,6 +206,22 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: move;
+    padding: 8px 4px;
+    margin-block: 4px;
+  }
+
+  .item:hover {
+    box-shadow: 0 0 2px 1px lightgray;
+  }
+
+  .drag {
+    opacity: 0.5;
+  }
+
+  .over {
+    opacity: 0.5;
+    border-top: 1px dashed lightgray;
   }
 
   .item .row {
