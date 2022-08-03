@@ -2,26 +2,24 @@
   <section>
     <ul class="sale-list">
       <li v-for="sale in sales" :key="sale._id" class="card sale-item">
-        <a :to="`/sales/${sale._id}`" class="sale-item__link" @click="prevent($event)">
-          <div class="sale-item__info">
-            <h4 class="sale-item__title">
-              {{ sale.description }}
-            </h4>
-            <p class="sale-item__author">
-              Author: {{ sale.owner.name }}
-            </p>
-          </div>
-          <div class="sale-item__products">
-            <base-carusel :key="sale.products.length" :slide-amount="[2, 4, 6, 8]" @open="openSale(sale._id)">
-              <div v-for="product in sale.products" :key="product._id" class="sale-item__product">
-                <h5 class="sale-item__product-title">
-                  {{ product.title }}
-                </h5>
-                <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
-              </div>
-            </base-carusel>
-          </div>
-        </a>
+        <nuxt-link class="sale-item__info" :to="`/sales/${sale._id}`">
+          <h4 class="sale-item__title">
+            {{ sale.description }}
+          </h4>
+          <p class="sale-item__author">
+            Author: {{ sale.owner.name }}
+          </p>
+        </nuxt-link>
+        <div class="sale-item__products">
+          <base-carusel :key="sale.products.length" :slide-amount="[2, 4, 6, 8]" @open="openSale(sale._id)">
+            <div v-for="product in sale.products" :key="product._id" class="sale-item__product">
+              <h5 class="sale-item__product-title">
+                {{ product.title }}
+              </h5>
+              <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
+            </div>
+          </base-carusel>
+        </div>
       </li>
     </ul>
     <div v-if="allSales.length > 3 && previewMode" class="view-more">
@@ -94,9 +92,6 @@ export default {
     openSale(id) {
       this.$router.push({ path: `/sales/${id}` });
     },
-    prevent(e) {
-      e.preventDefault();
-    },
     async updSales(page) {
       this.isLoading = true;
       await this.$store.dispatch('sale/fetchSales', { page });
@@ -114,6 +109,7 @@ export default {
   .sale-item__link {
     text-decoration: none;
     color: inherit;
+    cursor: auto;
   }
 
   .sale-item__info {
@@ -121,6 +117,8 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 8px;
+    color: inherit;
+    text-decoration: none;
   }
 
   .sale-item__title {

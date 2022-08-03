@@ -1,8 +1,8 @@
 <template>
   <Fragment>
     <div v-show="opened" class="backdrop" @click="close" />
-    <base-button v-show="opened" class="prev-btn" mode="arrow left" @click="prev" />
-    <base-button v-show="opened" class="next-btn" mode="arrow right" @click="next" />
+    <base-button v-show="opened" class="btn prev-btn" mode="arrow left" @click="prev" />
+    <base-button v-show="opened" class="btn next-btn" mode="arrow right" @click="next" />
     <image-carusel :sliders="images" @open="open" />
     <div v-show="opened" class="img-card">
       <close-cross @click="close" />
@@ -80,19 +80,18 @@ export default {
   cursor: pointer;
 }
 
-.prev-btn {
+.btn {
   position: fixed;
-  left: 5vw;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 99;
+  z-index: 100;
+}
+
+.prev-btn {
+  left: 5vw;
 }
 
 .next-btn {
-  position: fixed;
   right: 5vw;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 99;
 }
 </style>
