@@ -17,7 +17,10 @@ exports.getSales = async(req, res, next) => {
 
     res.status(200).json({
       message: 'Fetched sales successfully.',
-      sales,
+      sales: sales.map((sale) => {
+        sale.products = sale.products.filter(p => p.isPublished);
+        return sale;
+      }),
       totalItems,
     });
   } catch (err) {
