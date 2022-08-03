@@ -83,6 +83,7 @@ export default {
 
   methods: {
     openPage(page, e) {
+      this.$router.push({ path: this.$route.path, query: { page } });
       if (this.restApi) {
         if (e) { e.preventDefault(); }
         this.currentPage = page;

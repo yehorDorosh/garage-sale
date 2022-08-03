@@ -34,7 +34,6 @@
       :is-loading="isLoading"
       path="api-sales"
       :rest-api="true"
-      @getData="updSales"
     />
     <base-spinner :is-loading="isLoading" />
   </section>
@@ -65,6 +64,13 @@ export default {
     };
   },
 
+  async fetch() {
+    const page = this.$route.query.page || 1;
+    this.isLoading = true;
+    await this.$store.dispatch('sale/fetchSales', { page });
+    this.isLoading = false;
+  },
+
   computed: {
     sales() {
       const salesList = this.$store.getters['sale/getSales'];
@@ -82,21 +88,14 @@ export default {
     },
   },
 
-  async created() {
-    this.isLoading = true;
-    await this.$store.dispatch('sale/fetchSales');
-    this.isLoading = false;
+  watch: {
+    '$route.query': '$fetch'
   },
 
   methods: {
     openSale(id) {
       this.$router.push({ path: `/sales/${id}` });
     },
-    async updSales(page) {
-      this.isLoading = true;
-      await this.$store.dispatch('sale/fetchSales', { page });
-      this.isLoading = false;
-    }
   },
 };
 </script>
