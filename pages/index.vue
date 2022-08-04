@@ -24,20 +24,35 @@
 </template>
 
 <script>
+import openSocket from 'socket.io-client';
+
 import SalesList from '~/components/sale/SalesList';
 
 export default {
+  name: 'IndexPage',
+
   components: {
     SalesList
   },
-
-  name: 'IndexPage',
 
   data() {
     return {
       testInput: 'some text',
       testItems: []
     };
+  },
+
+  created() {
+    const socket = openSocket(`${process.env.fullHostName}`);
+    socket.on('sale', () => {
+      this.$store.dispatch('sale/fetchSales');
+    });
+    socket.on('product', () => {
+      this.$store.dispatch('sale/fetchSales');
+    });
+    socket.on('deletedUser', () => {
+      this.$store.dispatch('sale/fetchSales');
+    });
   },
 
   methods: {

@@ -8,6 +8,7 @@ const constants = require('../utils/constants.js');
 const User = require('../models/user');
 const Product = require('../models/product');
 const Sale = require('../models/sale');
+const io = require('../socket');
 
 exports.signup = async(req, res, next) => {
   const errors = validationResult(req);
@@ -130,6 +131,9 @@ exports.deleteUser = async(req, res, next) => {
     await Product.deleteMany({ owner: req.userId });
     await fs.rmSync(`${constants.IMAGE_DIR_PATH}/${req.userId}`, { recursive: true, force: true });
     await User.findByIdAndRemove(req.userId);
+
+    io.getIO().emit('deletedUser', { userId: req.userId });
+
     res.status(200).json({ message: 'User was delete' });
   } catch (err) {
     if (!err.statusCode) {

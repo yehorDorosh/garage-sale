@@ -72,6 +72,13 @@ export default {
     socket.on('booking', (buyer) => {
       this.$store.commit('sale/setBuyer', buyer);
     });
+    socket.on('product', () => {
+      this.$store.dispatch('sale/fetchSales');
+    });
+    socket.on('deletedUser', () => {
+      this.$store.dispatch('sale/fetchSales');
+      this.$router.push('/sales');
+    });
   },
 };
 </script>

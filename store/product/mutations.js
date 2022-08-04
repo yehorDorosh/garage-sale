@@ -24,6 +24,7 @@ const mutations = {
 
   setBuyer(state, buyer) {
     const product = state.userProducts.find(product => product._id === buyer.productId);
+    if (!product) { return; }
     product.buyer.name = buyer.name;
     product.buyer.email = buyer.email;
     product.isBooked = !!buyer.name && !!buyer.email;

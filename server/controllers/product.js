@@ -144,6 +144,11 @@ exports.createProduct = async(req, res, next) => {
       product.isPublished = isPublished;
       await product.save();
 
+      io.getIO().emit('product', {
+        product,
+        saleId: owner
+      });
+
       res.status(200).json({
         message: 'Product was updated.',
         product,
@@ -168,6 +173,11 @@ exports.createProduct = async(req, res, next) => {
 
       sale.products.push(product);
       await sale.save();
+
+      io.getIO().emit('product', {
+        product,
+        saleId: owner
+      });
 
       res.status(201).json({
         message: 'Product created successful.',
@@ -219,6 +229,11 @@ exports.deleteProduct = async(req, res, next) => {
     const sale = await Sale.findOne({ id: req.userId });
     sale.products.pull(prodId);
     await sale.save();
+
+    io.getIO().emit('product', {
+      product,
+      saleId: req.userId,
+    });
 
     res.status(200).json({
       message: 'Product was deleted.',
@@ -328,6 +343,11 @@ exports.sell = async(req, res, next) => {
 
     product.isSold = isSold;
     await product.save();
+
+    io.getIO().emit('product', {
+      product,
+      saleId: req.userId,
+    });
 
     res.status(200).json({
       message: 'Product "is sold" status was updated.',

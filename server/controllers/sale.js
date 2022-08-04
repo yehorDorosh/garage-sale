@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 
 const Sale = require('../models/sale');
 const User = require('../models/user');
+const io = require('../socket');
 
 exports.getSales = async(req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -85,6 +86,12 @@ exports.createSale = async(req, res, next) => {
       sale.description = description;
       sale.isPublished = isPublished;
       sale.save();
+
+      io.getIO().emit('sale', {
+        sale,
+        saleId: owner
+      });
+
       res.status(200).json({
         message: 'Sale successfuly updated',
         sale,

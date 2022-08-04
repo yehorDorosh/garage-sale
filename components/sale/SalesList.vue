@@ -12,7 +12,7 @@
         </nuxt-link>
         <div class="sale-item__products">
           <base-carusel :key="sale.products.length" :slide-amount="[2, 4, 6, 8]" @open="openSale(sale._id)">
-            <div v-for="product in sale.products" :key="product._id" class="sale-item__product">
+            <div v-for="product in sale.products" :key="product._id" class="sale-item__product carusel__item">
               <h5 class="sale-item__product-title">
                 {{ product.title }}
               </h5>

@@ -67,6 +67,6 @@ async function start() {
 
   const io = require('./socket').init(server);
   io.on('connection', (socket) => {
-    console.log('Client connected');
+    // console.log('Client connected');
   });
 }

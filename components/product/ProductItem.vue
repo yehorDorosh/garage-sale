@@ -39,7 +39,7 @@
         </base-button>
       </base-form>
     </div>
-    <image-slider :images="product.images" />
+    <image-slider :key="product.images.length" :images="product.images" />
   </li>
 </template>
 

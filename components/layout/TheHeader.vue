@@ -88,6 +88,7 @@ export default {
 
     closePopup() {
       this.popupIsShown = false;
+      this.$router.push('/sale-editor');
     },
 
     regIsSuccessfull() {

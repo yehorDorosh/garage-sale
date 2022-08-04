@@ -12,7 +12,7 @@ const getters = {
   },
 
   getSaleById(state) {
-    return id => state.sales.filter(sale => sale._id === id)[0];
+    return id => state.sales.find(sale => sale._id === id);
   },
 
   getUserSales(state) {
