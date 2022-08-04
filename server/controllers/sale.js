@@ -7,21 +7,20 @@ exports.getSales = async(req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 10;
   try {
-    const filter = { isPublished: true, 'products.0': { $exists: true } };
-    const totalItems = await Sale.find(filter).countDocuments();
-    const sales = await Sale.find(filter)
+    const sales = await Sale.find({ isPublished: true })
       .skip((currentPage - 1) * perPage)
       .limit(perPage)
-      .populate('products')
+      .populate('products', null, {
+        isPublished: true,
+        isSold: false,
+      })
       .populate('owner', '-password');
+    const filteredSales = sales.filter(sale => !!sale.products.length);
 
     res.status(200).json({
       message: 'Fetched sales successfully.',
-      sales: sales.map((sale) => {
-        sale.products = sale.products.filter(p => p.isPublished && !p.isSold);
-        return sale;
-      }),
-      totalItems,
+      sales: filteredSales,
+      totalItems: filteredSales.length,
     });
   } catch (err) {
     if (!err.statusCode) {
