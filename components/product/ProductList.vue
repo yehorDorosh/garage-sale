@@ -2,7 +2,7 @@
   <section>
     <ul>
       <product-item
-        v-for="product in filteredProducts"
+        v-for="product in products"
         :key="product._id"
         :product="product"
         :buyer-name="sessionBuyer.name"
@@ -39,9 +39,9 @@ export default {
   },
 
   computed: {
-    filteredProducts() {
-      return this.products.filter(product => product.isPublished);
-    },
+    // filteredProducts() {
+    //   return this.products.filter(product => product.isPublished);
+    // },
     sessionBuyer() {
       return this.$store.getters.getSessionBuyer;
     },
