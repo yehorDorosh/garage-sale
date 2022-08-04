@@ -41,10 +41,6 @@ export default {
     },
   },
 
-  // created() {
-  //   this.$store.dispatch('product/fetchUserProducts');
-  // },
-
   methods: {
     createProduct() {
       const newProduct = {

@@ -15,7 +15,7 @@ exports.getSales = async(req, res, next) => {
         isSold: false,
       })
       .populate('owner', '-password');
-    const filteredSales = sales.filter(sale => !!sale.products.length);
+    const filteredSales = sales ? sales.filter(sale => !!sale.products.length) : [];
 
     res.status(200).json({
       message: 'Fetched sales successfully.',
