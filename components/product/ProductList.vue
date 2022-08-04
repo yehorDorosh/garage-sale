@@ -39,9 +39,6 @@ export default {
   },
 
   computed: {
-    // filteredProducts() {
-    //   return this.products.filter(product => product.isPublished);
-    // },
     sessionBuyer() {
       return this.$store.getters.getSessionBuyer;
     },
