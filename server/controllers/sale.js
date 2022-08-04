@@ -18,7 +18,7 @@ exports.getSales = async(req, res, next) => {
     res.status(200).json({
       message: 'Fetched sales successfully.',
       sales: sales.map((sale) => {
-        sale.products = sale.products.filter(p => p.isPublished);
+        sale.products = sale.products.filter(p => p.isPublished && !p.isSold);
         return sale;
       }),
       totalItems,

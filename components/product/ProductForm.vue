@@ -66,7 +66,7 @@
         </span>
       </base-button>
     </div>
-    <div v-else>
+    <div v-if="currentIsSold || !currentIsBooked">
       <base-button v-if="isChanged" type="submit">
         Save
       </base-button>
