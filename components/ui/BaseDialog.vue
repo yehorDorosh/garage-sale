@@ -40,9 +40,17 @@ export default {
 dialog {
   z-index: 99;
   top: 100px;
-  border-radius: 32px;
+  border-radius: 24px;
   text-align: center;
-  padding: 32px;
+  padding: 24px;
+  border: none;
+}
+
+@media (min-width: 768) {
+  dialog {
+    border-radius: 32px;
+    padding: 32px;
+  }
 }
 
 .backdrop {

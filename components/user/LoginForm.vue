@@ -121,7 +121,7 @@ export default {
 <style scoped>
 form {
   text-align: left;
-  width: 260px;
+  width: 250px;
 }
 
 .error-txt {

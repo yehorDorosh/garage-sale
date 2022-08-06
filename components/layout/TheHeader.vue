@@ -211,6 +211,10 @@ export default {
     color: var(--accent-hover);
   }
 
+  nav a.nuxt-link-active {
+    text-decoration: underline;
+  }
+
   .cta-block {
     display: flex;
     justify-content: space-between;

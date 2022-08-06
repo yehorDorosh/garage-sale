@@ -1,10 +1,14 @@
 <template>
   <Fragment>
-    <h1>Garage sales</h1>
+    <section>
+      <h1 class="m-0">
+        Garage sales
+      </h1>
+    </section>
     <section>
       <sales-list :preview-mode="true" />
     </section>
-    <section>
+    <section v-show="false">
       <button type="button" @click="testReq">
         test
       </button>

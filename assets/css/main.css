@@ -74,6 +74,10 @@ h5 {
   font-size: 0.7rem;
 }
 
+.m-0 {
+  margin: 0;
+}
+
 .card {
   border-radius: 16px;
   box-shadow: 0 0 5px 2px lightgray;
