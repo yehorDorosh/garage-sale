@@ -1,46 +1,52 @@
 <template>
-  <div
-    ref="container"
-    class="carusel"
-    @touchstart="touchStart"
-    @mousedown="touchStart"
-    @touchmove="touchMove"
-    @mousemove="touchMove"
-    @touchend="touchEnd"
-    @mouseup="touchEnd"
-    @mouseleave="touchEnd"
-  >
-    <!-- eslint-disable -->
-    <style>
-      :root {
-        --img-width: {{ imageWidth }}px;
-        --img-height: {{ imageHeight }}px;
-        --computed-width: {{ 100 / imageAmount }}%;
-      }
-    </style>
-    <!-- eslint-enable -->
-    <img
-      v-for="(image, i) in sliders"
-      :key="image.filename"
-      :ref="i"
-      class="carusel__item"
-      :src="image.preview"
-      :alt="image.alt"
-      :style="{transform: `translateX(${translate[i]}px)`}"
-      @click="openSlide(i, $event)"
-      @touchstart="startClickTimer"
-      @touchend="openSlide(i, $event)"
-    >
+  <div class="outer">
     <base-button
-      v-show="limit !== -1 && limit !== 'hide'"
-      class="prev-btn"
+      :class="{ hidden: limit === -1 || limit === 'hide' }"
+      class="btn prev-btn"
       mode="arrow left"
       @click="prev"
       @touchend="prev"
     />
+    <div
+      ref="container"
+      class="carusel"
+      @touchstart="touchStart"
+      @mousedown="touchStart"
+      @touchmove="touchMove"
+      @mousemove="touchMove"
+      @touchend="touchEnd"
+      @mouseup="touchEnd"
+      @mouseleave="touchEnd"
+    >
+      <!-- eslint-disable -->
+      <style>
+        :root {
+          --img-width: {{ imageWidth }}px;
+          --img-height: {{ imageHeight }}px;
+          --computed-width: {{ 100 / imageAmount }}%;
+        }
+      </style>
+      <!-- eslint-enable -->
+      <div
+        v-for="(image, i) in sliders"
+        :key="image.filename"
+        :ref="i"
+        class="carusel__item"
+        :style="{transform: `translateX(${translate[i]}px)`}"
+        @click="openSlide(i, $event)"
+        @touchstart="startClickTimer"
+        @touchend="openSlide(i, $event)"
+      >
+        <img
+          class="carusel__card"
+          :src="image.preview"
+          :alt="image.alt"
+        >
+      </div>
+    </div>
     <base-button
-      v-show="limit !== 1 && limit !== 'hide'"
-      class="next-btn"
+      :class="{ hidden: limit === 1 || limit === 'hide' }"
+      class="btn next-btn"
       mode="arrow right"
       @click="next"
       @touchend="next"
@@ -167,7 +173,7 @@ export default {
     openSlide(i, e) {
       this.mouseUpT = new Date();
       const clickTime = this.mouseUpT - this.mouseDownT;
-      if (clickTime < 100) { this.$emit('open', i); }
+      if (clickTime < 150) { this.$emit('open', i); }
     },
     prev() {
       this.translate = this.translate.map(imgPos => imgPos + this.imageWidth);
@@ -205,10 +211,18 @@ export default {
 </script>
 
 <style scoped>
+.outer {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
 .carusel {
   position: relative;
   overflow: hidden;
   height: var(--img-height);
+  flex-grow: 1;
 }
 
 .carusel__item {
@@ -217,24 +231,29 @@ export default {
   box-sizing: border-box;
   height: var(--img-height);
   width: var(--computed-width);
-  object-fit: cover;
   transition: transform 0.3s ease-out;
   cursor: pointer;
 }
 
-.prev-btn {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-color: var(--accent) !important;
+.carusel__card {
+  height: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  object-fit: cover;
+  box-shadow: 0 0 8px 1px lightgray;
+  width: 100%;
 }
 
-.next-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-color: var(--accent) !important;
+.btn {
+  width: 32px;
+}
+
+.btn:hover {
+  border-radius: 8px;
+  box-shadow: 0 0 8px 1px lightgray;
+}
+
+.hidden {
+  visibility: hidden;
 }
 </style>

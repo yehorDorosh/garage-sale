@@ -11,12 +11,16 @@
           </p>
         </nuxt-link>
         <div class="sale-item__products">
-          <base-carusel :key="sale.products.length" :slide-amount="[2, 4, 6, 8]" @open="openSale(sale._id)">
+          <base-carusel :key="sale.products.length" :slide-amount="[1, 2, 4, 6]" @open="openSale(sale._id)">
             <div v-for="product in sale.products" :key="product._id" class="sale-item__product carusel__item">
-              <h5 class="sale-item__product-title">
-                {{ product.title }}
-              </h5>
-              <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
+              <div class="sale-item__card">
+                <h5 class="sale-item__product-title">
+                  {{ product.title }}
+                </h5>
+                <div class="sale-item__img-container">
+                  <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
+                </div>
+              </div>
             </div>
           </base-carusel>
         </div>
@@ -130,6 +134,21 @@ export default {
     color: lightgrey;
   }
 
+  .sale-item__card {
+    box-shadow: 0 0 8px 1px lightgray;
+    border-radius: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sale-item__img-container {
+    overflow: hidden;
+  }
+
   .sale-item__img {
     width: 100%;
     height: 100%;
@@ -140,6 +159,7 @@ export default {
     margin: 0;
     padding-bottom: 8px;
     text-align: center;
+    font-weight: 400;
   }
 
   .view-more {

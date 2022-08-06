@@ -9,6 +9,13 @@
       }
     </style>
     <!-- eslint-enable -->
+    <base-button
+      :class="{ hidden: limit === -1 || limit === 'hide' }"
+      class="btn prev-btn"
+      mode="arrow left"
+      @click="prev"
+      @touchend="prev"
+    />
     <div
       ref="container"
       class="carusel"
@@ -23,15 +30,8 @@
       <slot />
     </div>
     <base-button
-      v-show="limit !== -1 && limit !== 'hide'"
-      class="prev-btn"
-      mode="arrow left"
-      @click="prev"
-      @touchend="prev"
-    />
-    <base-button
-      v-show="limit !== 1 && limit !== 'hide'"
-      class="next-btn"
+      :class="{ hidden: limit === 1 || limit === 'hide' }"
+      class="btn next-btn"
       mode="arrow right"
       @click="next"
       @touchend="next"
@@ -175,7 +175,7 @@ export default {
     openSlide(e, i) {
       this.mouseUpT = new Date();
       const clickTime = this.mouseUpT - this.mouseDownT;
-      if (clickTime < 100) { this.$emit('open', e, i); }
+      if (clickTime < 150) { this.$emit('open', e, i); }
     },
     prev() {
       this.translate = this.translate.map(imgPos => imgPos + this.imageWidth);
@@ -215,12 +215,16 @@ export default {
 <style scoped>
 .outer {
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
 }
 
 .carusel {
   position: relative;
   overflow: hidden;
   height: var(--img-height);
+  flex-grow: 1;
 }
 
 .carusel__item {
@@ -234,19 +238,16 @@ export default {
   cursor: pointer;
 }
 
-.prev-btn {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-color: var(--accent) !important;
+.btn {
+  width: 32px;
 }
 
-.next-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-color: var(--accent) !important;
+.btn:hover {
+  border-radius: 8px;
+  box-shadow: 0 0 8px 1px lightgray;
+}
+
+.hidden {
+  visibility: hidden;
 }
 </style>

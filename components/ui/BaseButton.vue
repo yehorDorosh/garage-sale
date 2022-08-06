@@ -84,27 +84,31 @@ export default {
   }
 
   .arrow {
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    display: inline-block;
-    padding: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23da600f' d='M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z'/%3E%3C/svg%3E");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-color: transparent;
+    padding: 0;
+    border: none;
+    min-width: 8px;
+    min-height: 8px;
     cursor: pointer;
   }
 
-  .left {
-    transform: rotate(135deg);
+  .arrow.right {
+    transform: rotate(0deg);
   }
 
-  .right {
-    transform: rotate(-45deg);
+  .arrow.left {
+    transform: rotate(-180deg);
   }
 
-  .up {
-    transform: rotate(-135deg);
+  .arrow.up {
+    transform: rotate(-90deg);
   }
 
-  .down {
-    transform: rotate(45deg);
+  .arrow.down {
+    transform: rotate(90deg);
   }
 </style>
