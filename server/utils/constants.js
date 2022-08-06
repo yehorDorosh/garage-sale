@@ -6,4 +6,5 @@ module.exports = Object.freeze({
   IMG_WIDTH: 512,
   IMG_HEIGHT: 512,
   ROOT_DIR_ARR: [__dirname, '..', '..'],
+  SITE_EMAIL: process.env.SITE_EMAIL || 'egor.dorosh.v@gmail.com',
 });

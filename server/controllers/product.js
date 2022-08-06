@@ -283,8 +283,8 @@ exports.saveBuyer = async(req, res, next) => {
       }
       product.isBooked = true;
       transporter.sendMail({
-        to: 'yehor.dorosh@ukr.net',
-        from: 'egor.dorosh.v@gmail.com',
+        to: email,
+        from: constants.SITE_EMAIL,
         subject: `${product.title} was booked`,
         html: `
           <h1>${product.title} was booked.</h1>
