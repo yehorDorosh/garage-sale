@@ -109,7 +109,7 @@ exports.createProduct = async(req, res, next) => {
       fs.mkdirSync(previewDirPath, { recursive: true });
       buffer = await sharp(img.path)
         .resize(constants.IMG_WIDTH, constants.IMG_HEIGHT, {
-          withoutEnlargement: true,
+          withoutEnlargement: false,
         })
         .toBuffer();
       await sharp(buffer).toFile(cropFilePath);
