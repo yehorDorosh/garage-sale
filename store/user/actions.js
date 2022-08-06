@@ -87,7 +87,7 @@ const actions = {
           name: userData.name,
           email: userData.email,
         });
-      } else if (status === 401) {
+      } else if (status === 401 || status === 404) {
         context.dispatch('logout');
       }
     } catch (error) {
