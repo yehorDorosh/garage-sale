@@ -72,6 +72,7 @@ export default {
       mouseUpT: null,
       translate: [],
       translateBuffer: [],
+      y0: null,
     };
   },
 
@@ -116,22 +117,30 @@ export default {
     getTouches(e) {
       if (e.touches) {
         const touch = e.touches;
-        return touch[0] ? touch[0].clientX : 0;
+        return touch[0] ? { x: touch[0].clientX, y: touch[0].clientY, isMobile: true } : { x: 0, y: 0, isMobile: true };
       } else {
-        return e.clientX;
+        return { x: e.clientX, y: e.clientY, isMobile: false };
       }
     },
     touchStart(e) {
       e.preventDefault();
       this.startClickTimer();
       this.mouseDown = true;
-      this.x0 = this.getTouches(e);
+      const { x, y } = this.getTouches(e);
+      this.x0 = x;
+      this.y0 = y;
       this.translateBuffer = [...this.translate];
     },
     touchMove(e) {
+      const { x, y, isMobile } = this.getTouches(e);
       if (this.mouseDown) {
-        this.x1 = this.getTouches(e);
+        this.x1 = x;
         this.move(this.x0, this.x1);
+      }
+      if (isMobile) {
+        const shiftY = (y - this.y0) * -1;
+        window.scrollBy(0, shiftY);
+        this.y0 -= shiftY;
       }
     },
     touchEnd(e) {
@@ -158,7 +167,7 @@ export default {
     openSlide(i, e) {
       this.mouseUpT = new Date();
       const clickTime = this.mouseUpT - this.mouseDownT;
-      if (clickTime < 200) { this.$emit('open', i); }
+      if (clickTime < 100) { this.$emit('open', i); }
     },
     prev() {
       this.translate = this.translate.map(imgPos => imgPos + this.imageWidth);
