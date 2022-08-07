@@ -93,8 +93,14 @@ export default {
 
   created() {
     if (process.client) {
+      let timer;
       // eslint-disable-next-line nuxt/no-globals-in-created
-      window.addEventListener('resize', this.resize);
+      window.addEventListener('resize', () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          this.resize();
+        }, 50);
+      });
       this.breakPoint();
     }
   },
@@ -170,10 +176,10 @@ export default {
       });
     },
     resize() {
-      this.imageWidth = this.$refs.container.clientWidth / this.imageAmount;
+      this.breakPoint();
+      this.imageWidth = this.$refs.container?.clientWidth / this.imageAmount;
       this.imageHeight = this.imageWidth;
       this.translate = this.translate.map((_, i) => i * this.imageWidth);
-      this.breakPoint();
     },
     openSlide(e, i) {
       this.mouseUpT = new Date();
