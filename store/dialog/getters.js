@@ -17,6 +17,9 @@ const getters = {
   getBuyerFormData(state) {
     return state.buyerForm.payload;
   },
+  getDeleteUserWarning(state) {
+    return state.deleteUserWarning;
+  },
 };
 
 export default getters;

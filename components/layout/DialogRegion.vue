@@ -24,10 +24,23 @@
         :buyer-email="buyerFormData.buyerEmail"
       />
     </base-dialog>
+    <base-dialog :show="deleteUserWarning" :cross="true" @close="$store.commit('dialog/setDeleteUserWarning', false)">
+      <p>A you sure?</p>
+      <div>
+        <base-button @click="deleteAccount">
+          Delete account
+        </base-button>
+        <base-button @click="$store.commit('dialog/setDeleteUserWarning', false)">
+          Cancel
+        </base-button>
+      </div>
+      <base-spinner :is-loading="isLoading" />
+    </base-dialog>
   </div>
 </template>
 
 <script>
+import BaseSpinner from '~/components/ui/BaseSpinner';
 import RegForm from '~/components/user/RegForm';
 import LoginForm from '~/components/user/LoginForm';
 import BaseDialog from '~/components/ui/BaseDialog';
@@ -39,6 +52,13 @@ export default {
     LoginForm,
     BaseDialog,
     BuyerForm,
+    BaseSpinner
+  },
+
+  data() {
+    return {
+      isLoading: false,
+    };
   },
 
   computed: {
@@ -60,6 +80,9 @@ export default {
     buyerFormData() {
       return this.$store.getters['dialog/getBuyerFormData'];
     },
+    deleteUserWarning() {
+      return this.$store.getters['dialog/getDeleteUserWarning'];
+    }
   },
 
   methods: {
@@ -70,7 +93,18 @@ export default {
     closeRegMsgIsShown() {
       this.$store.commit('dialog/setRegMsgIsShown', false);
       this.$router.push('/sale-editor');
-    }
+    },
+    async deleteAccount() {
+      this.isLoading = true;
+      await this.$store.dispatch('user/deleteAccount');
+      this.isLoading = false;
+      const status = this.$store.getters['user/getResponse'].status;
+      if (status === 200) {
+        this.$store.commit('dialog/setDeleteUserWarning', false);
+        this.$store.dispatch('user/logout');
+        this.$router.push('/');
+      }
+    },
   },
 };
 </script>

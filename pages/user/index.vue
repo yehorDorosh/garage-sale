@@ -1,42 +1,34 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <Fragment>
-    <h1>
-      Account settings
-    </h1>
-    <p>
-      Email: {{ user.email }}
-    </p>
-    <base-form class="user-data" :is-loading="isLoading" :no-submit-btn="true">
-      <base-input
-        id="user-name"
-        ref="name"
-        v-model="newUserName"
-        type="text"
-        label="User name"
-        @blur="updUserData"
-        @keydown.enter="updUserData"
-      />
-      <p v-if="name.isUpdated" class="warning">
-        The name was updated!
+    <section>
+      <h1 class="m-0">
+        Account settings
+      </h1>
+    </section>
+    <section>
+      <p>
+        Email: {{ user.email }}
       </p>
-      <base-spinner :is-loading="isLoading" />
-    </base-form>
-    <base-button @click="openConformation">
-      Delete account
-    </base-button>
-    <base-dialog :show="conformationIsShown" :cross="true" @close="closeConformation">
-      <p>A you sure?</p>
-      <div>
-        <base-button @click="deleteAccount">
-          Delete account
-        </base-button>
-        <base-button @click="closeConformation">
-          Cancel
-        </base-button>
-      </div>
-      <base-spinner :is-loading="isLoading" />
-    </base-dialog>
+      <base-form class="user-data" :is-loading="isLoading" :no-submit-btn="!isChanged" @form-submit="updUserData">
+        <base-input
+          :id="name.id"
+          v-model="name.value"
+          label="User name"
+          type="text"
+          :is-valid="name.isValid"
+          :err-msg="name.errMsg"
+          @input="filedValidation($event, name, false)"
+          @blur="filedValidation($event, name, true)"
+        />
+        <base-spinner :is-loading="isLoading" />
+      </base-form>
+    </section>
+    <section>
+      <base-button @click="$store.commit('dialog/setDeleteUserWarning', true)">
+        Delete account
+      </base-button>
+    </section>
   </Fragment>
 </template>
 
@@ -58,10 +50,12 @@ export default {
     return {
       conformationIsShown: false,
       isLoading: false,
-      newUserName: this.$store.getters['user/getUser']?.name,
       name: {
-        isUpdated: false,
-        isTouched: false,
+        id: 'user-name',
+        value: this.$store.getters['user/getUser'].name,
+        isValid: null,
+        errMsg: 'This field shouldn\'t be empty.',
+        touched: false,
       },
     };
   },
@@ -70,50 +64,34 @@ export default {
     user() {
       return this.$store.getters['user/getUser'];
     },
+    isChanged() {
+      return this.user.name !== this.name.value;
+    }
   },
 
   methods: {
-    openConformation() {
-      this.conformationIsShown = true;
-    },
-
-    closeConformation() {
-      this.conformationIsShown = false;
-    },
-
-    async deleteAccount() {
-      this.isLoading = true;
-      await this.$store.dispatch('user/deleteAccount');
-      this.isLoading = false;
-      const status = this.$store.getters['user/getResponse'].status;
-      if (status === 200) {
-        this.$store.dispatch('user/logout');
-        this.$router.push('/');
+    filedValidation(value, field, touch, validation) {
+      if (touch === true) { field.isTouched = true; }
+      if (!field.isTouched) { return; }
+      if (validation === undefined) {
+        validation = (value) => {
+          return String(value).trim().length > 0;
+        };
       }
+      field.isValid = validation(value);
     },
-
     async updUserData() {
-      this.name.isUpdated = false;
+      if (!this.name.isValid) { return; }
       this.isLoading = true;
-      await this.$store.dispatch('user/updUserData', { name: this.newUserName });
+      await this.$store.dispatch('user/updUserData', { name: this.name.value });
       this.isLoading = false;
-      this.name.isTouched = false;
-      const status = this.$store.getters['user/getResponse'].status;
-      if (status === 200) { this.name.isUpdated = true; }
     }
   },
 };
 </script>
 
 <style scoped>
-  form.user-data {
-    max-width: 260px;
-  }
-
-  .warning {
-    color: lightgrey;
-    font-size: 0.5rem;
-    margin-top: 0;
-    margin-bottom: 8px;
-  }
+form.user-data {
+  max-width: 260px;
+}
 </style>

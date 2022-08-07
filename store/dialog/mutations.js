@@ -17,6 +17,9 @@ const mutations = {
   setBuyerFormData(state, payload) {
     state.buyerForm.payload = payload;
   },
+  setDeleteUserWarning(state, payload) {
+    state.deleteUserWarning = payload;
+  },
 };
 
 export default mutations;

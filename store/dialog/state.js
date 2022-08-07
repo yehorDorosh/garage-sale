@@ -12,6 +12,7 @@ const state = () => ({
       buyerEmail: '',
     }
   },
+  deleteUserWarning: false,
 });
 
 export default state;
