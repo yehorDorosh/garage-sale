@@ -71,6 +71,16 @@ export default {
     border-color: var(--accent-hover);
   }
 
+  .button.red {
+    background-color: red;
+    border-radius: 0;
+  }
+
+  .button.sm {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
   .blank {
     display: inline-block;
     text-decoration: none;

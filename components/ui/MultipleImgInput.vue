@@ -35,7 +35,7 @@
             @input="altHandler($event, i)"
           />
         </div>
-        <base-button @click="removeInput(i)">
+        <base-button mode="button red" @click="removeInput(i)">
           Remove image
         </base-button>
       </li>
@@ -206,9 +206,19 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column;
     cursor: move;
     padding: 8px 4px;
     margin-block: 4px;
+    overflow: hidden;
+    border: solid 1px lightgray;
+  }
+
+  @media (min-width: 768px) {
+    .item {
+      border: none;
+      flex-direction: row;
+    }
   }
 
   .item:hover {
@@ -226,23 +236,59 @@ export default {
 
   .item .row {
     flex-grow: 1;
-    padding-inline: 16px;
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .item .row {
+      padding-inline: 16px;
+      width: auto;
+      text-align: left;
+    }
+  }
+
+  .item .row .row {
+    padding-inline: 0;
+    margin: 0;
   }
 
   .item img {
     width: 64px;
     height: auto;
+    margin-bottom: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .item img {
+      margin-bottom: 0;
+    }
   }
 
   .btn {
     font-size: 0.8rem;
     cursor: pointer;
     padding: 8px;
-    border: 1px solid var(--accent);
+    border: 1px solid green;
     border-radius: 32px;
     color: white;
-    background-color: var(--accent);
-    margin-inline: 16px;
+    background-color: green;
+    margin-bottom: 16px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 768px) {
+    .btn {
+      margin-bottom: 4px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .button.red {
+      margin: 0;
+    }
   }
 
   .err {

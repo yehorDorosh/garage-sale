@@ -74,7 +74,7 @@
       <base-button v-if="isChanged" type="submit">
         Save
       </base-button>
-      <base-button @click="deleteProduct">
+      <base-button mode="button red" @click="deleteProduct">
         Delete
       </base-button>
     </div>
