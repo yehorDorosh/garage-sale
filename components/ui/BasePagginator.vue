@@ -1,5 +1,5 @@
 <template>
-  <div v-show="pages > 1" class="pagginator">
+  <div v-if="pages > 1" class="pagginator">
     <ul class="page-list">
       <li class="page-num" :class="{ active: 1 === currentPage, hidden: currentPage < 3 }">
         <a :href="`${path}?page=1`" @click="openPage(1, $event)">

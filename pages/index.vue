@@ -1,14 +1,20 @@
 <template>
   <Fragment>
     <section>
-      <h1 class="m-0">
+      <h1 class="m-0 text-center">
         Garage sales
       </h1>
     </section>
-    <section>
-      <sales-list :preview-mode="true" />
+    <section v-show="!isAuth" class="text-center">
+      <h2>Signup for create your own garage sale</h2>
+      <div>
+        <base-button @click="$store.commit('dialog/setRegIsShown', true)">
+          Signup
+        </base-button>
+      </div>
     </section>
-    <section v-show="false">
+    <sales-list :preview-mode="true" />
+    <div v-if="false">
       <button type="button" @click="testReq">
         test
       </button>
@@ -23,7 +29,7 @@
           submit
         </button>
       </form>
-    </section>
+    </div>
   </Fragment>
 </template>
 
@@ -44,6 +50,12 @@ export default {
       testInput: 'some text',
       testItems: []
     };
+  },
+
+  computed: {
+    isAuth() {
+      return this.$store.getters['user/isAuth'];
+    },
   },
 
   created() {

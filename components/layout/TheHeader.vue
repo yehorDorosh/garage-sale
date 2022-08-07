@@ -21,10 +21,10 @@
           </ul>
         </nav>
         <div class="cta-block">
-          <base-button v-if="!isAuth" @click="openReg">
+          <base-button v-if="!isAuth" @click="$store.commit('dialog/setRegIsShown', true)">
             Signup
           </base-button>
-          <base-button v-if="!isAuth" @click="openLogin">
+          <base-button v-if="!isAuth" @click="$store.commit('dialog/setLoginIsShown', true)">
             Login
           </base-button>
           <base-button v-if="isAuth" @click="logout">
@@ -36,31 +36,14 @@
         </div>
       </div>
     </div>
-    <base-dialog :show="regIsShown" :cross="true" @close="closeReg">
-      <reg-form @reg-compleated="regIsSuccessfull" />
-    </base-dialog>
-    <base-dialog :show="popupIsShown" @close="closePopup">
-      <p>
-        The registration completed successfully!
-      </p>
-    </base-dialog>
-    <base-dialog :show="loginIsShown" :cross="true" @close="closeLogin">
-      <login-form @login-compleated="closeLogin" />
-    </base-dialog>
   </header>
 </template>
 
 <script>
-import RegForm from '~/components/user/RegForm';
-import LoginForm from '~/components/user/LoginForm';
-import BaseDialog from '~/components/ui/BaseDialog.vue';
 import TheBurger from '~/components/ui/TheBurger.vue';
 
 export default {
   components: {
-    RegForm,
-    LoginForm,
-    BaseDialog,
     TheBurger,
   },
 
@@ -84,35 +67,9 @@ export default {
   },
 
   methods: {
-    openReg() {
-      this.regIsShown = true;
-    },
-
-    closeReg() {
-      this.regIsShown = false;
-    },
-
-    closePopup() {
-      this.popupIsShown = false;
-      this.$router.push('/sale-editor');
-    },
-
-    regIsSuccessfull() {
-      this.closeReg();
-      this.popupIsShown = true;
-    },
-
     logout() {
       this.$router.push('/');
       this.$store.dispatch('user/logout');
-    },
-
-    openLogin() {
-      this.loginIsShown = true;
-    },
-
-    closeLogin() {
-      this.loginIsShown = false;
     },
 
     burgerHandler() {

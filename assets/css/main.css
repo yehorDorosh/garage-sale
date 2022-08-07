@@ -11,6 +11,7 @@ html {
   --accent-hover-txt: black;
   --spinner: grey;
   --spinner-dropdown: white;
+  --gap: 16px;
 }
 
 body {
@@ -41,12 +42,16 @@ p {
 }
 
 section {
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-top: var(--gap);
+  padding-bottom: var(--gap);
 }
 
 section:first-child {
-  padding-bottom: 0;
+  padding-top: calc(var(--gap) * 2);
+}
+
+section:last-child {
+  padding-bottom: calc(var(--gap) * 2);
 }
 
 h1, h2, h3, h4, h5 {
@@ -76,6 +81,10 @@ h5 {
 
 .m-0 {
   margin: 0;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .card {
