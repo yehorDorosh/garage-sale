@@ -3,6 +3,14 @@
   <Fragment>
     <article>
       <section>
+        <base-button link to="/sales" mode="link">
+          Sales
+        </base-button>
+        <span>
+          > {{ sale.description }}
+        </span>
+      </section>
+      <section>
         <h1>
           {{ sale.description }}
         </h1>

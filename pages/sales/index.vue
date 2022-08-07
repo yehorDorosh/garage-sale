@@ -3,6 +3,14 @@
   <Fragment>
     <article>
       <section>
+        <base-button link to="/" mode="link">
+          Home
+        </base-button>
+        <span>
+          > Sales
+        </span>
+      </section>
+      <section>
         <h1>
           Last sales
         </h1>
