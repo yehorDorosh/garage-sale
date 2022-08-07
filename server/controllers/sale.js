@@ -8,6 +8,13 @@ exports.getSales = async(req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 10;
   try {
+    let totalItems = await Sale.find({ isPublished: true })
+      .populate('products', null, {
+        isPublished: true,
+        isSold: false,
+      });
+    totalItems = totalItems ? totalItems.filter(sale => !!sale.products.length) : [];
+
     const sales = await Sale.find({ isPublished: true })
       .skip((currentPage - 1) * perPage)
       .limit(perPage)
@@ -21,7 +28,7 @@ exports.getSales = async(req, res, next) => {
     res.status(200).json({
       message: 'Fetched sales successfully.',
       sales: filteredSales,
-      totalItems: filteredSales.length,
+      totalItems: totalItems.length,
     });
   } catch (err) {
     if (!err.statusCode) {

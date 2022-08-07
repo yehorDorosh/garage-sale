@@ -1,7 +1,7 @@
 <template>
   <div v-if="pages > 1" class="pagginator">
     <ul class="page-list">
-      <li class="page-num" :class="{ active: 1 === currentPage, hidden: currentPage < 3 }">
+      <li class="page-num first" :class="{ active: 1 === currentPage, hidden: currentPage < 3 }">
         <a :href="`${path}?page=1`" @click="openPage(1, $event)">
           First
         </a>
@@ -37,7 +37,7 @@
         mode="arrow right"
         @click="openPage(currentPage + 1)"
       />
-      <li class="page-num" :class="{ active: pages === currentPage, hidden: currentPage > (pages - 2) }">
+      <li class="page-num last" :class="{ active: pages === currentPage, hidden: currentPage > (pages - 2) }">
         <a :href="`${path}?page=${pages}`" @click="openPage(pages, $event)">
           Last
         </a>
@@ -135,5 +135,17 @@ export default {
 
 .hidden {
   visibility: hidden;
+}
+
+.first,
+.last {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .first,
+  .last {
+    display: block;
+  }
 }
 </style>
