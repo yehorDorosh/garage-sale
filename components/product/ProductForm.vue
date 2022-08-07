@@ -29,6 +29,7 @@
       v-model="priceInput.value"
       label="Product price"
       type="number"
+      step="0.01"
       :is-valid="priceInput.isValid"
       :err-msg="priceInput.errMsg"
       @input="filedValidation($event, priceInput, false, priceValidator)"

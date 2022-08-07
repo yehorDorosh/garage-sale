@@ -110,6 +110,14 @@ export default {
     this.sliders.forEach((elem, i) => {
       this.translate.push(i * this.imageWidth);
     });
+    setTimeout(() => {
+      for (const key in this.$refs) {
+        const elem = this.$refs[key][0];
+        if (elem && elem.classList.contains('carusel__item')) {
+          elem.classList.add('animation');
+        }
+      }
+    }, 0);
   },
 
   destroyed() {
@@ -231,8 +239,11 @@ export default {
   box-sizing: border-box;
   height: var(--img-height);
   width: var(--computed-width);
-  transition: transform 0.3s ease-out;
   cursor: pointer;
+}
+
+.animation {
+  transition: transform 0.3s ease-out;
 }
 
 .carusel__card {

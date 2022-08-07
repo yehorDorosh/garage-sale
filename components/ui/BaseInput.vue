@@ -89,5 +89,6 @@ export default {
     box-sizing: border-box;
     resize: none;
     overflow-y: scroll;
+    min-height: 50px;
   }
 </style>

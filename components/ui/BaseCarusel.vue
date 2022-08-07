@@ -112,6 +112,9 @@ export default {
         this.openSlide(e, i);
       });
     });
+    setTimeout(() => {
+      this.sliders.forEach(elem => elem.classList.add('animation'));
+    }, 0);
   },
 
   destroyed() {
@@ -234,8 +237,11 @@ export default {
   height: var(--img-height);
   width: var(--computed-width);
   object-fit: cover;
-  transition: transform 0.3s ease-out;
   cursor: pointer;
+}
+
+.animation {
+  transition: transform 0.3s ease-out;
 }
 
 .btn {
