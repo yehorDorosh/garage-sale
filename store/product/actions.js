@@ -96,9 +96,7 @@ const actions = {
         localStorage.setItem('buyer-name', data.buyer.name);
         localStorage.setItem('buyer-email', data.buyer.email);
       }
-      if (status === 202) {
-        return data;
-      }
+      return data;
     } catch (error) {
       throw new Error(error);
     }

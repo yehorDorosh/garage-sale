@@ -87,6 +87,10 @@ h5 {
   text-align: center;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .card {
   border-radius: 16px;
   box-shadow: 0 0 5px 2px lightgray;

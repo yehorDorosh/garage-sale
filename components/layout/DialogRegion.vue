@@ -11,19 +11,34 @@
     <base-dialog :show="loginIsShown" :cross="true" @close="$store.commit('dialog/setLoginIsShown', false)">
       <login-form @login-compleated="$store.commit('dialog/setLoginIsShown', false)" />
     </base-dialog>
+    <base-dialog :show="bookingWarning" @close="$store.commit('dialog/setBookingWarning', false)">
+      <p>
+        Unfortunately, the item has already been booked.
+      </p>
+    </base-dialog>
+    <base-dialog cross :show="buyerFormIsShown" @close="$store.commit('dialog/setBuyerFormIsShown', false)">
+      <buyer-form
+        :sale-id="buyerFormData.saleId"
+        :product-id="buyerFormData.productId"
+        :buyer-name="buyerFormData.buyerName"
+        :buyer-email="buyerFormData.buyerEmail"
+      />
+    </base-dialog>
   </div>
 </template>
 
 <script>
 import RegForm from '~/components/user/RegForm';
 import LoginForm from '~/components/user/LoginForm';
-import BaseDialog from '~/components/ui/BaseDialog.vue';
+import BaseDialog from '~/components/ui/BaseDialog';
+import BuyerForm from '~/components/buyer/BuyerForm';
 
 export default {
   components: {
     RegForm,
     LoginForm,
     BaseDialog,
+    BuyerForm,
   },
 
   computed: {
@@ -35,6 +50,15 @@ export default {
     },
     loginIsShown() {
       return this.$store.getters['dialog/getLoginIsShown'];
+    },
+    bookingWarning() {
+      return this.$store.getters['dialog/getBookingWarning'];
+    },
+    buyerFormIsShown() {
+      return this.$store.getters['dialog/getBuyerFormIsShown'];
+    },
+    buyerFormData() {
+      return this.$store.getters['dialog/getBuyerFormData'];
     },
   },
 

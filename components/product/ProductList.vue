@@ -7,12 +7,8 @@
         :product="product"
         :buyer-name="sessionBuyer.name"
         :buyer-email="sessionBuyer.email"
-        @bookingWasCanceled="bookingWasCanceled"
       />
     </ul>
-    <base-dialog :show="bookingWarning" @close="closeBookingWarning">
-      Unfortunately, the item has already been booked.
-    </base-dialog>
   </section>
 </template>
 
@@ -32,24 +28,9 @@ export default {
     },
   },
 
-  data() {
-    return {
-      bookingWarning: false,
-    };
-  },
-
   computed: {
     sessionBuyer() {
       return this.$store.getters.getSessionBuyer;
-    },
-  },
-
-  methods: {
-    bookingWasCanceled(data) {
-      this.bookingWarning = true;
-    },
-    closeBookingWarning() {
-      this.bookingWarning = false;
     },
   },
 };

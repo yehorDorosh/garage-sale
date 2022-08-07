@@ -8,6 +8,15 @@ const getters = {
   getLoginIsShown(state) {
     return state.loginIsShown;
   },
+  getBookingWarning(state) {
+    return state.bookingWarning;
+  },
+  getBuyerFormIsShown(state) {
+    return state.buyerForm.isShown;
+  },
+  getBuyerFormData(state) {
+    return state.buyerForm.payload;
+  },
 };
 
 export default getters;

@@ -35,6 +35,9 @@
       @input="filedValidation($event, priceInput, false, priceValidator)"
       @blur="filedValidation($event, priceInput, true, priceValidator)"
     />
+    <p class="subline">
+      Leave 0 for free.
+    </p>
     <multiple-img-input
       :id="imgInputs.id"
       title="Upload product image"
@@ -329,5 +332,10 @@ export default {
   color: red;
   margin-top: 8px;
   margin-bottom: 0;
+}
+
+.subline {
+  color: lightgray;
+  font-size: 0.6rem;
 }
 </style>

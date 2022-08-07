@@ -38,6 +38,7 @@ export default {
 
 <style scoped>
 dialog {
+  position: fixed;
   z-index: 99;
   top: 100px;
   border-radius: 24px;
