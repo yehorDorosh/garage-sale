@@ -134,9 +134,12 @@ export default {
     color: lightgrey;
   }
 
+  .carusel__item {
+    padding: 3px;
+  }
+
   .sale-item__card {
-    box-shadow: 0 0 8px 1px lightgray;
-    border-radius: 8px;
+    box-shadow: 0 0 4px 1px lightgray;
     padding: 8px;
     box-sizing: border-box;
     height: 100%;
