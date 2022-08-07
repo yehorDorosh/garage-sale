@@ -5,7 +5,7 @@
         <img src="/favicon.ico">
       </router-link>
       <the-burger :external-state="menuIsShown" @open="burgerHandler" />
-      <div class="menu-container" :class="{ 'is-open': menuIsShown }" @click="menuHandler">
+      <div ref="menu" class="menu-container animation" :class="{ 'is-open': menuIsShown }" @click="menuHandler">
         <nav>
           <ul>
             <li>
@@ -66,6 +66,19 @@ export default {
     }
   },
 
+  mounted() {
+    let timer;
+    const menu = this.$refs.menu;
+    if (!menu) { return; }
+    window.addEventListener('resize', () => {
+      menu.classList.remove('animation');
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        menu.classList.add('animation');
+      }, 0);
+    });
+  },
+
   methods: {
     logout() {
       this.$router.push('/');
@@ -93,11 +106,19 @@ export default {
 <style scoped>
   header {
     box-shadow: 0 1px 8px 2px lightgray;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background-color: white;
   }
 
   .container {
     align-items: center;
     padding-block: 16px;
+  }
+
+  .animation {
+    transition: transform 300ms ease-out;
   }
 
   .menu-container {
@@ -107,7 +128,6 @@ export default {
     background-color: #fff;
     z-index: 10;
     transform: translateX(100vw);
-    transition: transform 300ms ease-out;
     display: flex;
     flex-direction: column;
   }
