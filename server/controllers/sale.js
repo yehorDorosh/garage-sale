@@ -16,6 +16,7 @@ exports.getSales = async(req, res, next) => {
     totalItems = totalItems ? totalItems.filter(sale => !!sale.products.length) : [];
 
     const sales = await Sale.find({ isPublished: true })
+      .sort({ updatedAt: 'desc' })
       .skip((currentPage - 1) * perPage)
       .limit(perPage)
       .populate('products', null, {

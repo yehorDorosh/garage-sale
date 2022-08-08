@@ -13,6 +13,7 @@ const ObjectId = mongodb.ObjectId;
 
 const Product = require('../models/product');
 const Sale = require('../models/sale');
+const User = require('../models/user');
 const io = require('../socket');
 const transporter = nodemailer.createTransport(
   sendgridTransport({
@@ -282,8 +283,9 @@ exports.saveBuyer = async(req, res, next) => {
         return;
       }
       product.isBooked = true;
+      const owner = await User.findById(product.owner);
       transporter.sendMail({
-        to: email,
+        to: owner.email,
         from: constants.SITE_EMAIL,
         subject: `${product.title} was booked`,
         html: `

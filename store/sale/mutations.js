@@ -3,9 +3,7 @@ const mutations = {
     payload.forEach((sale) => {
       sale.products = sale.products.sort((a, b) => (a.isBooked === b.isBooked) ? 0 : a.isBooked ? 1 : -1);
     });
-    state.sales = payload.sort((a, b) => {
-      return new Date(b.updatedAt) - new Date(a.updatedAt);
-    });
+    state.sales = payload;
   },
 
   setSalesAmount(state, payload) {
