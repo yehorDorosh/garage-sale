@@ -7,7 +7,7 @@
     "dev-debug": "node --inspect=0.0.0.0 node_modules/.bin/nuxt",
     "dev-p": "nodemon --inspect=0.0.0.0 -w server -w nuxt.config.js server/index.js",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "node server/index.js",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{css,scss,sass,html,vue}\" --ignore-path .gitignore",

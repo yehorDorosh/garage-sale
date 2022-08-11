@@ -1,6 +1,9 @@
 node_modules
 .git
 Dockerfile
+prod.dockerfile
+docker-compose.yaml
+docker-compose.prod.yml
 .editorconfig
 .gitignore
 README.md

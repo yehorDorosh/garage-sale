@@ -7,8 +7,8 @@
     <div v-show="opened" class="img-card">
       <close-cross @click="close" />
       <img
-        :src="images[currentImgIndex]?.path"
-        :alt="images[currentImgIndex]?.alt"
+        :src="images[currentImgIndex].path"
+        :alt="images[currentImgIndex].alt"
         @click="next"
       >
     </div>

@@ -1,6 +1,7 @@
 /* eslint no-console: "off" */
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -22,6 +23,8 @@ const accessLogStream = fs.createWriteStream(
   path.join(__dirname, 'error.log'),
   { flags: 'a' }
 );
+const privateKey = fs.readFileSync(path.join(__dirname, 'key.pem'));
+const certificate = fs.readFileSync(path.join(__dirname, 'cert.pem'));
 
 app.use(
   helmet({
@@ -65,7 +68,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose.connect(
-  `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/garage-sale?authSource=admin`
+  `${process.env.MONGO_INITDB_PROTOCOL}://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.MONGO_INITDB_CONNECTION}`
 )
   .then(() => {
     console.log('Connect to DB!!!');
@@ -79,11 +82,16 @@ module.exports = app;
 
 async function start() {
   const nuxt = await loadNuxt(isDev ? 'dev' : 'start');
+  let server;
   app.use(nuxt.render);
   if (isDev) {
     build(nuxt);
+    server = app.listen(port);
+  } else {
+    server = https
+      .createServer({ key: privateKey, cert: certificate }, app)
+      .listen(port);
   }
-  const server = app.listen(port);
   console.log('Server listening on localhost:' + port + '.');
 
   const io = require('./socket').init(server);

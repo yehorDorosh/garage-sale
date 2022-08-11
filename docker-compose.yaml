@@ -10,7 +10,9 @@ services:
     env_file:
       - ./env/db.env
   garage-sale:
-    build: ./
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '3000:3000'
       - '9229:9229'

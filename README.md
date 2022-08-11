@@ -54,53 +54,87 @@ $ npm run start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+## SSH connect
 
-## Special Directories
+Use CLI.
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+Navigate to directoy with key-pair file.
 
-### `assets`
+```bash
+# For first connection
+$ chmod 400 garage-sale-1.pem
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+# Connection
+$ ssh -i "garage-sale-1.pem" ec2-user@ec2-18-224-8-250.us-east-2.compute.amazonaws.com
+```
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+## Install docker on EC2
 
-### `components`
+```bash
+# Update packages on remote machine
+$ sudo yum update -y
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+# Docker install
+$ sudo amazon-linux-extras install docker
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
+# Start docker
+$ sudo service docker start
 
-### `layouts`
+# Check docker is installed. Should return help proposition.
+$ docker run
+```
 
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
+## Push image to Docker HUB
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+```bash
+# Rename image. Image name should start from account name in repo
+docker tag garage-sale:0.1.0 egordoroshv/garage-sale:0.1.0
 
+# Use docker account name and pass
+$ docker login
 
-### `pages`
+# Push to repo
+$ docker push egordoroshv/garage-sale:0.1.0
+```
 
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+## Run container on EC2
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+```bush
+sudo docker run -d --rm -p 80:80 --env-file .env egordoroshv/garage-sale:0.1.0
+```
 
-### `plugins`
+## Deploy to prod
 
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+### Locale
+```bash
+# Build image
+$ docker build -t egordoroshv/garage-sale:0.1.0 -f prod.dockerfile .
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+# Use docker account name and pass
+$ docker login
 
-### `static`
+# Push to repo
+$ docker push egordoroshv/garage-sale:0.1.0
+```
 
-This directory contains your static files. Each file inside this directory is mapped to `/`.
+### EC2
+#### Filezilla
+Protocol: SFTP
+HOST: 18.224.8.250
+Logon: Type: Key file
+User: ec2-user
+Key-file: use downloaded key file
 
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
+#### Copy .env file to EC2 /home/ec2-user
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
+#### Run docker container
+```bash
+# Forced pull image for update image
+$ sudo docker pull egordoroshv/garage-sale:0.1.0
 
-### `store`
+# Run container
+sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:0.1.0
 
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+# Stop container
+sudo docker stop garage-sale
+```

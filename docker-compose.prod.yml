@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  garage-sale:
+    build:
+      context: .
+      dockerfile: prod.dockerfile
+    ports:
+      - '80:80'
+    env_file:
+      - ./.env
+    command: npm start
+    stdin_open: true
+    tty: true
