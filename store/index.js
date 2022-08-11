@@ -1,6 +1,5 @@
 export const state = () => ({
-  hostName: 'localhost:3000',
-  protocol: 'http',
+  siteEmail: process.env.siteEmail,
   sessionBuyer: {
     name: '',
     email: '',
@@ -8,12 +7,8 @@ export const state = () => ({
 });
 
 export const getters = {
-  hostName(state) {
-    return state.hostName;
-  },
-
-  protocol(state) {
-    return state.protocol;
+  getSiteEmail(state) {
+    return state.siteEmail;
   },
 
   getLocale() {

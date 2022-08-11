@@ -187,7 +187,7 @@ export default {
     openSlide(i, e) {
       this.mouseUpT = new Date();
       const clickTime = this.mouseUpT - this.mouseDownT;
-      if (clickTime < 150) { this.$emit('open', i); }
+      if (clickTime < 200) { this.$emit('open', i); }
     },
     prev() {
       this.translate = this.translate.map(imgPos => imgPos + this.imageWidth);
