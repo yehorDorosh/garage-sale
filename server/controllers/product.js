@@ -100,7 +100,11 @@ exports.createProduct = async(req, res, next) => {
     for await (const img of images) {
       const filePath = path.join(...constants.ROOT_DIR_ARR, img.path);
       let buffer = await sharp(img.path)
-        .jpeg({ quality: 80, force: false })
+        .rotate()
+        .resize(null, 768, {
+          withoutEnlargement: true,
+        })
+        .jpeg({ quality: 50, force: false })
         .png({ compressionLevel: 8, force: false })
         .toBuffer();
       await sharp(buffer).toFile(filePath);
@@ -109,6 +113,7 @@ exports.createProduct = async(req, res, next) => {
       const cropFilePath = `${constants.IMAGE_DIR_PATH}/${req.userId}/${constants.IMAGE_PREVIEW_DIR}/${img.filename}`;
       fs.mkdirSync(previewDirPath, { recursive: true });
       buffer = await sharp(img.path)
+        .rotate()
         .resize(constants.IMG_WIDTH, constants.IMG_HEIGHT, {
           withoutEnlargement: false,
         })
