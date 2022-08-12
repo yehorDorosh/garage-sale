@@ -93,6 +93,10 @@ export default {
   background-origin: content-box;
 }
 
+.btn:hover {
+  background-color: white;
+}
+
 @media (min-width: 768px) {
   .btn {
     height: 64px;
@@ -102,9 +106,11 @@ export default {
 
 .prev-btn {
   left: 5vw;
+  transform: rotate(-180deg) translateY(50%) !important;
 }
 
 .next-btn {
   right: 5vw;
+  transform: rotate(0) translateY(-50%) !important;
 }
 </style>
