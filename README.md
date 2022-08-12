@@ -6,7 +6,7 @@
 
 ```bash
 # Star dev
-$ docker-compose up garage-sale
+$ docker-compose --env-file ./env/nuxt.env up garage-sale
 
 # Stop
 $ docker-compose down
@@ -28,6 +28,8 @@ MONGO_INITDB_ROOT_PASSWORD=secret
 Set env. vars for nuxt.env:
 MONGO_INITDB_ROOT_USERNAME=mongoadmin
 MONGO_INITDB_ROOT_PASSWORD=secret
+MONGO_INITDB_PROTOCOL=mongodb
+MONGO_INITDB_CONNECTION=mongodb:27017/garage-sale?authSource=admin
 FULL_HOST_NAME=http://localhost:3000
 NODE_ENV=dev
 PORT=3000
@@ -35,6 +37,7 @@ JWT_PASSWORD=secret
 SENDGRID_KEY=******** (generate your own key on https://sendgrid.com/. In is need for mail sending)
 MAX_UPLOAD_IMG_SIZE=4000000
 SUPPORTED_IMAGE_FORMATS=jpg,jpeg,png
+SITE_EMAIL=egor.dorosh.v@gmail.com
 ```
 
 ### For localhost (Without docker)
@@ -64,8 +67,8 @@ Navigate to directoy with key-pair file.
 # For first connection
 $ chmod 400 garage-sale-1.pem
 
-# Connection
-$ ssh -i "garage-sale-1.pem" ec2-user@ec2-18-224-8-250.us-east-2.compute.amazonaws.com
+# Connection. use current IP from EC2
+$ ssh -i "garage-sale-1.pem" ec2-user@ec2-0-0-0-0.us-east-2.compute.amazonaws.com
 ```
 
 ## Install docker on EC2
@@ -83,6 +86,7 @@ $ sudo service docker start
 # Check docker is installed. Should return help proposition.
 $ docker run
 
+# Install composer
 $ sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 
 $ sudo chmod +x /usr/local/bin/docker-compose
@@ -135,33 +139,38 @@ $ docker push egordoroshv/garage-sale:0.1.0
 
 ### EC2
 #### Filezilla
-Protocol: SFTP
-HOST: 18.224.8.250
-Logon: Type: Key file
-User: ec2-user
-Key-file: use downloaded key file
+- Protocol: SFTP
+- HOST: 18.224.8.250
+- Logon: Type: Key file
+- User: ec2-user
+- Key-file: use downloaded key file
 
-#### Copy .env file to EC2 /home/ec2-user
+**Copy .env file to EC2 /home/ec2-user**
+
+**Copy docker-compose.prod.yaml file to EC2 /home/ec2-user**
 
 #### Run docker container
 ```bash
-# Start docker
+# Start docker. If instance was shut down.
 $ sudo service docker start
 
-# Forced pull image for update image
+# Forced pull image for update image (docker or docker compose)
 $ sudo docker pull egordoroshv/garage-sale:0.1.0
 
-# Run container
+$ docker-compose -f docker-compose.prod.yaml pull garage-sale
+
+# Run container (docker or docker compose)
 sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:0.1.0
 
-docker-compose -f docker-compose.prod.yaml up garage-sale  -d
+docker-compose -f docker-compose.prod.yaml up garage-sale -d
 
-# Stop container
+# Stop container (docker or docker compose)
 sudo docker stop garage-sale
 
 docker-compose -f docker-compose.prod.yaml down
 ```
 
+### CLI in container
 ```bash
 $ sudo docker exec -it garage-sale /bin/bash
 
