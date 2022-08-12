@@ -1,7 +1,7 @@
 /* eslint no-console: "off" */
 const path = require('path');
 const fs = require('fs');
-const https = require('https');
+// const https = require('https');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -23,8 +23,8 @@ const accessLogStream = fs.createWriteStream(
   path.join(__dirname, 'log', 'error.log'),
   { flags: 'a' }
 );
-const privateKey = fs.readFileSync(path.join(__dirname, 'key.pem'));
-const certificate = fs.readFileSync(path.join(__dirname, 'cert.pem'));
+// const privateKey = fs.readFileSync(path.join(__dirname, 'key.pem'));
+// const certificate = fs.readFileSync(path.join(__dirname, 'cert.pem'));
 
 app.use(
   helmet({
