@@ -34,7 +34,6 @@
         class="carusel__item"
         :style="{transform: `translateX(${translate[i]}px)`}"
         @click="openSlide(i, $event)"
-        @touchstart="startClickTimer"
         @touchend="openSlide(i, $event)"
       >
         <img
@@ -74,11 +73,10 @@ export default {
       x0: null,
       x1: null,
       mouseDown: false,
-      mouseDownT: null,
-      mouseUpT: null,
       translate: [],
       translateBuffer: [],
       y0: null,
+      drag: false,
     };
   },
 
@@ -131,9 +129,6 @@ export default {
   },
 
   methods: {
-    startClickTimer() {
-      this.mouseDownT = new Date();
-    },
     getTouches(e) {
       if (e.touches) {
         const touch = e.touches;
@@ -144,12 +139,12 @@ export default {
     },
     touchStart(e) {
       e.preventDefault();
-      this.startClickTimer();
       this.mouseDown = true;
       const { x, y } = this.getTouches(e);
       this.x0 = x;
       this.y0 = y;
       this.translateBuffer = [...this.translate];
+      this.drag = false;
     },
     touchMove(e) {
       const { x, y, isMobile } = this.getTouches(e);
@@ -162,6 +157,7 @@ export default {
         window.scrollBy(0, shiftY);
         this.y0 -= shiftY;
       }
+      this.drag = true;
     },
     touchEnd(e) {
       this.mouseDown = false;
@@ -185,9 +181,8 @@ export default {
       this.translate = this.translate.map((_, i) => i * this.imageWidth);
     },
     openSlide(i, e) {
-      this.mouseUpT = new Date();
-      const clickTime = this.mouseUpT - this.mouseDownT;
-      if (clickTime < 200) { this.$emit('open', i); }
+      if (!this.drag) { this.$emit('open', i); }
+      this.drag = false;
     },
     prev() {
       this.translate = this.translate.map(imgPos => imgPos + this.imageWidth);
