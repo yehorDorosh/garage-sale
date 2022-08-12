@@ -1,10 +1,5 @@
 <template>
   <base-form :is-loading="isLoading" :no-submit-btn="true" class="card" @form-submit="saveProduct">
-    <ul v-if="!validationErrFromBE.isValid" class="err">
-      <li v-for="(msg, i) in validationErrFromBE.errMsg" :key="`${i}-${msg}`">
-        {{ msg }}
-      </li>
-    </ul>
     <base-input
       :id="titleInput.id"
       v-model="titleInput.value"
@@ -78,6 +73,11 @@
         Delete
       </base-button>
     </div>
+    <ul v-if="!validationErrFromBE.isValid" class="err">
+      <li v-for="(msg, i) in validationErrFromBE.errMsg" :key="`${i}-${msg}`">
+        {{ msg }}
+      </li>
+    </ul>
   </base-form>
 </template>
 
@@ -264,6 +264,7 @@ export default {
     },
 
     async saveProduct() {
+      this.imgInputs.value = this.imgInputs.value.filter(imgObj => !!imgObj.path || !!imgObj.localpath);
       this.validationErrFromBE.errMsg = [];
       this.filedValidation(this.titleInput.value, this.titleInput, true);
       this.filedValidation(this.descriptionInput.value, this.descriptionInput, true);
