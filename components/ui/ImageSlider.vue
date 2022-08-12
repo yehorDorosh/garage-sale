@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       opened: false,
-      currentImgIndex: null,
+      currentImgIndex: 0,
     };
   },
 
