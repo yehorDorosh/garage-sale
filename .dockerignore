@@ -7,3 +7,5 @@ docker-compose.prod.yml
 .editorconfig
 .gitignore
 README.md
+/server/log/*
+/server/images/*

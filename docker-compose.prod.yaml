@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  garage-sale:
+    image: egordoroshv/garage-sale:0.1.0
+    ports:
+      - '80:80'
+    volumes:
+      - log:/app/server/log
+      - images:/app/server/images
+    env_file:
+      - ./.env
+
+volumes:
+  log:
+  images:

@@ -20,7 +20,7 @@ const saleRoutes = require('./routes/sale');
 const port = process.env.PORT || 3000;
 const isDev = process.env.NODE_ENV !== 'prod';
 const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, 'error.log'),
+  path.join(__dirname, 'log', 'error.log'),
   { flags: 'a' }
 );
 const privateKey = fs.readFileSync(path.join(__dirname, 'key.pem'));
@@ -28,11 +28,15 @@ const certificate = fs.readFileSync(path.join(__dirname, 'cert.pem'));
 
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        'script-src': ["'self'", "'unsafe-inline'"]
-      }
-    },
+    contentSecurityPolicy: false,
+    // contentSecurityPolicy: {
+    //   directives: {
+    //     'script-src': ["'self'", "'unsafe-inline'"]
+    //   }
+    // },
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: false,
+    originAgentCluster: false,
   })
 );
 app.use(morgan('combined', {
@@ -88,9 +92,10 @@ async function start() {
     build(nuxt);
     server = app.listen(port);
   } else {
-    server = https
-      .createServer({ key: privateKey, cert: certificate }, app)
-      .listen(port);
+    server = app.listen(port);
+    // server = https
+    //   .createServer({ key: privateKey, cert: certificate }, app)
+    //   .listen(port);
   }
   console.log('Server listening on localhost:' + port + '.');
 

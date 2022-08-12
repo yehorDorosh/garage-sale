@@ -82,6 +82,22 @@ $ sudo service docker start
 
 # Check docker is installed. Should return help proposition.
 $ docker run
+
+$ sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+
+$ sudo chmod +x /usr/local/bin/docker-compose
+
+$ docker-compose version
+
+# If docker compose Got permission denied
+$ sudo groupadd docker
+
+$ sudo usermod -aG docker $USER
+
+$ newgrp docker
+
+# Reboot if still got error
+$ reboot
 ```
 
 ## Push image to Docker HUB
@@ -129,12 +145,25 @@ Key-file: use downloaded key file
 
 #### Run docker container
 ```bash
+# Start docker
+$ sudo service docker start
+
 # Forced pull image for update image
 $ sudo docker pull egordoroshv/garage-sale:0.1.0
 
 # Run container
 sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:0.1.0
 
+docker-compose -f docker-compose.prod.yaml up garage-sale  -d
+
 # Stop container
 sudo docker stop garage-sale
+
+docker-compose -f docker-compose.prod.yaml down
+```
+
+```bash
+$ sudo docker exec -it garage-sale /bin/bash
+
+$ sudo docker exec -it ec2-user-garage-sale-1 /bin/bash
 ```
