@@ -85,6 +85,19 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   z-index: 100;
+  height: 48px;
+  width: 48px;
+  border: solid 1px var(--accent) !important;
+  padding: 8px !important;
+  border-radius: 8px;
+  background-origin: content-box;
+}
+
+@media (min-width: 768px) {
+  .btn {
+    height: 64px;
+    width: 64px;
+  }
 }
 
 .prev-btn {
