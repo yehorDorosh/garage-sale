@@ -63,6 +63,7 @@ export default {
       translate: [],
       translateBuffer: [],
       y0: null,
+      yDrug0: null,
       drag: false,
     };
   },
@@ -141,6 +142,7 @@ export default {
       const { x, y } = this.getTouches(e);
       this.x0 = x;
       this.y0 = y;
+      this.yDrug0 = y;
       this.translateBuffer = [...this.translate];
       this.drag = false;
     },
@@ -152,10 +154,13 @@ export default {
       }
       if (isMobile) {
         const shiftY = (y - this.y0) * -1;
+        const swipe = Math.abs(y - this.yDrug0) + Math.abs(x - this.x0);
         window.scrollBy(0, shiftY);
         this.y0 -= shiftY;
+        this.drag = swipe > 10;
+      } else {
+        this.drag = true;
       }
-      this.drag = true;
     },
     touchEnd(e) {
       this.mouseDown = false;
