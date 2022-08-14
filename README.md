@@ -68,7 +68,7 @@ Navigate to directoy with key-pair file.
 $ chmod 400 garage-sale-1.pem
 
 # Connection. use current IP from EC2
-$ ssh -i "garage-sale-1.pem" ec2-user@ec2-0-0-0-0.us-east-2.compute.amazonaws.com
+$ ssh -i "garage-sale.pem" ec2-user@ec2-3-9-113-229.eu-west-2.compute.amazonaws.com
 ```
 
 ## Install docker on EC2
@@ -83,8 +83,8 @@ $ sudo amazon-linux-extras install docker
 # Start docker
 $ sudo service docker start
 
-# Check docker is installed. Should return help proposition.
-$ docker run
+# Check docker is installed.
+$ docker --version
 
 # Install composer
 $ sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
@@ -140,7 +140,7 @@ $ docker push egordoroshv/garage-sale:0.1.0
 ### EC2
 #### Filezilla
 - Protocol: SFTP
-- HOST: 18.224.8.250
+- HOST: 3.9.113.229
 - Logon: Type: Key file
 - User: ec2-user
 - Key-file: use downloaded key file
