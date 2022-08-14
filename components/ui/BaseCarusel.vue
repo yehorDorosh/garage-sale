@@ -190,7 +190,6 @@ export default {
       this.sliderScrollLimit();
     },
     next() {
-      console.log(this.translate);
       this.translate = this.translate.map(imgPos => imgPos - this.imageWidth);
       this.sliderScrollLimit();
     },
