@@ -20,6 +20,12 @@
                 <div class="sale-item__img-container">
                   <img :src="product.images[0].preview" :alt="product.images[0].alt" class="sale-item__img">
                 </div>
+                <p v-if="product.price === 0" class="sale-item__product-price sale-item__product-price--free">
+                  It's FREE!!!
+                </p>
+                <p v-else class="sale-item__product-price">
+                  {{ new Intl.NumberFormat($store.getters.getLocale, { style: 'currency', currency: 'EUR' }).format(product.price) }}
+                </p>
               </div>
             </div>
           </base-carusel>
@@ -160,9 +166,20 @@ export default {
 
   .sale-item__product-title {
     margin: 0;
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     text-align: center;
     font-weight: 400;
+  }
+
+  .sale-item__product-price {
+    padding-top: 4px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 0.6rem;
+  }
+
+  .sale-item__product-price--free {
+    color: var(--accent);
   }
 
   .view-more {

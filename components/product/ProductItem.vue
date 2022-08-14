@@ -12,7 +12,7 @@
           It's FREE!!!
         </p>
         <p v-else class="prod__price">
-          Price: {{ product.price }}€
+          Price: {{ new Intl.NumberFormat($store.getters.getLocale, { style: 'currency', currency: 'EUR' }).format(product.price) }}
         </p>
       </div>
       <p v-if="isBooked">
