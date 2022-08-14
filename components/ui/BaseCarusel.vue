@@ -14,7 +14,6 @@
       class="btn prev-btn"
       mode="arrow left"
       @click="prev"
-      @touchend="prev"
     />
     <div
       ref="container"
@@ -34,7 +33,6 @@
       class="btn next-btn"
       mode="arrow right"
       @click="next"
-      @touchend="next"
     />
   </div>
 </template>
@@ -192,6 +190,7 @@ export default {
       this.sliderScrollLimit();
     },
     next() {
+      console.log(this.translate);
       this.translate = this.translate.map(imgPos => imgPos - this.imageWidth);
       this.sliderScrollLimit();
     },

@@ -5,7 +5,6 @@
       class="btn prev-btn"
       mode="arrow left"
       @click="prev"
-      @touchend="prev"
     />
     <div
       ref="container"
@@ -48,7 +47,6 @@
       class="btn next-btn"
       mode="arrow right"
       @click="next"
-      @touchend="next"
     />
   </div>
 </template>
