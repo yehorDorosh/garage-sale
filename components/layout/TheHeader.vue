@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="page-header">
     <div class="wrap container">
       <router-link to="/">
         <img src="/favicon.ico">

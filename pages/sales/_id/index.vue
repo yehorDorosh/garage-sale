@@ -45,6 +45,8 @@ export default {
     return salesIDs.includes(data.params.id);
   },
 
+  scrollToTop: false,
+
   data() {
     return {
 
