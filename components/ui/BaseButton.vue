@@ -98,7 +98,7 @@ export default {
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
-    background-color: transparent;
+    background-color: rgb(255 255 255 / 50%);
     padding: 0;
     border: none;
     min-width: 8px;
