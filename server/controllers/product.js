@@ -49,9 +49,9 @@ exports.createProduct = async(req, res, next) => {
     return;
   }
 
-  const title = req.body.title;
-  const description = req.body.description;
-  const price = req.body.price;
+  const title = req.body.title?.trim();
+  const description = req.body.description?.trim();
+  const price = req.body.price?.trim();
   const isPublished = req.body.isPublished;
   const owner = req.userId;
   const prodId = req.body.id;
@@ -265,8 +265,8 @@ exports.saveBuyer = async(req, res, next) => {
 
   const saleId = req.body.saleId;
   const productId = req.body.productId;
-  const name = req.body.name;
-  const email = req.body.email;
+  const name = req.body.name?.trim();
+  const email = req.body.email?.trim();
 
   try {
     const product = await Product.findById(productId);

@@ -20,9 +20,9 @@ exports.signup = async(req, res, next) => {
     return;
   }
 
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = req.body.password;
+  const name = req.body.name?.trim();
+  const email = req.body.email?.trim();
+  const password = req.body.password?.trim();
 
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -153,7 +153,7 @@ exports.updUserData = async(req, res, next) => {
       return;
     }
 
-    const newName = req.body.name;
+    const newName = req.body.name?.trim();
     user.name = newName;
 
     await user.save();

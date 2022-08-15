@@ -2,7 +2,7 @@
   <base-form :is-loading="isLoading" :no-submit-btn="true" class="card" @form-submit="saveProduct">
     <base-input
       :id="titleInput.id"
-      v-model="titleInput.value"
+      v-model.trim="titleInput.value"
       label="Product name"
       :is-valid="titleInput.isValid"
       :err-msg="titleInput.errMsg"
@@ -11,7 +11,7 @@
     />
     <base-input
       :id="descriptionInput.id"
-      v-model="descriptionInput.value"
+      v-model.trim="descriptionInput.value"
       :text-area="true"
       label="Product description"
       :is-valid="descriptionInput.isValid"
@@ -21,7 +21,7 @@
     />
     <base-input
       :id="priceInput.id"
-      v-model="priceInput.value"
+      v-model.trim="priceInput.value"
       label="Product price"
       type="number"
       step="0.01"

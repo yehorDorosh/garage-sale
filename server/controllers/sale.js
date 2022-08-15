@@ -71,7 +71,7 @@ exports.createSale = async(req, res, next) => {
     const owner = req.userId;
     const saleIsExist = await Sale.countDocuments({ id: owner });
     let sale;
-    const description = req.body.description;
+    const description = req.body.description?.trim();
     const isPublished = req.body.isPublished;
 
     if (saleIsExist === 0) {

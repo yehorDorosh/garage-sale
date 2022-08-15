@@ -4,7 +4,7 @@
       <h3>Sale configuration</h3>
       <base-input
         :id="titleInput.id"
-        v-model="titleInput.value"
+        v-model.trim="titleInput.value"
         label="Sale name/short description"
         :is-valid="titleInput.isValid"
         :err-msg="titleInput.errMsg"

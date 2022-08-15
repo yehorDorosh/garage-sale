@@ -2,7 +2,7 @@
   <base-form :is-loading="isLoading" :no-submit-btn="true" @form-submit="book">
     <base-input
       :id="nameInput.id"
-      v-model="nameInput.value"
+      v-model.trim="nameInput.value"
       label="Name"
       :is-valid="nameInput.isValid"
       :err-msg="nameInput.errMsg"
@@ -11,7 +11,7 @@
     />
     <base-input
       :id="emailInput.id"
-      v-model="emailInput.value"
+      v-model.trim="emailInput.value"
       label="email"
       :is-valid="emailInput.isValid"
       :err-msg="emailInput.errMsg"
