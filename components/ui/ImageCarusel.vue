@@ -255,7 +255,7 @@ export default {
   padding: 8px;
   box-sizing: border-box;
   object-fit: cover;
-  box-shadow: 0 0 8px 1px lightgray;
+  box-shadow: 0 0 8px 1px var(--light);
   width: 100%;
 }
 
@@ -265,7 +265,7 @@ export default {
 
 .btn:hover {
   border-radius: 8px;
-  box-shadow: 0 0 8px 1px lightgray;
+  box-shadow: 0 0 8px 1px var(--light);
 }
 
 .hidden {

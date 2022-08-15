@@ -211,7 +211,7 @@ export default {
     padding: 8px 4px;
     margin-block: 4px;
     overflow: hidden;
-    border: solid 1px lightgray;
+    border: solid 1px var(--light);
   }
 
   @media (min-width: 768px) {
@@ -222,7 +222,7 @@ export default {
   }
 
   .item:hover {
-    box-shadow: 0 0 2px 1px lightgray;
+    box-shadow: 0 0 2px 1px var(--light);
   }
 
   .drag {
@@ -231,7 +231,7 @@ export default {
 
   .over {
     opacity: 0.5;
-    border-top: 1px dashed lightgray;
+    border-top: 1px dashed var(--light);
   }
 
   .item .row {
@@ -270,10 +270,10 @@ export default {
     font-size: 0.8rem;
     cursor: pointer;
     padding: 8px;
-    border: 1px solid green;
+    border: 1px solid var(--accent-light);
     border-radius: 32px;
     color: white;
-    background-color: green;
+    background-color: var(--accent-light);
     margin-bottom: 16px;
     display: inline-block;
     white-space: nowrap;
@@ -293,7 +293,7 @@ export default {
 
   .err {
     font-size: 0.5rem;
-    color: red;
+    color: var(--error);
     margin-top: 8px;
     margin-bottom: 0;
   }

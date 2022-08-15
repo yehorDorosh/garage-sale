@@ -2,20 +2,33 @@ html {
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   line-height: 1.2;
+  color: var(--txt);
 }
 
 :root {
-  --accent: #da600f;
+  --accent: #7952B3;
+  --accent-light: #c5a4f6;
   --accent-txt: white;
-  --accent-hover: #f08c53;
-  --accent-hover-txt: black;
+  --accent-hover: #614092;
+  --accent-hover-txt: white;
+  --txt: black;
   --spinner: grey;
   --spinner-dropdown: white;
+  --bg: #f3f5f7;
+  --bg-drop: black;
+  --bg-header: white;
+  --bg-mobile-menu: white;
+  --bg-card: white;
+  --cross: #333;
+  --danger: #F01F4B;
+  --error: red;
+  --light: lightgrey;
   --gap: 16px;
 }
 
 body {
   margin: 0;
+  background-color: var(--bg);
 }
 
 .wrap {
@@ -93,17 +106,17 @@ h5 {
 
 .card {
   border-radius: 16px;
-  box-shadow: 0 0 5px 2px lightgray;
+  box-shadow: 0 0 5px 2px var(--light);
   padding: 16px;
   margin-bottom: 16px;
-  background-color: white;
+  background-color: var(--bg-card);
 }
 
 .backdrop {
   position: fixed;
   inset: 0;
   z-index: 98;
-  background-color: black;
+  background-color: var(--bg-drop);
   opacity: 0.6;
 }
 

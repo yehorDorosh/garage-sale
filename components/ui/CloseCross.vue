@@ -31,7 +31,7 @@
   content: " ";
   height: 17px;
   width: 2px;
-  background-color: #333;
+  background-color: var(--cross);
 }
 
 .cross::before {

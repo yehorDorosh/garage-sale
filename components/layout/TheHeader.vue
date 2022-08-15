@@ -105,11 +105,11 @@ export default {
 
 <style scoped>
   header {
-    box-shadow: 0 1px 8px 2px lightgray;
+    box-shadow: 0 1px 8px 2px var(--light);
     position: sticky;
     top: 0;
     z-index: 5;
-    background-color: white;
+    background-color: var(--bg-header);
   }
 
   .container {
@@ -125,7 +125,7 @@ export default {
     position: fixed;
     inset: 0;
     top: 85px;
-    background-color: #fff;
+    background-color: var(--bg-mobile-menu);
     z-index: 10;
     transform: translateX(100vw);
     display: flex;
@@ -169,7 +169,7 @@ export default {
 
   nav li {
     padding: 8px;
-    border-bottom: solid 1px lightgray;
+    border-bottom: solid 1px var(--light);
   }
 
   @media (min-width: 1024px) {

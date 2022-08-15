@@ -330,13 +330,13 @@ export default {
 <style scoped>
 .err {
   font-size: 0.5rem;
-  color: red;
+  color: var(--error);
   margin-top: 8px;
   margin-bottom: 0;
 }
 
 .subline {
-  color: lightgray;
+  color: var(--light);
   font-size: 0.6rem;
 }
 </style>

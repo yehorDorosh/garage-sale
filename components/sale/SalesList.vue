@@ -145,7 +145,7 @@ export default {
   }
 
   .sale-item__card {
-    box-shadow: 0 0 4px 1px lightgray;
+    box-shadow: 0 0 4px 1px var(--light);
     padding: 8px;
     box-sizing: border-box;
     height: 100%;

@@ -29,12 +29,12 @@ export default {
 <style scoped>
 .footer-inner {
   padding: 64px 0;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid var(--light);
   font-size: 0.8rem;
-  color: lightgray;
+  color: var(--light);
 }
 
 address a {
-  color: lightgray;
+  color: var(--light);
 }
 </style>

@@ -58,7 +58,7 @@ dialog {
   position: fixed;
   inset: 0;
   z-index: 98;
-  background-color: black;
+  background-color: var(--bg-drop);
   opacity: 0.6;
 }
 
@@ -108,7 +108,7 @@ dialog {
   content: " ";
   height: 17px;
   width: 2px;
-  background-color: #333;
+  background-color: var(--cross);
 }
 
 .cross::before {

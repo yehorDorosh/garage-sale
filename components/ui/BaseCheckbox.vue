@@ -60,13 +60,13 @@ export default {
   }
 
   input.invalid {
-    border-color: red;
+    border-color: var(--error);
     outline-color: transparent;
   }
 
   .err {
     font-size: 0.5rem;
-    color: red;
+    color: var(--error);
     margin-top: 8px;
     margin-bottom: 0;
   }

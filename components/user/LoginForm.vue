@@ -125,7 +125,7 @@ form {
 }
 
 .error-txt {
-  color: red;
+  color: var(--error);
   font-size: 0.5rem;
   margin-block: 0;
 }
