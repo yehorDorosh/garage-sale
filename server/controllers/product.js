@@ -297,6 +297,7 @@ exports.saveBuyer = async(req, res, next) => {
           <h1>${product.title} was booked.</h1>
           <p>${name} has booked the ${product.title}.</p>
           <p>Contact with ${name} by email: <a href="mailto:${email}">${email}</a></p>
+          <p><a href="${process.env.FULL_HOST_NAME}/sale-editor">Your Grage sale</a></p>
         `,
       });
     } else {
