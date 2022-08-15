@@ -3,13 +3,18 @@ export default {
   head: {
     title: 'Garage sale',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'en',
+      prefix: 'og: https://ogp.me/ns#',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'Garage sale. Sale and buy.' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
+      { property: 'og:title', content: 'Garage sale' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:image', content: `${process.env.FULL_HOST_NAME}/opengraph.jpeg` },
+      { property: 'og:url', content: `${process.env.FULL_HOST_NAME}` },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
