@@ -92,3 +92,5 @@ sw.*
 /env
 /server/images/*
 !/server/images/.gitkeep
+/server/.well-known/pki-validation/*
+!/server/.well-known/pki-validation/.gitkeep

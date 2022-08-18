@@ -47,6 +47,7 @@ app.use(morgan('combined', {
 app.use(bodyParser.json());
 
 app.use('/server/images', express.static(path.join(__dirname, 'images')));
+app.use('/.well-known/pki-validation', express.static(path.join(__dirname, '.well-known', 'pki-validation')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', process.env.FULL_HOST_NAME);
