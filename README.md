@@ -37,7 +37,8 @@ JWT_PASSWORD=secret
 SENDGRID_KEY=******** (generate your own key on https://sendgrid.com/. In is need for mail sending)
 MAX_UPLOAD_IMG_SIZE=4000000
 SUPPORTED_IMAGE_FORMATS=jpg,jpeg,png
-SITE_EMAIL=egor.dorosh.v@gmail.com
+SITE_EMAIL=noreply@em5894.garage-sale.me
+SITE_FB_EMAIL=egor.dorosh.v@gmail.com
 NODE_EXTRA_CA_CERTS=/app/server/ssl/intermediate.pem
 ```
 
