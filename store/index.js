@@ -1,5 +1,6 @@
 export const state = () => ({
   siteEmail: process.env.siteEmail,
+  siteFBEmail: process.env.siteFBEmail,
   sessionBuyer: {
     name: '',
     email: '',
@@ -9,6 +10,10 @@ export const state = () => ({
 export const getters = {
   getSiteEmail(state) {
     return state.siteEmail;
+  },
+
+  getSiteFBEmail(state) {
+    return state.siteFBEmail;
   },
 
   getLocale() {

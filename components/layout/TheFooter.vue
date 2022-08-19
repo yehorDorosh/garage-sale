@@ -6,7 +6,9 @@
           © {{ year }}, Garage sale
         </p>
         <address>
-          Email: <a :href="`mailto:${email}`">{{ email }}</a>
+          Email: <a :href="`mailto:${email}`">{{ email }}</a><br>
+          City: Mykolaiv,<br>
+          Country: Ukraine
         </address>
       </div>
     </div>
@@ -20,7 +22,7 @@ export default {
       return new Date().getFullYear();
     },
     email() {
-      return this.$store.getters.getSiteEmail;
+      return this.$store.getters.getSiteFBEmail;
     }
   }
 };

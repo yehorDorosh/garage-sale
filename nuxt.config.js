@@ -71,6 +71,7 @@ export default {
     maxUploadImgSize: process.env.MAX_UPLOAD_IMG_SIZE || 4000000,
     supportedImageFormats: process.env.SUPPORTED_IMAGE_FORMATS?.split(',') || 'jpg,jpeg,png',
     siteEmail: process.env.SITE_EMAIL,
+    siteFBEmail: process.env.SITE_FB_EMAIL,
   },
 
   telemetry: false,
