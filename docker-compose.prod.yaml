@@ -1,9 +1,10 @@
 version: '3.8'
 services:
   garage-sale:
-    image: egordoroshv/garage-sale:0.1.0
+    image: egordoroshv/garage-sale:0.2.0
     ports:
       - '80:80'
+      - '443:443'
     volumes:
       - log:/app/server/log
       - images:/app/server/images

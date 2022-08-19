@@ -38,6 +38,7 @@ SENDGRID_KEY=******** (generate your own key on https://sendgrid.com/. In is nee
 MAX_UPLOAD_IMG_SIZE=4000000
 SUPPORTED_IMAGE_FORMATS=jpg,jpeg,png
 SITE_EMAIL=egor.dorosh.v@gmail.com
+NODE_EXTRA_CA_CERTS=/app/server/ssl/intermediate.pem
 ```
 
 ### For localhost (Without docker)
@@ -128,13 +129,13 @@ sudo docker run -d --rm -p 80:80 --env-file .env egordoroshv/garage-sale:0.1.0
 ### Locale
 ```bash
 # Build image
-$ docker build -t egordoroshv/garage-sale:0.1.0 -f prod.dockerfile .
+$ docker build -t egordoroshv/garage-sale:0.2.0 -f prod.dockerfile .
 
 # Use docker account name and pass
 $ docker login
 
 # Push to repo
-$ docker push egordoroshv/garage-sale:0.1.0
+$ docker push egordoroshv/garage-sale:0.2.0
 ```
 
 ### EC2
@@ -155,12 +156,12 @@ $ docker push egordoroshv/garage-sale:0.1.0
 $ sudo service docker start
 
 # Forced pull image for update image (docker or docker compose)
-$ sudo docker pull egordoroshv/garage-sale:0.1.0
+$ sudo docker pull egordoroshv/garage-sale:0.2.0
 
 $ docker-compose -f docker-compose.prod.yaml pull garage-sale
 
 # Run container (docker or docker compose)
-sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:0.1.0
+sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:0.2.0
 
 docker-compose -f docker-compose.prod.yaml up garage-sale -d
 

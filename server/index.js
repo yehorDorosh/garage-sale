@@ -1,7 +1,7 @@
 /* eslint no-console: "off" */
 const path = require('path');
 const fs = require('fs');
-// const https = require('https');
+const https = require('https');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -23,22 +23,21 @@ const accessLogStream = fs.createWriteStream(
   path.join(__dirname, 'log', 'error.log'),
   { flags: 'a' }
 );
-// const privateKey = fs.readFileSync(path.join(__dirname, 'key.pem'));
-// const certificate = fs.readFileSync(path.join(__dirname, 'cert.pem'));
+const privateKey = fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem'));
+const certificate = fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'));
 
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-    // contentSecurityPolicy: {
-    //   directives: {
-    //     'script-src': ["'self'", "'unsafe-inline'"]
-    //   }
-    // },
-    crossOriginEmbedderPolicy: false,
-    crossOriginOpenerPolicy: false,
-    originAgentCluster: false,
-  })
-);
+if (!isDev) {
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          'script-src': ["'self'", "'unsafe-inline'"]
+        }
+      },
+    })
+  );
+}
+
 app.use(morgan('combined', {
   stream: accessLogStream,
   skip(req, res) { return res.statusCode < 400; }
@@ -93,10 +92,9 @@ async function start() {
     build(nuxt);
     server = app.listen(port);
   } else {
-    server = app.listen(port);
-    // server = https
-    //   .createServer({ key: privateKey, cert: certificate }, app)
-    //   .listen(port);
+    server = https
+      .createServer({ key: privateKey, cert: certificate }, app)
+      .listen(port);
   }
   console.log('Server listening on localhost:' + port + '.');
 
