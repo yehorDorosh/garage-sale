@@ -3,7 +3,7 @@
     <base-input
       :id="nameInput.id"
       v-model.trim="nameInput.value"
-      label="Name"
+      label="Full name *"
       :is-valid="nameInput.isValid"
       :err-msg="nameInput.errMsg"
       @input="filedValidation($event, nameInput, false)"
@@ -12,7 +12,7 @@
     <base-input
       :id="emailInput.id"
       v-model.trim="emailInput.value"
-      label="email"
+      label="email *"
       :is-valid="emailInput.isValid"
       :err-msg="emailInput.errMsg"
       @input="filedValidation($event, emailInput, false, emailValidator)"
