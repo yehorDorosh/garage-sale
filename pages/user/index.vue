@@ -87,14 +87,14 @@ export default {
         value: this.$store.getters['user/getUser'].name,
         isValid: null,
         errMsg: 'This field shouldn\'t be empty.',
-        touched: false,
+        isTouched: false,
       },
       phone: {
         id: 'user-phone',
         value: this.$store.getters['user/getUser'].phone?.number || '',
         isValid: null,
         errMsg: 'Please enter a valid phone.',
-        touched: false,
+        isTouched: false,
       },
       whatsApp: {
         value: this.$store.getters['user/getUserPhone']?.whatsApp ?? false,

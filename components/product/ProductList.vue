@@ -8,6 +8,7 @@
         :product="product"
         :buyer-name="sessionBuyer.name"
         :buyer-email="sessionBuyer.email"
+        :buyer-phone="sessionBuyer.phone"
       />
     </ul>
   </section>

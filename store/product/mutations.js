@@ -27,6 +27,7 @@ const mutations = {
     if (!product) { return; }
     product.buyer.name = buyer.name;
     product.buyer.email = buyer.email;
+    product.buyer.phone = buyer.phone;
     product.isBooked = !!buyer.name && !!buyer.email;
   },
 

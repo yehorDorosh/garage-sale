@@ -55,6 +55,10 @@ export default {
       type: String,
       required: true,
     },
+    buyerPhone: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   computed: {
@@ -73,6 +77,7 @@ export default {
         productId: this.product._id,
         buyerName: this.buyerName,
         buyerEmail: this.buyerEmail,
+        buyerPhone: this.buyerPhone,
       });
       this.$store.commit('dialog/setBuyerFormIsShown', true);
     }

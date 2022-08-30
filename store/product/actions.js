@@ -95,6 +95,7 @@ const actions = {
         context.commit('setSessionBuyer', data.buyer, { root: true });
         localStorage.setItem('buyer-name', data.buyer.name);
         localStorage.setItem('buyer-email', data.buyer.email);
+        localStorage.setItem('buyer-phone', JSON.stringify(data.buyer.phone));
       }
       return data;
     } catch (error) {
@@ -105,6 +106,7 @@ const actions = {
   async clearBuyer(context, buyer) {
     buyer.name = '';
     buyer.email = '';
+    buyer.phone = {};
 
     try {
       const response = await fetch(`${process.env.fullHostName}/buyer`, {
@@ -121,6 +123,7 @@ const actions = {
       if (status === 200 || status === 201) {
         data.buyer.name = '';
         data.buyer.email = '';
+        data.buyer.phone = {};
         context.commit('product/setBuyer', data.buyer, { root: true });
       }
     } catch (error) {

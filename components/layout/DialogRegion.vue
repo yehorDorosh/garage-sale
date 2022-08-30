@@ -22,6 +22,7 @@
         :product-id="buyerFormData.productId"
         :buyer-name="buyerFormData.buyerName"
         :buyer-email="buyerFormData.buyerEmail"
+        :buyer-phone="buyerFormData.buyerPhone"
       />
     </base-dialog>
     <base-dialog :show="deleteUserWarning" :cross="true" @close="$store.commit('dialog/setDeleteUserWarning', false)">

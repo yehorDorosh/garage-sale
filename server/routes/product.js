@@ -39,6 +39,11 @@ router.post('/buyer', [
     .not()
     .isEmpty()
     .withMessage('The field Name shouldn\'t be empty.'),
+  body('phone.number')
+    .if(body('phone.number').notEmpty())
+    .trim()
+    .isMobilePhone()
+    .withMessage('Invalid phone number'),
 ], productController.saveBuyer);
 
 router.delete('/buyer', isAuth, productController.saveBuyer);

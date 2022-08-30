@@ -267,6 +267,7 @@ exports.saveBuyer = async(req, res, next) => {
   const productId = req.body.productId;
   const name = req.body.name?.trim();
   const email = req.body.email?.trim();
+  const phone = req.body.phone || {};
 
   try {
     const product = await Product.findById(productId);
@@ -279,6 +280,7 @@ exports.saveBuyer = async(req, res, next) => {
 
     product.buyer.name = name;
     product.buyer.email = email;
+    product.buyer.phone = phone;
     if (name && email) {
       if (product.isBooked) {
         res.status(202).json({
@@ -297,6 +299,7 @@ exports.saveBuyer = async(req, res, next) => {
           <h1>${product.title} was booked.</h1>
           <p>${name} has booked the ${product.title}.</p>
           <p>Contact with ${name} by email: <a href="mailto:${email}">${email}</a></p>
+          <p>Contact with ${name} by phone: <a href="tel:${phone.number}">${phone.number}</a></p>
           <p><a href="${process.env.FULL_HOST_NAME}/sale-editor">Your Grage sale</a></p>
         `,
       });
@@ -315,6 +318,7 @@ exports.saveBuyer = async(req, res, next) => {
       productId,
       name,
       email,
+      phone,
     };
     io.getIO().emit('booking', buyer);
 

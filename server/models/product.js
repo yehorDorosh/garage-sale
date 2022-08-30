@@ -38,6 +38,12 @@ const productSchema = new Schema({
   buyer: {
     name: String,
     email: String,
+    phone: {
+      number: String,
+      whatsApp: Boolean,
+      viber: Boolean,
+      telegram: Boolean,
+    }
   }
 });
 

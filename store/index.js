@@ -4,6 +4,12 @@ export const state = () => ({
   sessionBuyer: {
     name: '',
     email: '',
+    phone: {
+      number: '',
+      whatsApp: false,
+      viber: false,
+      telegram: false
+    }
   },
 });
 
@@ -26,7 +32,8 @@ export const getters = {
     if (process.client && !state.sessionBuyer.name && !state.sessionBuyer.email) {
       const name = localStorage.getItem('buyer-name');
       const email = localStorage.getItem('buyer-email');
-      if (name && email) { return { name, email }; }
+      const phone = localStorage.getItem('buyer-phone');
+      if (name && email) { return { name, email, phone: JSON.parse(phone) }; }
     }
     return state.sessionBuyer;
   },
@@ -36,6 +43,7 @@ export const mutations = {
   setSessionBuyer(state, payload) {
     state.sessionBuyer.name = payload.name;
     state.sessionBuyer.email = payload.email;
+    state.sessionBuyer.phone = payload.phone;
   },
 };
 

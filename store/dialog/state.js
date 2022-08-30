@@ -10,6 +10,7 @@ const state = () => ({
       productId: '',
       buyerName: '',
       buyerEmail: '',
+      buyerPhone: {},
     }
   },
   deleteUserWarning: false,

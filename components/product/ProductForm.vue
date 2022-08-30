@@ -51,7 +51,13 @@
         <b>{{ currentBuyer.name }}</b> booked this product.
       </p>
       <p>
-        {{ currentBuyer.name }} email:  <b>{{ currentBuyer.email }}</b>
+        email:  <b><a :href="`mailto:${currentBuyer.email}`">{{ currentBuyer.email }}</a></b>
+      </p>
+      <p v-if="currentBuyer.phone && currentBuyer.phone.number">
+        phone:  <b><a :href="`tel:${currentBuyer.phone.number}`">{{ currentBuyer.phone.number }}</a></b>
+        <span v-if="currentBuyer.phone.whatsApp" class="ico ico--whatsapp" />
+        <span v-if="currentBuyer.phone.viber" class="ico ico--viber" />
+        <span v-if="currentBuyer.phone.telegram" class="ico ico--telegram" />
       </p>
       <base-button @click="unBook">
         Cancel reservation
