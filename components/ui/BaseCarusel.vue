@@ -146,18 +146,19 @@ export default {
     },
     touchMove(e) {
       const { x, y, isMobile } = this.getTouches(e);
+      const swipe = Math.abs(y - this.yDrug0) + Math.abs(x - this.x0);
+
       if (this.mouseDown) {
         this.x1 = x;
         this.move(this.x0, this.x1);
       }
       if (isMobile) {
         const shiftY = (y - this.y0) * -1;
-        const swipe = Math.abs(y - this.yDrug0) + Math.abs(x - this.x0);
         window.scrollBy(0, shiftY);
         this.y0 -= shiftY;
         this.drag = swipe > 10;
       } else {
-        this.drag = true;
+        this.drag = swipe > 10;
       }
     },
     touchEnd(e) {
