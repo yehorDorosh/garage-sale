@@ -11,6 +11,20 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  phone: {
+    number: {
+      type: String,
+    },
+    whatsApp: {
+      type: Boolean,
+    },
+    viber: {
+      type: Boolean,
+    },
+    telegram: {
+      type: Boolean,
+    },
+  },
   password: {
     type: String,
     required: true,

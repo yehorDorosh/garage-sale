@@ -14,13 +14,43 @@
         <base-input
           :id="name.id"
           v-model="name.value"
-          label="User name"
+          label="User full name"
           type="text"
           :is-valid="name.isValid"
           :err-msg="name.errMsg"
           @input="filedValidation($event, name, false)"
           @blur="filedValidation($event, name, true)"
         />
+        <base-input
+          :id="phone.id"
+          v-model="phone.value"
+          label="Phone (optional)"
+          type="tel"
+          :is-valid="phone.isValid"
+          :err-msg="phone.errMsg"
+          @input="filedValidation($event, phone, false, phoneValidator)"
+          @blur="filedValidation($event, phone, true, phoneValidator)"
+        />
+        <div class="checkboxes">
+          <base-checkbox
+            id="whatsapp-input"
+            v-model="whatsApp.value"
+            label="WhatsApp"
+            :value="whatsApp.value"
+          />
+          <base-checkbox
+            id="viber-input"
+            v-model="viber.value"
+            label="Viber"
+            :value="viber.value"
+          />
+          <base-checkbox
+            id="telegram-input"
+            v-model="telegram.value"
+            label="Telegram"
+            :value="telegram.value"
+          />
+        </div>
         <base-spinner :is-loading="isLoading" />
       </base-form>
     </section>
@@ -36,12 +66,14 @@
 import BaseSpinner from '~/components/ui/BaseSpinner';
 import BaseForm from '~/components/ui/BaseForm';
 import BaseInput from '~/components/ui/BaseInput';
+import BaseCheckbox from '~/components/ui/BaseCheckbox';
 
 export default {
   components: {
     BaseSpinner,
     BaseForm,
     BaseInput,
+    BaseCheckbox,
   },
 
   middleware: 'auth',
@@ -57,6 +89,22 @@ export default {
         errMsg: 'This field shouldn\'t be empty.',
         touched: false,
       },
+      phone: {
+        id: 'user-phone',
+        value: this.$store.getters['user/getUser'].phone?.number || '',
+        isValid: null,
+        errMsg: 'Please enter a valid phone.',
+        touched: false,
+      },
+      whatsApp: {
+        value: this.$store.getters['user/getUserPhone']?.whatsApp ?? false,
+      },
+      viber: {
+        value: this.$store.getters['user/getUserPhone']?.viber ?? false,
+      },
+      telegram: {
+        value: this.$store.getters['user/getUserPhone']?.telegram ?? false,
+      },
     };
   },
 
@@ -65,7 +113,15 @@ export default {
       return this.$store.getters['user/getUser'];
     },
     isChanged() {
-      return this.user.name !== this.name.value;
+      if (this.phone.value || this.user.phone.number) {
+        return this.user.name !== this.name.value ||
+          this.user.phone.number !== this.phone.value ||
+          this.user.phone.whatsApp !== this.whatsApp.value ||
+          this.user.phone.viber !== this.viber.value ||
+          this.user.phone.telegram !== this.telegram.value;
+      } else {
+        return this.user.name !== this.name.value;
+      }
     }
   },
 
@@ -80,10 +136,34 @@ export default {
       }
       field.isValid = validation(value);
     },
+    phoneValidator(value) {
+      if (!value) { return true; }
+      const regexp = /^[\\+]?[(]?[0-9]{3}[)]?[-\s\\.]?[0-9]{3}[-\s\\.]?[0-9]{4,6}$/;
+      const isValid = !!value.trim().match(regexp);
+      return isValid;
+    },
     async updUserData() {
-      if (!this.name.isValid) { return; }
+      this.filedValidation(this.name.value, this.name, true);
+      this.filedValidation(this.phone.value, this.phone, true, this.phoneValidator);
+      if (!this.name.isValid || !this.phone.isValid) { return; }
+
+      const data = {
+        name: this.name.value,
+      };
+
+      if (this.phone.value) {
+        data.phone = {
+          number: this.phone.value,
+          whatsApp: this.whatsApp.value,
+          viber: this.viber.value,
+          telegram: this.telegram.value,
+        };
+      } else {
+        data.phone = {};
+      }
+
       this.isLoading = true;
-      await this.$store.dispatch('user/updUserData', { name: this.name.value });
+      await this.$store.dispatch('user/updUserData', data);
       this.isLoading = false;
     }
   },
@@ -93,5 +173,15 @@ export default {
 <style scoped>
 form.user-data {
   max-width: 260px;
+}
+
+.checkboxes {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.checkboxes .row {
+  width: 50%;
 }
 </style>

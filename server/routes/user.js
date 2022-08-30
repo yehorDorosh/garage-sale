@@ -45,6 +45,17 @@ router.get('/data', isAuth, authController.userData);
 
 router.delete('/delete', isAuth, authController.deleteUser);
 
-router.put('/update', isAuth, authController.updUserData);
+router.put('/update', isAuth, [
+  body('name')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('The field Name shouldn\'t be empty.'),
+  body('phone.number')
+    .if(body('phone.number').notEmpty())
+    .trim()
+    .isMobilePhone()
+    .withMessage('Invalid phone number'),
+], authController.updUserData);
 
 module.exports = router;

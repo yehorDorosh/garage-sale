@@ -27,6 +27,10 @@ const mutations = {
     state.user.email = payload;
   },
 
+  setUserPhone(state, payload) {
+    state.user.phone = payload;
+  },
+
   setUser(state, payload) {
     state.user = {
       ...payload,

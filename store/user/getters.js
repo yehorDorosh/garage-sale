@@ -15,6 +15,10 @@ const getters = {
     return state.user.email;
   },
 
+  getUserPhone(state) {
+    return state.user.phone;
+  },
+
   getUser(state) {
     return state.user;
   },

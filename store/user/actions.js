@@ -86,6 +86,7 @@ const actions = {
           id: userData.id,
           name: userData.name,
           email: userData.email,
+          phone: userData.phone,
         });
       } else if (status === 401 || status === 404) {
         context.dispatch('logout');
@@ -105,6 +106,7 @@ const actions = {
         },
         body: JSON.stringify({
           name: newUserData.name,
+          phone: newUserData.phone,
         }),
       });
       const status = response.status;
@@ -114,6 +116,7 @@ const actions = {
 
       if (status === 200) {
         context.commit('setUserName', data.user.name);
+        context.commit('setUserPhone', data.user.phone);
       }
     } catch (err) {
       throw new Error(err);

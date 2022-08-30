@@ -23,6 +23,7 @@ exports.signup = async(req, res, next) => {
   const name = req.body.name?.trim();
   const email = req.body.email?.trim();
   const password = req.body.password?.trim();
+  const phone = req.body.phone || {};
 
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -30,6 +31,7 @@ exports.signup = async(req, res, next) => {
     const user = new User({
       name,
       email,
+      phone,
       password: hashedPassword,
     });
 
@@ -108,6 +110,7 @@ exports.userData = async(req, res, next) => {
       id: user._id.toString(),
       name: user.name,
       email: user.email,
+      phone: user.phone,
     });
   } catch (err) {
     if (!err.statusCode) {
@@ -144,6 +147,15 @@ exports.deleteUser = async(req, res, next) => {
 };
 
 exports.updUserData = async(req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error('Validation faild.');
+    error.statusCode = 422;
+    error.data = errors.array();
+    next(error);
+    return;
+  }
+
   try {
     const user = await User.findById(req.userId);
     if (!user) {
@@ -154,13 +166,17 @@ exports.updUserData = async(req, res, next) => {
     }
 
     const newName = req.body.name?.trim();
+    const newPhone = req.body.phone;
+
     user.name = newName;
+    user.phone = newPhone;
 
     await user.save();
     res.status(200).json({
       message: 'User data was updated',
       user: {
-        name: newName
+        name: newName,
+        phone: newPhone,
       }
     });
   } catch (err) {

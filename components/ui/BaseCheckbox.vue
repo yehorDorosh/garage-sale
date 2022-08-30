@@ -49,10 +49,12 @@ export default {
 <style scoped>
   input {
     box-sizing: border-box;
+    cursor: pointer;
   }
 
   label {
     font-size: 0.8rem;
+    cursor: pointer;
   }
 
   .row {

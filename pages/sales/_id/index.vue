@@ -14,13 +14,28 @@
         <h1>
           {{ sale.description }}
         </h1>
-        <p>
+        <p class="subline">
           <span>
-            Author: {{ userName }},
+            Author: {{ user.name }},
           </span>
           <span>
             Date: {{ date }}
           </span>
+        </p>
+        <p>
+          Contact with
+          <span>
+            {{ user.name }}
+          </span>
+        </p>
+        <p>
+          email: {{ user.email }}
+        </p>
+        <p v-if="user.phone && user.phone.number">
+          phone: {{ user.phone.number }}
+          <span v-if="user.phone.whatsApp" class="ico ico--whatsapp" />
+          <span v-if="user.phone.viber" class="ico ico--viber" />
+          <span v-if="user.phone.telegram" class="ico ico--telegram" />
         </p>
       </section>
       <product-list :products="sale.products" />
@@ -60,8 +75,8 @@ export default {
     sale() {
       return this.$store.getters['sale/getSaleById'](this.id);
     },
-    userName() {
-      return this.sale.owner.name;
+    user() {
+      return this.sale.owner;
     },
     date() {
       const date = new Date(this.sale.updatedAt);
@@ -92,3 +107,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.subline {
+  color: var(--light);
+  font-size: 0.8rem;
+}
+</style>

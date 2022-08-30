@@ -44,17 +44,50 @@
       @input="passwordConfValidation"
       @blur="passwordConfTouch"
     />
+    <base-input
+      id="phone-input"
+      v-model.trim="phone.value"
+      :is-valid="phone.isValid"
+      :err-msg="phone.errMsg"
+      type="tel"
+      label="Phone (optional)"
+      placeholder="+380111111111"
+      @input="phoneValidation"
+      @blur="phoneTouch"
+    />
+    <div class="checkboxes">
+      <base-checkbox
+        id="whatsapp-input"
+        v-model="whatsApp.value"
+        label="WhatsApp"
+        :value="whatsApp.value"
+      />
+      <base-checkbox
+        id="viber-input"
+        v-model="viber.value"
+        label="Viber"
+        :value="viber.value"
+      />
+      <base-checkbox
+        id="telegram-input"
+        v-model="telegram.value"
+        label="Telegram"
+        :value="telegram.value"
+      />
+    </div>
   </base-form>
 </template>
 
 <script>
 import BaseForm from '~/components/ui/BaseForm';
 import BaseInput from '~/components/ui/BaseInput';
+import BaseCheckbox from '~/components/ui/BaseCheckbox';
 
 export default {
   components: {
     BaseForm,
     BaseInput,
+    BaseCheckbox,
   },
 
   emits: ['reg-compleated'],
@@ -72,6 +105,21 @@ export default {
         isValid: null,
         errMsg: 'Please enter a valid email.',
         touched: false,
+      },
+      phone: {
+        value: '',
+        isValid: null,
+        errMsg: 'Please enter a valid phone.',
+        touched: false,
+      },
+      whatsApp: {
+        value: false,
+      },
+      viber: {
+        value: false,
+      },
+      telegram: {
+        value: false,
       },
       password: {
         value: '',
@@ -135,6 +183,20 @@ export default {
       }
     },
 
+    phoneValidation(value) {
+      if (!value) {
+        this.phone.isValid = true;
+        return;
+      }
+      const regexp = /^[\\+]?[(]?[0-9]{3}[)]?[-\s\\.]?[0-9]{3}[-\s\\.]?[0-9]{4,6}$/;
+      const isValid = !!value.trim().match(regexp);
+      if (!isValid) {
+        this.phone.isValid = false;
+      } else {
+        this.phone.isValid = true;
+      }
+    },
+
     nameTouch(value) {
       this.name.touched = true;
       this.nameValidation(value);
@@ -155,13 +217,25 @@ export default {
       this.passwordConfValidation(value);
     },
 
+    phoneTouch(value) {
+      this.phone.touched = true;
+      this.phoneValidation(value);
+    },
+
     async submit() {
       this.nameTouch(this.name.value);
       this.emailTouch(this.email.value);
       this.passwordTouch(this.password.value);
       this.passwordConfTouch(this.passwordConfirmation.value);
+      this.phoneValidation(this.phone.value);
 
-      if (!this.name.isValid || !this.email.isValid || !this.password.isValid || !this.passwordConfirmation.isValid) { return; }
+      if (
+        !this.name.isValid ||
+        !this.email.isValid ||
+        !this.password.isValid ||
+        !this.passwordConfirmation.isValid ||
+        !this.phone.isValid
+      ) { return; }
 
       const userData = {
         name: this.name.value,
@@ -169,6 +243,15 @@ export default {
         password: this.password.value,
         passwordConfirmation: this.passwordConfirmation.value,
       };
+
+      if (this.phone.value) {
+        userData.phone = {
+          number: this.phone.value,
+          whatsApp: this.whatsApp.value,
+          viber: this.viber.value,
+          telegram: this.telegram.value,
+        };
+      }
 
       this.isLoading = true;
       await this.$store.dispatch('user/userReg', userData);
@@ -196,5 +279,15 @@ export default {
 form {
   text-align: left;
   width: 250px;
+}
+
+.checkboxes {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.checkboxes .row {
+  width: 50%;
 }
 </style>

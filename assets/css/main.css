@@ -123,3 +123,26 @@ h5 {
 .stop-scrolling {
   overflow-y: hidden;
 }
+
+.ico::before {
+  content: '';
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: bottom;
+}
+
+.ico--whatsapp::before {
+  background-image: url('~/assets/img/icons/whatsapp.png');
+}
+
+.ico--viber::before {
+  background-image: url('~/assets/img/icons/viber.png');
+}
+
+.ico--telegram::before {
+  background-image: url('~/assets/img/icons/telegram.png');
+}
