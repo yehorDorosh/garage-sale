@@ -62,12 +62,6 @@ export default {
 
   scrollToTop: false,
 
-  data() {
-    return {
-
-    };
-  },
-
   computed: {
     id() {
       return this.$route.params.id;

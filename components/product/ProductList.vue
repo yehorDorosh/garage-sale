@@ -43,7 +43,12 @@ export default {
   methods: {
     scroll() {
       const id = this.$route.hash ? this.$route.hash.slice(4) : null;
-      if (id === null || +id === 0) { return; }
+      if (id === null || +id === 0) {
+        window.scrollTo({
+          top: 0,
+        });
+        return;
+      }
       const headerHight = document.querySelector('.page-header')?.clientHeight;
       const elem = document.getElementById(id);
       if (id === null) { return; }
