@@ -37,6 +37,11 @@ router.post('/signup', [
         return true;
       }
     }),
+  body('phone.number')
+    .if(body('phone.number').notEmpty())
+    .trim()
+    .isMobilePhone()
+    .withMessage('Invalid phone number'),
 ], authController.signup);
 
 router.post('/login', authController.login);

@@ -263,6 +263,9 @@ export default {
           if (this[err.param]) {
             this[err.param].isValid = false;
             this[err.param].errMsg = err.msg;
+          } else if (err.param === 'phone.number') {
+            this.phone.isValid = false;
+            this.phone.errMsg = err.msg;
           }
         });
       }

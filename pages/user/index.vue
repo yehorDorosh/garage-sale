@@ -165,6 +165,19 @@ export default {
       this.isLoading = true;
       await this.$store.dispatch('user/updUserData', data);
       this.isLoading = false;
+
+      const res = this.$store.getters['user/getResponse'];
+      if (res.status === 422) {
+        res.data.forEach((err) => {
+          if (this[err.param]) {
+            this[err.param].isValid = false;
+            this[err.param].errMsg = err.msg;
+          } else if (err.param === 'phone.number') {
+            this.phone.isValid = false;
+            this.phone.errMsg = err.msg;
+          }
+        });
+      }
     }
   },
 };

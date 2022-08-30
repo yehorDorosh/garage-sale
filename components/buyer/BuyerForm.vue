@@ -48,6 +48,9 @@
         :value="telegram.value"
       />
     </div>
+    <p v-if="serverValidation.error" class="error">
+      {{ serverValidation.errMsg }}
+    </p>
     <base-button type="submit">
       Book
     </base-button>
@@ -122,6 +125,10 @@ export default {
       telegram: {
         value: this.buyerPhone?.telegram ?? false,
       },
+      serverValidation: {
+        error: false,
+        errMsg: 'Validation faild.'
+      },
     };
   },
 
@@ -185,6 +192,11 @@ export default {
       const data = await this.$store.dispatch('product/saveBuyer', buyer);
       this.isLoading = false;
 
+      if (data?.status === 422) {
+        this.serverValidation.error = true;
+        this.serverValidation.errMsg = data?.data[0]?.msg;
+      }
+
       if (data?.status === 200) {
         this.$store.commit('dialog/setBuyerFormIsShown', false);
       }
@@ -207,6 +219,12 @@ export default {
 
 .checkboxes .row {
   width: 50%;
+  text-align: left;
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.6rem;
   text-align: left;
 }
 </style>
