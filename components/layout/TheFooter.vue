@@ -7,8 +7,8 @@
         </p>
         <address>
           Email: <a :href="`mailto:${email}`">{{ email }}</a><br>
-          City: Mykolaiv,<br>
-          Country: Ukraine
+          City: Podgorica,<br>
+          Country: Montenegro
         </address>
       </div>
     </div>
