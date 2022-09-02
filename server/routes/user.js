@@ -18,7 +18,7 @@ router.post('/signup', [
         }
       });
     })
-    .normalizeEmail(),
+    .normalizeEmail({ gmail_remove_dots: false }),
   body('password')
     .trim()
     .isStrongPassword({ minSymbols: 0 })
