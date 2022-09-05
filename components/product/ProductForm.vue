@@ -59,7 +59,7 @@
         <span v-if="currentBuyer.phone.viber" class="ico ico--viber" />
         <span v-if="currentBuyer.phone.telegram" class="ico ico--telegram" />
       </p>
-      <base-button @click="unBook">
+      <base-button v-if="!isSold" @click="unBook">
         Cancel reservation
       </base-button>
       <base-button @click="sellHandler">
