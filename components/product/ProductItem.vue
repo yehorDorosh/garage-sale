@@ -15,13 +15,17 @@
           Price: {{ new Intl.NumberFormat($store.getters.getLocale, { style: 'currency', currency: 'EUR' }).format(product.price) }}
         </p>
       </div>
-      <p v-if="isBooked">
+      <p v-if="isBooked" class="prod__buyer">
         Booked by <b><span class="nowrap">{{ product.buyer.name }}</span></b>
       </p>
       <div v-else class="btn-container">
         <base-button @click="book">
           Book
         </base-button>
+        <base-button v-show="buyerName && buyerEmail" @click="openForm">
+          Edit contact data
+        </base-button>
+        <base-spinner :is-loading="isLoading" />
       </div>
     </div>
     <image-slider :key="product.images.length" :images="product.images" />
@@ -30,10 +34,12 @@
 
 <script>
 import ImageSlider from '~/components/ui/ImageSlider';
+import BaseSpinner from '~/components/ui/BaseSpinner';
 
 export default {
   components: {
     ImageSlider,
+    BaseSpinner,
   },
 
   props: {
@@ -61,6 +67,12 @@ export default {
     },
   },
 
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+
   computed: {
     saleId() {
       return this.$route.params.id;
@@ -71,7 +83,7 @@ export default {
   },
 
   methods: {
-    book() {
+    openForm() {
       this.$store.commit('dialog/setBuyerFormData', {
         saleId: this.saleId,
         productId: this.product._id,
@@ -80,6 +92,29 @@ export default {
         buyerPhone: this.buyerPhone,
       });
       this.$store.commit('dialog/setBuyerFormIsShown', true);
+    },
+
+    async book() {
+      if (!this.buyerName || !this.buyerEmail) {
+        this.openForm();
+        return;
+      }
+
+      const buyer = {
+        saleId: this.saleId,
+        productId: this.product._id,
+        name: this.buyerName,
+        email: this.buyerEmail,
+        phone: this.buyerPhone,
+      };
+
+      this.isLoading = true;
+      const data = await this.$store.dispatch('product/saveBuyer', buyer);
+      this.isLoading = false;
+
+      if (data?.status === 202) {
+        this.$store.commit('dialog/setBookingWarning', true);
+      }
     }
   },
 };
@@ -95,6 +130,14 @@ export default {
 
 .btn-container {
   text-align: center;
+  position: relative;
+  min-width: 200px;
+}
+
+@media (min-width: 768px) {
+  .btn-container {
+    text-align: right;
+  }
 }
 
 @media (min-width: 768px) {
@@ -109,5 +152,15 @@ export default {
 
 .prod__price--free {
   color: var(--accent);
+}
+
+@media (min-width: 768px) {
+  .prod__txt {
+    padding-right: 16px;
+  }
+}
+
+.prod__buyer {
+  min-width: 200px;
 }
 </style>
