@@ -69,6 +69,9 @@ export default {
     socket.on('deletedUser', () => {
       this.$store.dispatch('sale/fetchSales');
     });
+    socket.on('booking', (buyer) => {
+      this.$store.commit('sale/setBuyer', buyer);
+    });
   },
 
   methods: {
