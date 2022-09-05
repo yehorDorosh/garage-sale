@@ -156,6 +156,7 @@ export default {
 
   .sale-item__img-container {
     overflow: hidden;
+    width: 100%;
   }
 
   .sale-item__img {
