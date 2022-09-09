@@ -33,7 +33,7 @@ router.post('/buyer', [
   body('email')
     .isEmail()
     .withMessage('Please enter a valid email.')
-    .normalizeEmail(),
+    .normalizeEmail({ gmail_remove_dots: false }),
   body('name')
     .trim()
     .not()

@@ -17,7 +17,7 @@
       :is-valid="email.isValid"
       :err-msg="email.errMsg"
       type="email"
-      label="Email *"
+      label="e-mail *"
       placeholder="user@email.com"
       @input="emailValidation"
       @blur="emailTouch"

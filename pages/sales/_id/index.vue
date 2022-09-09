@@ -29,7 +29,7 @@
           </span>
         </p>
         <p>
-          email: {{ user.email }}
+          e-mail: {{ user.email }}
         </p>
         <p v-if="user.phone && user.phone.number">
           phone: {{ user.phone.number }}

@@ -12,7 +12,7 @@
     <base-input
       :id="emailInput.id"
       v-model.trim="emailInput.value"
-      label="email *"
+      label="e-mail *"
       :is-valid="emailInput.isValid"
       :err-msg="emailInput.errMsg"
       @input="filedValidation($event, emailInput, false, emailValidator)"

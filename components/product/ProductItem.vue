@@ -23,7 +23,7 @@
           Book
         </base-button>
         <base-button v-show="buyerName && buyerEmail" @click="openForm">
-          Edit contact data
+          Edit my contact data
         </base-button>
         <base-spinner :is-loading="isLoading" />
       </div>
