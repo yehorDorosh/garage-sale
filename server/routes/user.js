@@ -1,6 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 
+const constants = require('../utils/constants');
 const User = require('../models/user');
 const authController = require('../controllers/auth');
 const isAuth = require('../middleware/is-auth');
@@ -40,8 +41,14 @@ router.post('/signup', [
   body('phone.number')
     .if(body('phone.number').notEmpty())
     .trim()
-    .isMobilePhone()
-    .withMessage('Invalid phone number'),
+    .custom((value, { req }) => {
+      const regexp = constants.PHONE_VALIDATOR;
+      const isValid = !!value.trim().match(regexp);
+      if (!isValid) {
+        throw new Error('Invalid phone number.');
+      }
+      return true;
+    })
 ], authController.signup);
 
 router.post('/login', authController.login);
@@ -59,8 +66,14 @@ router.put('/update', isAuth, [
   body('phone.number')
     .if(body('phone.number').notEmpty())
     .trim()
-    .isMobilePhone()
-    .withMessage('Invalid phone number'),
+    .custom((value, { req }) => {
+      const regexp = constants.PHONE_VALIDATOR;
+      const isValid = !!value.trim().match(regexp);
+      if (!isValid) {
+        throw new Error('Invalid phone number.');
+      }
+      return true;
+    })
 ], authController.updUserData);
 
 module.exports = router;

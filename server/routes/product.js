@@ -1,6 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 
+const constants = require('../utils/constants');
 const isAuth = require('../middleware/is-auth');
 const imgUploader = require('../middleware/img-uploader');
 const productController = require('../controllers/product');
@@ -42,8 +43,15 @@ router.post('/buyer', [
   body('phone.number')
     .if(body('phone.number').notEmpty())
     .trim()
-    .isMobilePhone()
-    .withMessage('Invalid phone number'),
+    // .isMobilePhone()
+    .custom((value, { req }) => {
+      const regexp = constants.PHONE_VALIDATOR;
+      const isValid = !!value.trim().match(regexp);
+      if (!isValid) {
+        throw new Error('Invalid phone number.');
+      }
+      return true;
+    })
 ], productController.saveBuyer);
 
 router.delete('/buyer', isAuth, productController.saveBuyer);

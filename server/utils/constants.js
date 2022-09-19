@@ -7,4 +7,5 @@ module.exports = Object.freeze({
   IMG_HEIGHT: 320,
   ROOT_DIR_ARR: [__dirname, '..', '..'],
   SITE_EMAIL: process.env.SITE_EMAIL || 'egor.dorosh.v@gmail.com',
+  PHONE_VALIDATOR: /^[\\+]?[(]?[0-9]{3}[)]?[-\s\\.]?[0-9]{3}[-\s\\.]?[0-9]{4,6}$/,
 });
