@@ -110,19 +110,19 @@ $ reboot
 
 ```bash
 # Rename image. Image name should start from account name in repo
-docker tag garage-sale:0.1.0 egordoroshv/garage-sale:0.1.0
+docker tag garage-sale:1.0.0 egordoroshv/garage-sale:1.0.0
 
 # Use docker account name and pass
 $ docker login
 
 # Push to repo
-$ docker push egordoroshv/garage-sale:0.1.0
+$ docker push egordoroshv/garage-sale:1.0.0
 ```
 
 ## Run container on EC2
 
 ```bush
-sudo docker run -d --rm -p 80:80 --env-file .env egordoroshv/garage-sale:0.1.0
+sudo docker run -d --rm -p 80:80 --env-file .env egordoroshv/garage-sale:1.0.0
 ```
 
 ## Deploy to prod
