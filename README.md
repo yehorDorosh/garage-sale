@@ -174,7 +174,7 @@ docker-compose -f docker-compose.prod.yaml down
 
 ### CLI in container
 ```bash
-$ sudo docker exec -it garage-sale /bin/bash
+$ docker exec -it garage-sale-garage-sale-1 /bin/bash
 
 $ sudo docker exec -it ec2-user-garage-sale-1 /bin/bash
 ```
