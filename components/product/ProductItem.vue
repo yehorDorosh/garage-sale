@@ -5,9 +5,7 @@
         <h3 class="prod__title">
           {{ product.title }}
         </h3>
-        <!-- eslint-disable vue/no-v-html -->
-        <p class="prod__desc" v-html="product.description" />
-        <!--eslint-enable-->
+        <p ref="descText" class="prod__desc" />
         <p v-if="product.price === 0" class="prod__price prod__price--free">
           It's FREE!!!
         </p>
@@ -80,6 +78,11 @@ export default {
     isBooked() {
       return this.product.isBooked;
     },
+  },
+
+  mounted() {
+    const elem = this.$refs.descText;
+    elem.insertAdjacentHTML('afterbegin', this.product.description);
   },
 
   methods: {
