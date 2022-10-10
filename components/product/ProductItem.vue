@@ -5,9 +5,9 @@
         <h3 class="prod__title">
           {{ product.title }}
         </h3>
-        <p class="prod__desc">
-          {{ product.description }}
-        </p>
+        <!-- eslint-disable vue/no-v-html -->
+        <p class="prod__desc" v-html="product.description" />
+        <!--eslint-enable-->
         <p v-if="product.price === 0" class="prod__price prod__price--free">
           It's FREE!!!
         </p>
@@ -162,5 +162,13 @@ export default {
 
 .prod__buyer {
   min-width: 200px;
+}
+</style>
+
+<style>
+.prod__desc ul {
+  list-style: disc;
+  padding-left: 16px;
+  margin-bottom: 16px;
 }
 </style>

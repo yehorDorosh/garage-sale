@@ -13,7 +13,7 @@
       :id="descriptionInput.id"
       v-model.trim="descriptionInput.value"
       :text-area="true"
-      label="Product description"
+      label="Product description. You can use simple html tags."
       :is-valid="descriptionInput.isValid"
       :err-msg="descriptionInput.errMsg"
       @input="filedValidation($event, descriptionInput, false)"

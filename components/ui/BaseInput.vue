@@ -87,7 +87,6 @@ export default {
   textarea {
     width: 100% !important;
     box-sizing: border-box;
-    resize: none;
     overflow-y: scroll;
     min-height: 50px;
   }

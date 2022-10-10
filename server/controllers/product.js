@@ -6,6 +6,7 @@ const { validationResult } = require('express-validator');
 const mongodb = require('mongodb');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
+const sanitizeHtml = require('sanitize-html');
 
 const constants = require('../utils/constants.js');
 
@@ -50,7 +51,7 @@ exports.createProduct = async(req, res, next) => {
   }
 
   const title = req.body.title?.trim();
-  const description = req.body.description?.trim();
+  const description = req.body.description ? sanitizeHtml(req.body.description.trim()) : '';
   const price = req.body.price?.trim();
   const isPublished = req.body.isPublished;
   const owner = req.userId;
