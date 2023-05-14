@@ -55,7 +55,7 @@ const imgUploader = (req, res, next) => {
         error.statusCode = 422;
       }
       next(error);
-    } else if (customErr) { 
+    } else if (customErr) {
       next(customErr);
       customErr = null;
     } else {

@@ -8,7 +8,12 @@ module.exports = {
   // https://stylelint.io/user-guide/configuration
   rules: {
     'selector-class-pattern': '',
-    'value-keyword-case': '',
+    'value-keyword-case': [
+      'lower',
+      {
+        ignoreKeywords: ['imageWidth', 'imageHeight', 'imageAmount']
+      }
+    ],
   },
   env: {
     browser: true,
