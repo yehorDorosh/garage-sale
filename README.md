@@ -71,6 +71,7 @@ $ chmod 400 garage-sale-1.pem
 
 # Connection. use current IP from EC2
 $ ssh -i "garage-sale.pem" ec2-user@ec2-3-9-113-229.eu-west-2.compute.amazonaws.com
+$ ssh -i "~/private/sites/garage-sale-keys/garage-sale.pem" ec2-user@ec2-3-9-113-229.eu-west-2.compute.amazonaws.com
 ```
 
 ## Install docker on EC2
@@ -94,6 +95,11 @@ $ sudo curl -L https://github.com/docker/compose/releases/latest/download/docker
 $ sudo chmod +x /usr/local/bin/docker-compose
 
 $ docker-compose version
+
+# Docker start automatically on system boot
+$ sudo systemctl enable docker.service
+
+$ sudo systemctl enable containerd.service
 
 # If docker compose Got permission denied
 $ sudo groupadd docker
@@ -177,4 +183,9 @@ docker-compose -f docker-compose.prod.yaml down
 $ docker exec -it garage-sale-garage-sale-1 /bin/bash
 
 $ sudo docker exec -it ec2-user-garage-sale-1 /bin/bash
+```
+
+### Copy file from container to server
+```bash
+$ docker cp ec2-user-garage-sale-1:/app/server/log/error.log .
 ```
