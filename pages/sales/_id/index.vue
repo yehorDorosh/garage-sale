@@ -22,21 +22,31 @@
             Date: {{ date }}
           </span>
         </p>
-        <p>
-          Contact with
-          <span>
-            {{ user.name }}
-          </span>
-        </p>
-        <p>
-          e-mail: {{ user.email }}
-        </p>
-        <p v-if="user.phone && user.phone.number">
-          phone: {{ user.phone.number }}
-          <span v-if="user.phone.whatsApp" class="ico ico--whatsapp" />
-          <span v-if="user.phone.viber" class="ico ico--viber" />
-          <span v-if="user.phone.telegram" class="ico ico--telegram" />
-        </p>
+        <div>
+          <base-button
+            v-if="!showContact"
+            @click="showContact = true"
+          >
+            Show {{ user.name }} contacts
+          </base-button>
+          <div v-if="showContact">
+            <p>
+              Contact with
+              <span>
+                {{ user.name }}
+              </span>
+            </p>
+            <p>
+              e-mail: {{ user.email }}
+            </p>
+            <p v-if="user.phone && user.phone.number">
+              phone: {{ user.phone.number }}
+              <span v-if="user.phone.whatsApp" class="ico ico--whatsapp" />
+              <span v-if="user.phone.viber" class="ico ico--viber" />
+              <span v-if="user.phone.telegram" class="ico ico--telegram" />
+            </p>
+          </div>
+        </div>
       </section>
       <product-list :products="sale.products" />
     </article>
@@ -46,23 +56,29 @@
 <script>
 import openSocket from 'socket.io-client';
 import ProductList from '~/components/product/ProductList';
+import BaseButton from '~/components/ui/BaseButton.vue';
 
 export default {
   components: {
-    ProductList
+    ProductList,
+    BaseButton,
   },
 
   async validate(data) {
-    // This variant for SSR of detail sale page. If you want to use it, you need to remove beforeCreate() hook.
-    // if (!data.store.getters['sale/getSales'].length) {
-    //   await data.store.dispatch('sale/fetchSales');
-    // }
-    // const salesIDs = data.store.getters['sale/getSalesIDs'];
-    // return salesIDs.includes(data.params.id);
-    return await data.store.dispatch('sale/isSaleExist', { id: data.params.id });
+    if (!data.store.getters['sale/getSales'].length) {
+      await data.store.dispatch('sale/fetchSales');
+    }
+    const salesIDs = data.store.getters['sale/getSalesIDs'];
+    return salesIDs.includes(data.params.id);
   },
 
   scrollToTop: false,
+
+  data() {
+    return {
+      showContact: false,
+    };
+  },
 
   computed: {
     id() {
@@ -86,11 +102,6 @@ export default {
       };
       return date.toLocaleDateString(locale, options);
     },
-  },
-
-  // This variant hook needs if page load without SSR. See comments above.
-  beforeCreate() {
-    this.$store.dispatch('sale/fetchSales');
   },
 
   created() {
