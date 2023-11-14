@@ -15,6 +15,22 @@ const actions = {
     }
   },
 
+  async isSaleExist(context, payload) {
+    try {
+      const response = await fetch(`${process.env.fullHostName}/api-sales`);
+      const status = response.status;
+      const data = await response.json();
+
+      if (status === 200 && data.sales && data.sales.length > 0) {
+        return data.sales.map(sale => sale._id).includes(payload.id);
+      }
+
+      return false;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+
   async fetchUserSales(context) {
     try {
       const response = await fetch(`${process.env.fullHostName}/api-user-sales`, {

@@ -13,6 +13,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    mem_limit: 512m
     ports:
       - '3000:3000'
       - '9229:9229'

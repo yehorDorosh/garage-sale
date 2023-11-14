@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <Fragment>
-    <article>
+    <article v-if="sale">
       <section>
         <base-button link to="/sales" mode="link">
           Sales
@@ -53,11 +53,13 @@ export default {
   },
 
   async validate(data) {
-    if (!data.store.getters['sale/getSales'].length) {
-      await data.store.dispatch('sale/fetchSales');
-    }
-    const salesIDs = data.store.getters['sale/getSalesIDs'];
-    return salesIDs.includes(data.params.id);
+    // This variant for SSR of detail sale page. If you want to use it, you need to remove beforeCreate() hook.
+    // if (!data.store.getters['sale/getSales'].length) {
+    //   await data.store.dispatch('sale/fetchSales');
+    // }
+    // const salesIDs = data.store.getters['sale/getSalesIDs'];
+    // return salesIDs.includes(data.params.id);
+    return await data.store.dispatch('sale/isSaleExist', { id: data.params.id });
   },
 
   scrollToTop: false,
@@ -84,6 +86,11 @@ export default {
       };
       return date.toLocaleDateString(locale, options);
     },
+  },
+
+  // This variant hook needs if page load without SSR. See comments above.
+  beforeCreate() {
+    this.$store.dispatch('sale/fetchSales');
   },
 
   created() {
