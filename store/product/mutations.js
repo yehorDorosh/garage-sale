@@ -1,6 +1,6 @@
 const mutations = {
   setUserProducts(state, payload) {
-    state.userProducts = payload;
+    state.userProducts = payload?.reverse();
   },
 
   addUserProducts(state, payload) {

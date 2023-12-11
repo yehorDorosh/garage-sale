@@ -12,7 +12,13 @@
         </nuxt-link>
         <div class="sale-item__products">
           <base-carusel :key="sale.products.length" :slide-amount="[1, 2, 4, 6]" @open="openSlide">
-            <div v-for="product in sale.products" :key="product._id" class="sale-item__product carusel__item" :data-sale-id="sale._id">
+            <div
+              v-for="product in sale.products"
+              :key="product._id"
+              class="sale-item__product carusel__item"
+              :data-sale-id="sale._id"
+              :data-product-id="product._id"
+            >
               <div class="sale-item__card">
                 <h5 class="sale-item__product-title">
                   {{ product.title }}
@@ -104,7 +110,7 @@ export default {
 
   methods: {
     openSlide(e, i) {
-      this.$router.push({ path: `/sales/${e.currentTarget.dataset.saleId}`, hash: `#id=${i}` });
+      this.$router.push({ path: `/sales/${e.currentTarget.dataset.saleId}`, hash: `#id=${e.currentTarget.dataset.productId}` });
     },
   },
 };

@@ -2,8 +2,8 @@
   <section>
     <ul>
       <product-item
-        v-for="(product, i) in products"
-        :id="i"
+        v-for="(product) in products"
+        :id="product._id"
         :key="product._id"
         :product="product"
         :buyer-name="sessionBuyer.name"
@@ -51,7 +51,7 @@ export default {
       }
       const headerHight = document.querySelector('.page-header')?.clientHeight;
       const elem = document.getElementById(id);
-      if (id === null) { return; }
+      if (id === null || !elem) { return; }
       const headerOffset = headerHight ?? 100;
       const elemPos = elem.getBoundingClientRect().top;
       const offsetPos = elemPos + window.pageYOffset - headerOffset;

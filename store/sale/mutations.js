@@ -1,7 +1,7 @@
 const mutations = {
   setSales(state, payload) {
     payload.forEach((sale) => {
-      sale.products = sale.products.sort((a, b) => (a.isBooked === b.isBooked) ? 0 : a.isBooked ? 1 : -1);
+      sale.products = sale.products.reverse().sort((a, b) => (a.isBooked === b.isBooked) ? 0 : a.isBooked ? 1 : -1);
     });
     state.sales = payload;
   },
