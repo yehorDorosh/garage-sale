@@ -7,7 +7,7 @@
             {{ sale.description }}
           </h4>
           <p class="sale-item__author">
-            Author: {{ sale.owner.name }}
+            Author: {{ sale.owner?.name }}
           </p>
         </nuxt-link>
         <div class="sale-item__products">
