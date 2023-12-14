@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const { loadNuxt, build } = require('nuxt');
@@ -25,8 +26,15 @@ const accessLogStream = fs.createWriteStream(
 );
 const privateKey = fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem'));
 const certificate = fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'));
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
 
 if (!isDev) {
+  app.use(limiter);
   app.use(
     helmet({
       contentSecurityPolicy: {
