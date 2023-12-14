@@ -66,6 +66,12 @@ exports.createSale = async(req, res, next) => {
   }
 
   const user = await User.findById(req.userId);
+  if (!user) {
+    const error = new Error('User not found');
+    error.statusCode = 404;
+    next(error);
+    return;
+  }
 
   try {
     const owner = req.userId;
