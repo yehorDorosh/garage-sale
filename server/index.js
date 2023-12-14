@@ -27,8 +27,8 @@ const accessLogStream = fs.createWriteStream(
 const privateKey = fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem'));
 const certificate = fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'));
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 100,
+  windowMs: (+process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000,
+  limit: +process.env.RATE_LIMIT || 100,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
 });
@@ -105,6 +105,7 @@ async function start() {
       .listen(port);
   }
   console.log('Server listening on localhost:' + port + '.');
+  console.log('Rate limit: ' + process.env.RATE_LIMIT_WINDOW + ' minutes / ' + process.env.RATE_LIMIT + ' requests.');
 
   const io = require('./socket').init(server);
   io.on('connection', (socket) => {
