@@ -72,6 +72,7 @@ export default {
     supportedImageFormats: process.env.SUPPORTED_IMAGE_FORMATS?.split(',') || 'jpg,jpeg,png',
     siteEmail: process.env.SITE_EMAIL,
     siteFBEmail: process.env.SITE_FB_EMAIL,
+    ownerContactsKey: process.env.OWNER_CONTACTS_KEY,
   },
 
   telemetry: false,

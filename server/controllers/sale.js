@@ -3,6 +3,8 @@ const { validationResult } = require('express-validator');
 const Sale = require('../models/sale');
 const User = require('../models/user');
 const io = require('../socket');
+const encrypt = require('../utils/crypto-data').encrypt;
+const key = require('../utils/crypto-data').key;
 
 exports.getSales = async(req, res, next) => {
   const currentPage = req.query.page || 1;
@@ -25,6 +27,41 @@ exports.getSales = async(req, res, next) => {
       })
       .populate('owner', '-password');
     const filteredSales = sales ? sales.filter(sale => !!sale.products.length) : [];
+
+    filteredSales.forEach((sale) => {
+      const ownerEmail = sale.owner.email;
+      const ownerPhone = sale.owner.phone ? sale.owner.phone.number : null;
+      const ownerName = sale.owner.name;
+      if (ownerEmail) {
+        const hashedOwnerEmail = encrypt(ownerEmail, key);
+        sale.owner.email = JSON.stringify(hashedOwnerEmail);
+      }
+      if (ownerPhone) {
+        const hashedOwnerPhone = JSON.stringify(encrypt(ownerPhone, key));
+        sale.owner.phone.number = hashedOwnerPhone;
+      }
+      if (ownerName) {
+        const hashedOwnerName = JSON.stringify(encrypt(ownerName, key));
+        sale.owner.name = hashedOwnerName;
+      }
+      sale.products.forEach((product) => {
+        const buyerEmail = product.buyer.email;
+        const buyerPhone = product.buyer.phone ? product.buyer.phone.number : null;
+        const buyerName = product.buyer.name;
+        if (buyerEmail) {
+          const hashedBuyerEmail = encrypt(buyerEmail, key);
+          product.buyer.email = JSON.stringify(hashedBuyerEmail);
+        }
+        if (buyerPhone) {
+          const hashedBuyerPhone = JSON.stringify(encrypt(buyerPhone, key));
+          product.buyer.phone.number = hashedBuyerPhone;
+        }
+        if (buyerName) {
+          const hashedBuyerName = JSON.stringify(encrypt(buyerName, key));
+          product.buyer.name = hashedBuyerName;
+        }
+      });
+    });
 
     res.status(200).json({
       message: 'Fetched sales successfully.',
