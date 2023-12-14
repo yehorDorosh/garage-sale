@@ -13,9 +13,14 @@ router.post('/signup', [
     .isEmail()
     .withMessage('Please enter a valid email.')
     .custom((value, { req }) => {
+      const domain = value.split('@')[1];
+      const blackList = process.env.EMAIL_BLACK_LIST?.split(',');
+      if (blackList && blackList.includes(domain)) {
+        return Promise.reject(new Error(`Email with this domain (${domain}) is not allowed.`));
+      }
       return User.findOne({ email: value }).then((userDoc) => {
         if (userDoc) {
-          return Promise.reject(new Error('Email adress already exist.'));
+          return Promise.reject(new Error('Email address already exist.'));
         }
       });
     })
