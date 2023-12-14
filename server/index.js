@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const ipfilter = require('express-ipfilter').IpFilter;
 
 const app = express();
 const { loadNuxt, build } = require('nuxt');
@@ -32,6 +33,9 @@ const limiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
 });
+const ips = process.env.IP_BLACK_LIST.split(',') ?? [];
+
+app.use(ipfilter(ips, { log: false }));
 
 if (!isDev) {
   app.use(limiter);
@@ -106,6 +110,7 @@ async function start() {
   }
   console.log('Server listening on localhost:' + port + '.');
   console.log('Rate limit: ' + process.env.RATE_LIMIT_WINDOW + ' minutes / ' + process.env.RATE_LIMIT + ' requests.');
+  console.log('Deny the following IPs: ' + ips);
 
   const io = require('./socket').init(server);
   io.on('connection', (socket) => {
