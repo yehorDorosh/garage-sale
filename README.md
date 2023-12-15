@@ -13,6 +13,9 @@ $ docker-compose down
 
 # For update nuxt image. (Install new dependency or add new code)
 $ docker-compose build garage-sale
+
+# Restart
+$ docker-compose --env-file ./env/nuxt.env up -d --force-recreate garage-sale
 ```
 
 ```
@@ -168,14 +171,17 @@ $ sudo docker pull egordoroshv/garage-sale:1.0.5
 $ docker-compose -f docker-compose.prod.yaml pull garage-sale
 
 # Run container (docker or docker compose)
-sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:1.0.5
+$ sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:1.0.5
 
-docker-compose -f docker-compose.prod.yaml up garage-sale -d
+$ docker-compose -f docker-compose.prod.yaml up garage-sale -d
 
 # Stop container (docker or docker compose)
-sudo docker stop garage-sale
+$ sudo docker stop garage-sale
 
-docker-compose -f docker-compose.prod.yaml down
+$ docker-compose -f docker-compose.prod.yaml down
+
+# Restart container
+$ docker-compose -f docker-compose.prod.yaml up -d --force-recreate garage-sale
 ```
 
 ### CLI in container

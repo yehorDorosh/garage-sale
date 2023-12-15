@@ -1,12 +1,12 @@
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
 // const key = crypto.randomBytes(32);
-const iv = crypto.randomBytes(16);
 
 const envKey = process.env.OWNER_CONTACTS_KEY;
 exports.key = Buffer.from(envKey, 'hex');
 
 exports.encrypt = (text, key) => {
+  const iv = crypto.randomBytes(16);
   if (!text || !key || !iv) { return null; }
   const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
   let encrypted = cipher.update(text);
