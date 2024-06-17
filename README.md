@@ -119,19 +119,19 @@ $ reboot
 
 ```bash
 # Rename image. Image name should start from account name in repo
-docker tag garage-sale:1.0.5 egordoroshv/garage-sale:1.0.5
+docker tag garage-sale:1.0.6 egordoroshv/garage-sale:1.0.6
 
 # Use docker account name and pass
 $ docker login
 
 # Push to repo
-$ docker push egordoroshv/garage-sale:1.0.5
+$ docker push egordoroshv/garage-sale:1.0.6
 ```
 
 ## Run container on EC2
 
 ```bush
-sudo docker run -d --rm -p 80:80 --env-file .env egordoroshv/garage-sale:1.0.5
+sudo docker run -d --rm -p 80:80 --env-file .env egordoroshv/garage-sale:1.0.6
 ```
 
 ## Deploy to prod
@@ -139,13 +139,13 @@ sudo docker run -d --rm -p 80:80 --env-file .env egordoroshv/garage-sale:1.0.5
 ### Locale
 ```bash
 # Build image
-$ docker build -t egordoroshv/garage-sale:1.0.5 -f prod.dockerfile .
+$ docker build -t egordoroshv/garage-sale:1.0.6 -f prod.dockerfile .
 
 # Use docker account name and pass
 $ docker login
 
 # Push to repo
-$ docker push egordoroshv/garage-sale:1.0.5
+$ docker push egordoroshv/garage-sale:1.0.6
 ```
 
 ### EC2
@@ -166,12 +166,12 @@ $ docker push egordoroshv/garage-sale:1.0.5
 $ sudo service docker start
 
 # Forced pull image for update image (docker or docker compose)
-$ sudo docker pull egordoroshv/garage-sale:1.0.5
+$ sudo docker pull egordoroshv/garage-sale:1.0.6
 
 $ docker-compose -f docker-compose.prod.yaml pull garage-sale
 
 # Run container (docker or docker compose)
-$ sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:1.0.5
+$ sudo docker run -d --rm -p 80:80 -p 443:443 --name garage-sale --env-file ./.env egordoroshv/garage-sale:1.0.6
 
 $ docker-compose -f docker-compose.prod.yaml up garage-sale -d
 

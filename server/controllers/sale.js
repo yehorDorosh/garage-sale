@@ -9,15 +9,20 @@ const key = require('../utils/crypto-data').key;
 exports.getSales = async(req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 10;
+  const query = {
+    isPublished: true,
+    products: { $exists: true, $ne: [] }
+  };
+
   try {
-    let totalItems = await Sale.find({ isPublished: true })
+    let totalItems = await Sale.find(query)
       .populate('products', null, {
         isPublished: true,
         isSold: false,
       });
-    totalItems = totalItems ? totalItems.filter(sale => !!sale.products.length) : [];
+    totalItems = totalItems ?? [];
 
-    const sales = await Sale.find({ isPublished: true })
+    const sales = await Sale.find(query)
       .sort({ updatedAt: 'desc' })
       .skip((currentPage - 1) * perPage)
       .limit(perPage)
@@ -26,7 +31,7 @@ exports.getSales = async(req, res, next) => {
         isSold: false,
       })
       .populate('owner', '-password');
-    const filteredSales = sales ? sales.filter(sale => !!sale.products.length) : [];
+    const filteredSales = sales ?? [];
 
     filteredSales.forEach((sale) => {
       const ownerEmail = sale.owner.email;
