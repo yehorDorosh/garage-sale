@@ -195,3 +195,9 @@ $ sudo docker exec -it ec2-user-garage-sale-1 /bin/bash
 ```bash
 $ docker cp ec2-user-garage-sale-1:/app/server/log/error.log .
 ```
+
+### Copy file to server
+
+```bash
+$ scp -i "~/private/sites/garage-sale-keys/garage-sale.pem" docker-compose.prod.yaml ec2-user@ec2-3-9-113-229.eu-west-2.compute.amazonaws.com:/home/ec2-user
+```
