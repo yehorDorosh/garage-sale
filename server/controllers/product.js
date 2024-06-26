@@ -375,6 +375,9 @@ exports.sell = async(req, res, next) => {
 };
 
 function clearImage(filePath, next) {
+  if (!filePath) {
+    return;
+  }
   filePath = path.join(...constants.ROOT_DIR_ARR, filePath);
   fs.unlink(filePath, (err) => {
     if (err && !err.statusCode) {

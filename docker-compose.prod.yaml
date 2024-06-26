@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   garage-sale:
-    image: egordoroshv/garage-sale:1.0.6
+    image: egordoroshv/garage-sale:1.0.7
     mem_limit: 768m
     ports:
       - '80:80'

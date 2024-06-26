@@ -1,5 +1,5 @@
 <template>
-  <base-form :is-loading="isLoading" :no-submit-btn="true" class="card" @form-submit="saveProduct">
+  <base-form :is-loading="isLoading" :no-submit-btn="true" class="card" enctype="multipart/form-data" @form-submit="saveProduct">
     <base-input
       :id="titleInput.id"
       v-model.trim="titleInput.value"

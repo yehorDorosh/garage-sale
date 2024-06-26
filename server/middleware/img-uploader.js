@@ -9,6 +9,7 @@ let customErr;
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
+    file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
     fs.mkdirSync(`${constants.IMAGE_DIR_PATH}/${req.userId}`, { recursive: true });
     cb(null, `${constants.IMAGE_DIR_PATH}/${req.userId}`);
   },
